@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "SYrj80xXnYs=",
+  "dgSpecHash": "dHtZ806nhzA=",
   "success": true,
-  "projectFilePath": "/Users/olescholz/Desktop/ARC-Summary/ARCSummary/src/CLI/CLI.fsproj",
+  "projectFilePath": "/Users/olescholz/Desktop/ARC-Summary/src/CLI/CLI.fsproj",
   "expectedPackageFiles": [
     "/Users/olescholz/.nuget/packages/arctrl/2.3.1/arctrl.2.3.1.nupkg.sha512",
     "/Users/olescholz/.nuget/packages/arctrl.contract/2.3.1/arctrl.contract.2.3.1.nupkg.sha512",
@@ -15,7 +15,7 @@
     "/Users/olescholz/.nuget/packages/arctrl.spreadsheet/2.3.1/arctrl.spreadsheet.2.3.1.nupkg.sha512",
     "/Users/olescholz/.nuget/packages/arctrl.validationpackages/2.3.1/arctrl.validationpackages.2.3.1.nupkg.sha512",
     "/Users/olescholz/.nuget/packages/arctrl.yaml/2.3.1/arctrl.yaml.2.3.1.nupkg.sha512",
-    "/Users/olescholz/.nuget/packages/argu/6.2.4/argu.6.2.4.nupkg.sha512",
+    "/Users/olescholz/.nuget/packages/argu/6.2.5/argu.6.2.5.nupkg.sha512",
     "/Users/olescholz/.nuget/packages/documentformat.openxml/2.16.0/documentformat.openxml.2.16.0.nupkg.sha512",
     "/Users/olescholz/.nuget/packages/dynamicobj/4.0.3/dynamicobj.4.0.3.nupkg.sha512",
     "/Users/olescholz/.nuget/packages/fable.browser.blob/1.1.0/fable.browser.blob.1.1.0.nupkg.sha512",
@@ -41,9 +41,9 @@
     "/Users/olescholz/.nuget/packages/thoth.json.core/0.4.0/thoth.json.core.0.4.0.nupkg.sha512",
     "/Users/olescholz/.nuget/packages/thoth.json.newtonsoft/0.2.0/thoth.json.newtonsoft.0.2.0.nupkg.sha512",
     "/Users/olescholz/.nuget/packages/yamlicious/0.0.3/yamlicious.0.0.3.nupkg.sha512",
-    "/Users/olescholz/.nuget/packages/microsoft.netcore.app.ref/8.0.11/microsoft.netcore.app.ref.8.0.11.nupkg.sha512",
     "/Users/olescholz/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.11/microsoft.aspnetcore.app.ref.8.0.11.nupkg.sha512",
-    "/Users/olescholz/.nuget/packages/microsoft.netcore.app.host.osx-arm64/8.0.11/microsoft.netcore.app.host.osx-arm64.8.0.11.nupkg.sha512"
+    "/Users/olescholz/.nuget/packages/microsoft.netcore.app.host.osx-arm64/8.0.11/microsoft.netcore.app.host.osx-arm64.8.0.11.nupkg.sha512",
+    "/Users/olescholz/.nuget/packages/microsoft.netcore.app.ref/8.0.11/microsoft.netcore.app.ref.8.0.11.nupkg.sha512"
   ],
   "logs": [
     {

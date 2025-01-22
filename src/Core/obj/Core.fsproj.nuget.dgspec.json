@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/olescholz/Desktop/ARC-Summary/ARCSummary/src/Core/Core.fsproj": {}
+    "/Users/olescholz/Desktop/ARC-Summary/src/Core/Core.fsproj": {}
   },
   "projects": {
-    "/Users/olescholz/Desktop/ARC-Summary/ARCSummary/src/Core/Core.fsproj": {
+    "/Users/olescholz/Desktop/ARC-Summary/src/Core/Core.fsproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/olescholz/Desktop/ARC-Summary/ARCSummary/src/Core/Core.fsproj",
+        "projectUniqueName": "/Users/olescholz/Desktop/ARC-Summary/src/Core/Core.fsproj",
         "projectName": "Core",
-        "projectPath": "/Users/olescholz/Desktop/ARC-Summary/ARCSummary/src/Core/Core.fsproj",
+        "projectPath": "/Users/olescholz/Desktop/ARC-Summary/src/Core/Core.fsproj",
         "packagesPath": "/Users/olescholz/.nuget/packages/",
-        "outputPath": "/Users/olescholz/Desktop/ARC-Summary/ARCSummary/src/Core/obj/",
+        "outputPath": "/Users/olescholz/Desktop/ARC-Summary/src/Core/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/olescholz/.nuget/NuGet/NuGet.Config"
@@ -42,7 +42,7 @@
           "dependencies": {
             "ARCtrl": {
               "target": "Package",
-              "version": "[2.2.4, )",
+              "version": "[2.3.1, )",
               "generatePathProperty": true
             },
             "ARCtrl.NET": {
@@ -52,7 +52,7 @@
             },
             "Argu": {
               "target": "Package",
-              "version": "[6.2.4, )",
+              "version": "[6.2.5, )",
               "generatePathProperty": true
             },
             "FSharp.Core": {

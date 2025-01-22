@@ -204,10 +204,10 @@
           }
         }
       },
-      "Argu/6.2.4": {
+      "Argu/6.2.5": {
         "type": "package",
         "dependencies": {
-          "FSharp.Core": "6.0.7",
+          "FSharp.Core": "6.0.0",
           "System.Configuration.ConfigurationManager": "4.4.0"
         },
         "compile": {
@@ -671,9 +671,9 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
-          "ARCtrl": "2.2.4",
+          "ARCtrl": "2.3.1",
           "ARCtrl.NET": "2.0.2",
-          "Argu": "6.2.4",
+          "Argu": "6.2.5",
           "FSharp.Core": "9.0.100"
         },
         "compile": {
@@ -1087,14 +1087,14 @@
         "logo.png"
       ]
     },
-    "Argu/6.2.4": {
-      "sha512": "RuANu8+L1P2HWozmbRXkj6MQGYwP5DL2wdARfBPtRjsLS8TSgwYjOKxMnY5LtjmHLlMBD3u2+MfbAy8xMGg8Qg==",
+    "Argu/6.2.5": {
+      "sha512": "68vfXYZCcyTFtC11Z26+S4cSyEPiUJ8PL+iGuYpIbCsH+TN27bIxV/QczHXus/+iSCOfjMJsBffBC90mlzKXrw==",
       "type": "package",
-      "path": "argu/6.2.4",
+      "path": "argu/6.2.5",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "argu.6.2.4.nupkg.sha512",
+        "argu.6.2.5.nupkg.sha512",
         "argu.nuspec",
         "lib/netstandard2.0/Argu.dll",
         "lib/netstandard2.0/Argu.xml",
@@ -1714,7 +1714,7 @@
   "projectFileDependencyGroups": {
     "net8.0": [
       "ARCtrl >= 2.3.1",
-      "Argu >= 6.2.4",
+      "Argu >= 6.2.5",
       "Core >= 1.0.0",
       "FSharp.Core >= 9.0.100"
     ]
@@ -1725,11 +1725,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/olescholz/Desktop/ARC-Summary/ARCSummary/src/CLI/CLI.fsproj",
+      "projectUniqueName": "/Users/olescholz/Desktop/ARC-Summary/src/CLI/CLI.fsproj",
       "projectName": "CLI",
-      "projectPath": "/Users/olescholz/Desktop/ARC-Summary/ARCSummary/src/CLI/CLI.fsproj",
+      "projectPath": "/Users/olescholz/Desktop/ARC-Summary/src/CLI/CLI.fsproj",
       "packagesPath": "/Users/olescholz/.nuget/packages/",
-      "outputPath": "/Users/olescholz/Desktop/ARC-Summary/ARCSummary/src/CLI/obj/",
+      "outputPath": "/Users/olescholz/Desktop/ARC-Summary/src/CLI/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/olescholz/.nuget/NuGet/NuGet.Config"
@@ -1745,8 +1745,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "/Users/olescholz/Desktop/ARC-Summary/ARCSummary/src/Core/Core.fsproj": {
-              "projectPath": "/Users/olescholz/Desktop/ARC-Summary/ARCSummary/src/Core/Core.fsproj"
+            "/Users/olescholz/Desktop/ARC-Summary/src/Core/Core.fsproj": {
+              "projectPath": "/Users/olescholz/Desktop/ARC-Summary/src/Core/Core.fsproj"
             }
           }
         }
@@ -1769,7 +1769,7 @@
           },
           "Argu": {
             "target": "Package",
-            "version": "[6.2.4, )",
+            "version": "[6.2.5, )",
             "generatePathProperty": true
           },
           "FSharp.Core": {

@@ -2,16 +2,17 @@
   "version": 3,
   "targets": {
     "net8.0": {
-      "ARCtrl/2.2.4": {
+      "ARCtrl/2.3.1": {
         "type": "package",
         "dependencies": {
-          "ARCtrl.CWL": "2.2.4",
-          "ARCtrl.Contract": "2.2.4",
-          "ARCtrl.FileSystem": "2.2.4",
-          "ARCtrl.Json": "2.2.4",
-          "ARCtrl.ROCrate": "2.2.4",
-          "ARCtrl.Spreadsheet": "2.2.4",
+          "ARCtrl.CWL": "2.3.1",
+          "ARCtrl.Contract": "2.3.1",
+          "ARCtrl.FileSystem": "2.3.1",
+          "ARCtrl.Json": "2.3.1",
+          "ARCtrl.ROCrate": "2.3.1",
+          "ARCtrl.Spreadsheet": "2.3.1",
           "Fable.SimpleHttp": "3.5.0",
+          "FsSpreadsheet.NET": "6.3.1",
           "Thoth.Json.Newtonsoft": "0.2.0"
         },
         "compile": {
@@ -25,13 +26,13 @@
           }
         }
       },
-      "ARCtrl.Contract/2.2.4": {
+      "ARCtrl.Contract/2.3.1": {
         "type": "package",
         "dependencies": {
-          "ARCtrl.Core": "2.2.4",
-          "ARCtrl.Json": "2.2.4",
-          "ARCtrl.Spreadsheet": "2.2.4",
-          "ARCtrl.Yaml": "2.2.4"
+          "ARCtrl.Core": "2.3.1",
+          "ARCtrl.Json": "2.3.1",
+          "ARCtrl.Spreadsheet": "2.3.1",
+          "ARCtrl.Yaml": "2.3.1"
         },
         "compile": {
           "lib/netstandard2.0/ARCtrl.Contract.dll": {
@@ -44,11 +45,11 @@
           }
         }
       },
-      "ARCtrl.Core/2.2.4": {
+      "ARCtrl.Core/2.3.1": {
         "type": "package",
         "dependencies": {
-          "ARCtrl.CWL": "2.2.4",
-          "ARCtrl.FileSystem": "2.2.4"
+          "ARCtrl.CWL": "2.3.1",
+          "ARCtrl.FileSystem": "2.3.1"
         },
         "compile": {
           "lib/netstandard2.0/ARCtrl.Core.dll": {
@@ -61,7 +62,7 @@
           }
         }
       },
-      "ARCtrl.CWL/2.2.4": {
+      "ARCtrl.CWL/2.3.1": {
         "type": "package",
         "dependencies": {
           "DynamicObj": "4.0.3",
@@ -78,7 +79,7 @@
           }
         }
       },
-      "ARCtrl.FileSystem/2.2.4": {
+      "ARCtrl.FileSystem/2.3.1": {
         "type": "package",
         "dependencies": {
           "Fable.Core": "4.3.0"
@@ -94,11 +95,11 @@
           }
         }
       },
-      "ARCtrl.Json/2.2.4": {
+      "ARCtrl.Json/2.3.1": {
         "type": "package",
         "dependencies": {
-          "ARCtrl.Core": "2.2.4",
-          "ARCtrl.ROCrate": "2.2.4",
+          "ARCtrl.Core": "2.3.1",
+          "ARCtrl.ROCrate": "2.3.1",
           "Thoth.Json.Core": "0.4.0"
         },
         "compile": {
@@ -134,7 +135,7 @@
           }
         }
       },
-      "ARCtrl.ROCrate/2.2.4": {
+      "ARCtrl.ROCrate/2.3.1": {
         "type": "package",
         "dependencies": {
           "DynamicObj": "4.0.3",
@@ -151,12 +152,12 @@
           }
         }
       },
-      "ARCtrl.Spreadsheet/2.2.4": {
+      "ARCtrl.Spreadsheet/2.3.1": {
         "type": "package",
         "dependencies": {
-          "ARCtrl.Core": "2.2.4",
-          "ARCtrl.FileSystem": "2.2.4",
-          "FsSpreadsheet": "6.3.0-alpha.4"
+          "ARCtrl.Core": "2.3.1",
+          "ARCtrl.FileSystem": "2.3.1",
+          "FsSpreadsheet": "6.3.1"
         },
         "compile": {
           "lib/netstandard2.0/ARCtrl.Spreadsheet.dll": {
@@ -169,10 +170,10 @@
           }
         }
       },
-      "ARCtrl.ValidationPackages/2.2.4": {
+      "ARCtrl.ValidationPackages/2.3.1": {
         "type": "package",
         "dependencies": {
-          "ARCtrl.Core": "2.2.4"
+          "ARCtrl.Core": "2.3.1"
         },
         "compile": {
           "lib/netstandard2.0/ARCtrl.ValidationPackages.dll": {
@@ -185,11 +186,11 @@
           }
         }
       },
-      "ARCtrl.Yaml/2.2.4": {
+      "ARCtrl.Yaml/2.3.1": {
         "type": "package",
         "dependencies": {
-          "ARCtrl.Core": "2.2.4",
-          "ARCtrl.ValidationPackages": "2.2.4",
+          "ARCtrl.Core": "2.3.1",
+          "ARCtrl.ValidationPackages": "2.3.1",
           "YAMLicious": "0.0.3"
         },
         "compile": {
@@ -203,10 +204,10 @@
           }
         }
       },
-      "Argu/6.2.4": {
+      "Argu/6.2.5": {
         "type": "package",
         "dependencies": {
-          "FSharp.Core": "6.0.7",
+          "FSharp.Core": "6.0.0",
           "System.Configuration.ConfigurationManager": "4.4.0"
         },
         "compile": {
@@ -443,12 +444,11 @@
           }
         }
       },
-      "FsSpreadsheet/6.3.0-alpha.4": {
+      "FsSpreadsheet/6.3.1": {
         "type": "package",
         "dependencies": {
-          "FSharp.Core": "6.0.7",
-          "Fable.Package.SDK": "1.0.0",
-          "Thoth.Json.Core": "0.4.0"
+          "FSharp.Core": "8.0.301",
+          "Thoth.Json.Core": "0.2.1"
         },
         "compile": {
           "lib/netstandard2.0/FsSpreadsheet.dll": {
@@ -461,11 +461,11 @@
           }
         }
       },
-      "FsSpreadsheet.Net/6.2.0": {
+      "FsSpreadsheet.Net/6.3.1": {
         "type": "package",
         "dependencies": {
           "DocumentFormat.OpenXml": "2.16.0",
-          "FSharp.Core": "6.0.7",
+          "FSharp.Core": "8.0.301",
           "FsSpreadsheet": "[6.0.0, 7.0.0)",
           "Thoth.Json.Newtonsoft": "0.1.0"
         },
@@ -670,18 +670,21 @@
     }
   },
   "libraries": {
-    "ARCtrl/2.2.4": {
-      "sha512": "C6Ft3XgnAVw/RILb8Csq8Le7cyKNIqKiT+VwwncxpRtw/DUkSI/ai1mI5bS2rWEC3AvPCJHhXUcya2O9GB6qzg==",
+    "ARCtrl/2.3.1": {
+      "sha512": "V9FUoSoqof+/qcjojIsvPxSzH5RtI7HPzikSS/r0t5E4us7JkJqSC3h+uqBdrnLcFVuAFlTDk+rWBpafuVVgtw==",
       "type": "package",
-      "path": "arctrl/2.2.4",
+      "path": "arctrl/2.3.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "arctrl.2.2.4.nupkg.sha512",
+        "arctrl.2.3.1.nupkg.sha512",
         "arctrl.nuspec",
         "fable/ARC.fs",
         "fable/ARCtrl.Common.props",
         "fable/ARCtrl.fsproj",
+        "fable/ContractIO/ContractIO.fs",
+        "fable/ContractIO/FileSystemHelper.fs",
+        "fable/CrossAsync.fs",
         "fable/Json.fs",
         "fable/JsonIO/ARC.fs",
         "fable/JsonIO/Assay.fs",
@@ -730,14 +733,14 @@
         "logo.png"
       ]
     },
-    "ARCtrl.Contract/2.2.4": {
-      "sha512": "KE0/cE8/uUgZiKskrraGujiEV5yG4bUuWdu5USKIqNlO5dGbNXiKYFEr17p7J8m488IIO3Ho/7KHkA57RFOfIQ==",
+    "ARCtrl.Contract/2.3.1": {
+      "sha512": "5G8Oa+yc22J1UPo7flfY/ZoWl8H+dfchqyTaY9vDPHUiKQc4Ck6yRBnvDOYG59fYL3OLKXSKnvNeIpmIu10Keg==",
       "type": "package",
-      "path": "arctrl.contract/2.2.4",
+      "path": "arctrl.contract/2.3.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "arctrl.contract.2.2.4.nupkg.sha512",
+        "arctrl.contract.2.3.1.nupkg.sha512",
         "arctrl.contract.nuspec",
         "fable/ARC.fs",
         "fable/ARCtrl.Contract.fsproj",
@@ -753,14 +756,14 @@
         "logo.png"
       ]
     },
-    "ARCtrl.Core/2.2.4": {
-      "sha512": "qc2F0KJ8kN/2corO3j+CCM6/W0/UAftVgGdtOLU+gRl/W5oFHBlEynctEjQW2JaUB76vmIBFtVl42O4WjJ00xg==",
+    "ARCtrl.Core/2.3.1": {
+      "sha512": "7+/cy6XnpYyKm5Ia8aVq3tW6O7UU1WVEBrzvWVpwQPhgf1AJ9737sEZ6XdvEsq/l6NtdUFEFs4GC6SF0FZCFXA==",
       "type": "package",
-      "path": "arctrl.core/2.2.4",
+      "path": "arctrl.core/2.3.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "arctrl.core.2.2.4.nupkg.sha512",
+        "arctrl.core.2.3.1.nupkg.sha512",
         "arctrl.core.nuspec",
         "fable/ARCtrl.Core.fsproj",
         "fable/ArcTypes.fs",
@@ -816,14 +819,14 @@
         "logo.png"
       ]
     },
-    "ARCtrl.CWL/2.2.4": {
-      "sha512": "y+XoMTqqxPRJHeizpX7g+fj/Y/e42TIUubVPVfRVwB/zev6KvDtvdZu1REvllb2pgJfKRGvuyFZKsf88EelR/w==",
+    "ARCtrl.CWL/2.3.1": {
+      "sha512": "Gs/vzcE9He6vXwXrdT9ECSBqOG5ChxNh58o3XTzk4KCHXkxBzJSc9RFG3m/doTkjVfxMOblbIf8nCouv/ug1CQ==",
       "type": "package",
-      "path": "arctrl.cwl/2.2.4",
+      "path": "arctrl.cwl/2.3.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "arctrl.cwl.2.2.4.nupkg.sha512",
+        "arctrl.cwl.2.3.1.nupkg.sha512",
         "arctrl.cwl.nuspec",
         "fable/ARCtrl.CWL.fsproj",
         "fable/CWLTypes.fs",
@@ -840,14 +843,14 @@
         "logo.png"
       ]
     },
-    "ARCtrl.FileSystem/2.2.4": {
-      "sha512": "SnCeuPxQT3IYvClSs5Dt6gDaA+WpUU1o4ReUyyBeR/C+9xvpQ+IpBcoJGtWArQrHS0GqHAyukGR1DrXr5eGhwA==",
+    "ARCtrl.FileSystem/2.3.1": {
+      "sha512": "KI+MxH3Fst2VjQtDblNueUfEA2tZ0nozm0qaZ5hvApxu7fOvoHYtmTkELcvV0c1GvaKpNsSH/F0fgxtYoNXvnw==",
       "type": "package",
-      "path": "arctrl.filesystem/2.2.4",
+      "path": "arctrl.filesystem/2.3.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "arctrl.filesystem.2.2.4.nupkg.sha512",
+        "arctrl.filesystem.2.3.1.nupkg.sha512",
         "arctrl.filesystem.nuspec",
         "fable/ARCtrl.FileSystem.fsproj",
         "fable/Commit.fs",
@@ -861,14 +864,14 @@
         "logo.png"
       ]
     },
-    "ARCtrl.Json/2.2.4": {
-      "sha512": "kQNpBbidjPsP0JY8YTy4N0YBTjb+0/mDkwCaTnkRsUBjg6j4gSjl/rJ1jLoESb7xPMF5uM4TZwCVxJXtDqIaSA==",
+    "ARCtrl.Json/2.3.1": {
+      "sha512": "TMW98l2I60x87QaOwvvrCP84/5Sr4e6G/7fYDSVeaNQFg44S5/3u9v+WnAM1oiJIJFh841J7YXlzbpoKafHRRg==",
       "type": "package",
-      "path": "arctrl.json/2.2.4",
+      "path": "arctrl.json/2.3.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "arctrl.json.2.2.4.nupkg.sha512",
+        "arctrl.json.2.3.1.nupkg.sha512",
         "arctrl.json.nuspec",
         "fable/ARC.fs",
         "fable/ARCtrl.Json.fsproj",
@@ -958,14 +961,14 @@
         "lib/netstandard2.1/ARCtrl.NET.xml"
       ]
     },
-    "ARCtrl.ROCrate/2.2.4": {
-      "sha512": "lwo5RkzivmJXPUsNmCGEb/JXaWARpgH2UVK4CE/H5LaCj4DmtMlYXdXSC10x7xq/uJDmQ0kMGp5gWyuHkGDKaA==",
+    "ARCtrl.ROCrate/2.3.1": {
+      "sha512": "5OoRJG5Iwa8R7q+DVyH7sp/q3bi3pdlIMHNy5HFcRxFjEBYp2q5wsPalczLs09v969J29ScTF0sVOOUrq46/vg==",
       "type": "package",
-      "path": "arctrl.rocrate/2.2.4",
+      "path": "arctrl.rocrate/2.3.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "arctrl.rocrate.2.2.4.nupkg.sha512",
+        "arctrl.rocrate.2.3.1.nupkg.sha512",
         "arctrl.rocrate.nuspec",
         "fable/ARCtrl.ROCrate.fsproj",
         "fable/ArcROCrateMetadata.fs",
@@ -987,14 +990,14 @@
         "logo.png"
       ]
     },
-    "ARCtrl.Spreadsheet/2.2.4": {
-      "sha512": "zpGoXfUS9HCNLUeKGPgdE4mdA7kL8r4I5syWCEvLexRqvTIPFY0FUbTZm8RF2NtGdfdllKkztGz3fBcpznfzNg==",
+    "ARCtrl.Spreadsheet/2.3.1": {
+      "sha512": "dMgblfqnhQJiSu0D4BAcmL7MvPtjI4/X6bixm1zdPtbTekuQGs9pwOW+3qdwdmRakAmFgGiliFOPN0k/vxiFgw==",
       "type": "package",
-      "path": "arctrl.spreadsheet/2.2.4",
+      "path": "arctrl.spreadsheet/2.3.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "arctrl.spreadsheet.2.2.4.nupkg.sha512",
+        "arctrl.spreadsheet.2.3.1.nupkg.sha512",
         "arctrl.spreadsheet.nuspec",
         "fable/ARCtrl.Spreadsheet.fsproj",
         "fable/AnnotationTable/ArcTable.fs",
@@ -1028,14 +1031,14 @@
         "logo.png"
       ]
     },
-    "ARCtrl.ValidationPackages/2.2.4": {
-      "sha512": "2sfXpm/8RhOHnXXc8v7s3B5shS79RGf0PiahJBXU6p/MtytRHWttjClDO5NOkX4RoWdkFI9sQCPiZrRhPP+vCw==",
+    "ARCtrl.ValidationPackages/2.3.1": {
+      "sha512": "GpecsMHEHoM+WsfArPfXY3sI2tl8Cohp3zJnpkGmZELvCRgULhNRg/cAe1pICf9VwgOPyGkX0Dpo+PDAzyLTRg==",
       "type": "package",
-      "path": "arctrl.validationpackages/2.2.4",
+      "path": "arctrl.validationpackages/2.3.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "arctrl.validationpackages.2.2.4.nupkg.sha512",
+        "arctrl.validationpackages.2.3.1.nupkg.sha512",
         "arctrl.validationpackages.nuspec",
         "fable/ARCtrl.ValidationPackages.fsproj",
         "fable/ValidationPackage.fs",
@@ -1049,14 +1052,14 @@
         "logo.png"
       ]
     },
-    "ARCtrl.Yaml/2.2.4": {
-      "sha512": "gu++6LLHBc8QzTadlPBd1kjDIcktI+4fmu54qXWyVZMc/sjNAFDxHS/BqrNvJmxiKiiHHwpO/1Mz198HzUjj2A==",
+    "ARCtrl.Yaml/2.3.1": {
+      "sha512": "8eSzXGyR+mAaQJGVYpWj8DhVpEJAlxzeC1Q9sXmmKE4yHHtgEEwFGPREbEDOewdpDv5axJzoJKHFcZR9iMHf/g==",
       "type": "package",
-      "path": "arctrl.yaml/2.2.4",
+      "path": "arctrl.yaml/2.3.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "arctrl.yaml.2.2.4.nupkg.sha512",
+        "arctrl.yaml.2.3.1.nupkg.sha512",
         "arctrl.yaml.nuspec",
         "fable/ARCtrl.Yaml.fsproj",
         "fable/Decode.fs",
@@ -1068,14 +1071,14 @@
         "logo.png"
       ]
     },
-    "Argu/6.2.4": {
-      "sha512": "RuANu8+L1P2HWozmbRXkj6MQGYwP5DL2wdARfBPtRjsLS8TSgwYjOKxMnY5LtjmHLlMBD3u2+MfbAy8xMGg8Qg==",
+    "Argu/6.2.5": {
+      "sha512": "68vfXYZCcyTFtC11Z26+S4cSyEPiUJ8PL+iGuYpIbCsH+TN27bIxV/QczHXus/+iSCOfjMJsBffBC90mlzKXrw==",
       "type": "package",
-      "path": "argu/6.2.4",
+      "path": "argu/6.2.5",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "argu.6.2.4.nupkg.sha512",
+        "argu.6.2.5.nupkg.sha512",
         "argu.nuspec",
         "lib/netstandard2.0/Argu.dll",
         "lib/netstandard2.0/Argu.xml",
@@ -1286,10 +1289,10 @@
         "lib/netstandard2.1/zh-Hant/FSharp.Core.resources.dll"
       ]
     },
-    "FsSpreadsheet/6.3.0-alpha.4": {
-      "sha512": "XBjvsfQ3aC3q7W2BcoMJ9Wo6DkH1FLmuAmsGa4CSWmIcDSXPu/Gsg3cl7kDQfdOKonAe1uEnb5KPqEHdjGkNQg==",
+    "FsSpreadsheet/6.3.1": {
+      "sha512": "vJUjS9fR1QftcWAFDtZxBKNuTe/PCAapI0Kj3ag46SzHbmlOIzz+Yu5INQ/0kgxoR5ZguX8ojNbLRHpeiaGGfQ==",
       "type": "package",
-      "path": "fsspreadsheet/6.3.0-alpha.4",
+      "path": "fsspreadsheet/6.3.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -1332,21 +1335,21 @@
         "fable/obj/Debug/netstandard2.0/FsSpreadsheet.AssemblyInfo.fs",
         "fable/obj/Release/netstandard2.0/.NETStandard,Version=v2.0.AssemblyAttributes.fs",
         "fable/obj/Release/netstandard2.0/FsSpreadsheet.AssemblyInfo.fs",
-        "fsspreadsheet.6.3.0-alpha.4.nupkg.sha512",
+        "fsspreadsheet.6.3.1.nupkg.sha512",
         "fsspreadsheet.nuspec",
         "lib/netstandard2.0/FsSpreadsheet.dll",
         "lib/netstandard2.0/FsSpreadsheet.xml",
         "logo.png"
       ]
     },
-    "FsSpreadsheet.Net/6.2.0": {
-      "sha512": "D+N6r3nSwOaIAQhmBuI7pgBPs3CtsZXkachHPSEcJ7aQru1NpHJeSJnxEy85sVsjD0gPpKgM6D2NYsUeYlqTWQ==",
+    "FsSpreadsheet.Net/6.3.1": {
+      "sha512": "2Kw1QM6eJak1HIZipsGRROXb5hTEe5WPxmy3S/L+VzsA/nFNHMfKuY+BPmTJp2AY+2ybp+vDHd5tt9vi9o2Mcg==",
       "type": "package",
-      "path": "fsspreadsheet.net/6.2.0",
+      "path": "fsspreadsheet.net/6.3.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "fsspreadsheet.net.6.2.0.nupkg.sha512",
+        "fsspreadsheet.net.6.3.1.nupkg.sha512",
         "fsspreadsheet.net.nuspec",
         "lib/netstandard2.0/FsSpreadsheet.Net.dll",
         "lib/netstandard2.0/FsSpreadsheet.Net.xml",
@@ -1689,9 +1692,9 @@
   },
   "projectFileDependencyGroups": {
     "net8.0": [
-      "ARCtrl >= 2.2.4",
+      "ARCtrl >= 2.3.1",
       "ARCtrl.NET >= 2.0.2",
-      "Argu >= 6.2.4",
+      "Argu >= 6.2.5",
       "FSharp.Core >= 9.0.100"
     ]
   },
@@ -1701,11 +1704,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/olescholz/Desktop/ARC-Summary/ARCSummary/src/Core/Core.fsproj",
+      "projectUniqueName": "/Users/olescholz/Desktop/ARC-Summary/src/Core/Core.fsproj",
       "projectName": "Core",
-      "projectPath": "/Users/olescholz/Desktop/ARC-Summary/ARCSummary/src/Core/Core.fsproj",
+      "projectPath": "/Users/olescholz/Desktop/ARC-Summary/src/Core/Core.fsproj",
       "packagesPath": "/Users/olescholz/.nuget/packages/",
-      "outputPath": "/Users/olescholz/Desktop/ARC-Summary/ARCSummary/src/Core/obj/",
+      "outputPath": "/Users/olescholz/Desktop/ARC-Summary/src/Core/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/olescholz/.nuget/NuGet/NuGet.Config"
@@ -1736,7 +1739,7 @@
         "dependencies": {
           "ARCtrl": {
             "target": "Package",
-            "version": "[2.2.4, )",
+            "version": "[2.3.1, )",
             "generatePathProperty": true
           },
           "ARCtrl.NET": {
@@ -1746,7 +1749,7 @@
           },
           "Argu": {
             "target": "Package",
-            "version": "[6.2.4, )",
+            "version": "[6.2.5, )",
             "generatePathProperty": true
           },
           "FSharp.Core": {

@@ -13,8 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="ARCtrl" Version="2.2.4" />
+    <PackageReference Include="ARCtrl" Version="2.3.1" />
     <PackageReference Include="ARCtrl.NET" Version="2.0.2" />
-    <PackageReference Include="Argu" Version="6.2.4" />
+    <PackageReference Include="Argu" Version="6.2.5" />
   </ItemGroup>
 </Project>
