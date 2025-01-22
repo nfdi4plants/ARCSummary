@@ -1,0 +1,1801 @@
+{
+  "version": 3,
+  "targets": {
+    "net8.0": {
+      "ARCtrl/2.2.4": {
+        "type": "package",
+        "dependencies": {
+          "ARCtrl.CWL": "2.2.4",
+          "ARCtrl.Contract": "2.2.4",
+          "ARCtrl.FileSystem": "2.2.4",
+          "ARCtrl.Json": "2.2.4",
+          "ARCtrl.ROCrate": "2.2.4",
+          "ARCtrl.Spreadsheet": "2.2.4",
+          "Fable.SimpleHttp": "3.5.0",
+          "Thoth.Json.Newtonsoft": "0.2.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/ARCtrl.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/ARCtrl.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "ARCtrl.Contract/2.2.4": {
+        "type": "package",
+        "dependencies": {
+          "ARCtrl.Core": "2.2.4",
+          "ARCtrl.Json": "2.2.4",
+          "ARCtrl.Spreadsheet": "2.2.4",
+          "ARCtrl.Yaml": "2.2.4"
+        },
+        "compile": {
+          "lib/netstandard2.0/ARCtrl.Contract.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/ARCtrl.Contract.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "ARCtrl.Core/2.2.4": {
+        "type": "package",
+        "dependencies": {
+          "ARCtrl.CWL": "2.2.4",
+          "ARCtrl.FileSystem": "2.2.4"
+        },
+        "compile": {
+          "lib/netstandard2.0/ARCtrl.Core.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/ARCtrl.Core.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "ARCtrl.CWL/2.2.4": {
+        "type": "package",
+        "dependencies": {
+          "DynamicObj": "4.0.3",
+          "YAMLicious": "0.0.3"
+        },
+        "compile": {
+          "lib/netstandard2.0/ARCtrl.CWL.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/ARCtrl.CWL.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "ARCtrl.FileSystem/2.2.4": {
+        "type": "package",
+        "dependencies": {
+          "Fable.Core": "4.3.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/ARCtrl.FileSystem.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/ARCtrl.FileSystem.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "ARCtrl.Json/2.2.4": {
+        "type": "package",
+        "dependencies": {
+          "ARCtrl.Core": "2.2.4",
+          "ARCtrl.ROCrate": "2.2.4",
+          "Thoth.Json.Core": "0.4.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/ARCtrl.Json.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/ARCtrl.Json.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "ARCtrl.NET/2.0.2": {
+        "type": "package",
+        "dependencies": {
+          "ARCtrl": "2.1.0-alpha.4",
+          "FSharp.Core": "8.0.400",
+          "FsSpreadsheet": "6.2.0",
+          "FsSpreadsheet.Net": "6.2.0",
+          "JsonDSL": "0.0.5",
+          "LitXml": "0.1.0",
+          "NLog": "5.1.2"
+        },
+        "compile": {
+          "lib/netstandard2.1/ARCtrl.NET.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.1/ARCtrl.NET.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "ARCtrl.ROCrate/2.2.4": {
+        "type": "package",
+        "dependencies": {
+          "DynamicObj": "4.0.3",
+          "Thoth.Json.Core": "0.4.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/ARCtrl.ROCrate.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/ARCtrl.ROCrate.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "ARCtrl.Spreadsheet/2.2.4": {
+        "type": "package",
+        "dependencies": {
+          "ARCtrl.Core": "2.2.4",
+          "ARCtrl.FileSystem": "2.2.4",
+          "FsSpreadsheet": "6.3.0-alpha.4"
+        },
+        "compile": {
+          "lib/netstandard2.0/ARCtrl.Spreadsheet.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/ARCtrl.Spreadsheet.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "ARCtrl.ValidationPackages/2.2.4": {
+        "type": "package",
+        "dependencies": {
+          "ARCtrl.Core": "2.2.4"
+        },
+        "compile": {
+          "lib/netstandard2.0/ARCtrl.ValidationPackages.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/ARCtrl.ValidationPackages.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "ARCtrl.Yaml/2.2.4": {
+        "type": "package",
+        "dependencies": {
+          "ARCtrl.Core": "2.2.4",
+          "ARCtrl.ValidationPackages": "2.2.4",
+          "YAMLicious": "0.0.3"
+        },
+        "compile": {
+          "lib/netstandard2.0/ARCtrl.Yaml.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/ARCtrl.Yaml.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Argu/6.2.4": {
+        "type": "package",
+        "dependencies": {
+          "FSharp.Core": "6.0.7",
+          "System.Configuration.ConfigurationManager": "4.4.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Argu.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/Argu.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "DocumentFormat.OpenXml/2.16.0": {
+        "type": "package",
+        "dependencies": {
+          "System.IO.Packaging": "4.7.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/DocumentFormat.OpenXml.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/DocumentFormat.OpenXml.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "DynamicObj/4.0.3": {
+        "type": "package",
+        "dependencies": {
+          "FSharp.Core": "8.0.301",
+          "Fable.Core": "4.3.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/DynamicObj.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/DynamicObj.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Fable.Browser.Blob/1.1.0": {
+        "type": "package",
+        "dependencies": {
+          "FSharp.Core": "4.6.2",
+          "Fable.Core": "3.0.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Browser.Blob.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/Browser.Blob.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Fable.Browser.Dom/1.0.0": {
+        "type": "package",
+        "dependencies": {
+          "FSharp.Core": "4.5.2",
+          "Fable.Browser.Blob": "1.0.0",
+          "Fable.Browser.Event": "1.0.0",
+          "Fable.Browser.WebStorage": "1.0.0",
+          "Fable.Core": "3.0.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Browser.Dom.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/Browser.Dom.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Fable.Browser.Event/1.0.0": {
+        "type": "package",
+        "dependencies": {
+          "FSharp.Core": "4.5.2",
+          "Fable.Core": "3.0.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Browser.Event.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/Browser.Event.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Fable.Browser.WebStorage/1.0.0": {
+        "type": "package",
+        "dependencies": {
+          "FSharp.Core": "4.5.2",
+          "Fable.Browser.Event": "1.0.0",
+          "Fable.Core": "3.0.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Browser.WebStorage.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/Browser.WebStorage.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Fable.Browser.XMLHttpRequest/1.1.0": {
+        "type": "package",
+        "dependencies": {
+          "FSharp.Core": "4.6.2",
+          "Fable.Browser.Blob": "1.1.0",
+          "Fable.Browser.Event": "1.0.0",
+          "Fable.Core": "3.0.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Browser.XMLHttpRequest.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/Browser.XMLHttpRequest.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Fable.Core/4.3.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/Fable.Core.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/Fable.Core.dll": {
+            "related": ".xml"
+          }
+        },
+        "contentFiles": {
+          "contentFiles/any/any/_._": {
+            "buildAction": "None",
+            "codeLanguage": "any",
+            "copyToOutput": false
+          }
+        }
+      },
+      "Fable.Package.SDK/1.0.0": {
+        "type": "package",
+        "build": {
+          "build/_._": {}
+        }
+      },
+      "Fable.SimpleHttp/3.5.0": {
+        "type": "package",
+        "dependencies": {
+          "FSharp.Core": "4.6.2",
+          "Fable.Browser.Dom": "1.0.0",
+          "Fable.Browser.XMLHttpRequest": "1.1.0",
+          "Fable.Core": "3.0.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Fable.SimpleHttp.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/Fable.SimpleHttp.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "FSharp.Core/9.0.100": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.1/FSharp.Core.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.1/FSharp.Core.dll": {
+            "related": ".xml"
+          }
+        },
+        "resource": {
+          "lib/netstandard2.1/cs/FSharp.Core.resources.dll": {
+            "locale": "cs"
+          },
+          "lib/netstandard2.1/de/FSharp.Core.resources.dll": {
+            "locale": "de"
+          },
+          "lib/netstandard2.1/es/FSharp.Core.resources.dll": {
+            "locale": "es"
+          },
+          "lib/netstandard2.1/fr/FSharp.Core.resources.dll": {
+            "locale": "fr"
+          },
+          "lib/netstandard2.1/it/FSharp.Core.resources.dll": {
+            "locale": "it"
+          },
+          "lib/netstandard2.1/ja/FSharp.Core.resources.dll": {
+            "locale": "ja"
+          },
+          "lib/netstandard2.1/ko/FSharp.Core.resources.dll": {
+            "locale": "ko"
+          },
+          "lib/netstandard2.1/pl/FSharp.Core.resources.dll": {
+            "locale": "pl"
+          },
+          "lib/netstandard2.1/pt-BR/FSharp.Core.resources.dll": {
+            "locale": "pt-BR"
+          },
+          "lib/netstandard2.1/ru/FSharp.Core.resources.dll": {
+            "locale": "ru"
+          },
+          "lib/netstandard2.1/tr/FSharp.Core.resources.dll": {
+            "locale": "tr"
+          },
+          "lib/netstandard2.1/zh-Hans/FSharp.Core.resources.dll": {
+            "locale": "zh-Hans"
+          },
+          "lib/netstandard2.1/zh-Hant/FSharp.Core.resources.dll": {
+            "locale": "zh-Hant"
+          }
+        }
+      },
+      "FsSpreadsheet/6.3.0-alpha.4": {
+        "type": "package",
+        "dependencies": {
+          "FSharp.Core": "6.0.7",
+          "Fable.Package.SDK": "1.0.0",
+          "Thoth.Json.Core": "0.4.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/FsSpreadsheet.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/FsSpreadsheet.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "FsSpreadsheet.Net/6.2.0": {
+        "type": "package",
+        "dependencies": {
+          "DocumentFormat.OpenXml": "2.16.0",
+          "FSharp.Core": "6.0.7",
+          "FsSpreadsheet": "[6.0.0, 7.0.0)",
+          "Thoth.Json.Newtonsoft": "0.1.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/FsSpreadsheet.Net.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/FsSpreadsheet.Net.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "JsonDSL/0.0.5": {
+        "type": "package",
+        "dependencies": {
+          "FSharp.Core": "7.0.0",
+          "System.Text.Json": "7.0.2"
+        },
+        "compile": {
+          "lib/netstandard2.0/JsonDSL.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/JsonDSL.dll": {}
+        }
+      },
+      "LitXml/0.1.0": {
+        "type": "package",
+        "dependencies": {
+          "FSharp.Core": "6.0.1"
+        },
+        "compile": {
+          "lib/netstandard2.0/LitXml.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/LitXml.dll": {}
+        }
+      },
+      "Newtonsoft.Json/13.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "NLog/5.1.2": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/NLog.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/NLog.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "System.Configuration.ConfigurationManager/4.4.0": {
+        "type": "package",
+        "dependencies": {
+          "System.Security.Cryptography.ProtectedData": "4.4.0"
+        },
+        "compile": {
+          "ref/netstandard2.0/System.Configuration.ConfigurationManager.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.Configuration.ConfigurationManager.dll": {}
+        }
+      },
+      "System.IO.Packaging/4.7.0": {
+        "type": "package",
+        "compile": {
+          "ref/netstandard2.0/System.IO.Packaging.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.IO.Packaging.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "System.Security.Cryptography.ProtectedData/4.4.0": {
+        "type": "package",
+        "compile": {
+          "ref/netstandard2.0/_._": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll": {}
+        },
+        "runtimeTargets": {
+          "runtimes/win/lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll": {
+            "assetType": "runtime",
+            "rid": "win"
+          }
+        }
+      },
+      "System.Text.Encodings.Web/7.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/net7.0/System.Text.Encodings.Web.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net7.0/System.Text.Encodings.Web.dll": {
+            "related": ".xml"
+          }
+        },
+        "build": {
+          "buildTransitive/net6.0/_._": {}
+        },
+        "runtimeTargets": {
+          "runtimes/browser/lib/net7.0/System.Text.Encodings.Web.dll": {
+            "assetType": "runtime",
+            "rid": "browser"
+          }
+        }
+      },
+      "System.Text.Json/7.0.2": {
+        "type": "package",
+        "dependencies": {
+          "System.Text.Encodings.Web": "7.0.0"
+        },
+        "compile": {
+          "lib/net7.0/System.Text.Json.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net7.0/System.Text.Json.dll": {
+            "related": ".xml"
+          }
+        },
+        "build": {
+          "buildTransitive/net6.0/System.Text.Json.targets": {}
+        }
+      },
+      "Thoth.Json.Core/0.4.0": {
+        "type": "package",
+        "dependencies": {
+          "FSharp.Core": "5.0.0",
+          "Fable.Core": "4.1.0",
+          "Fable.Package.SDK": "1.0.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Thoth.Json.Core.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/Thoth.Json.Core.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Thoth.Json.Newtonsoft/0.2.0": {
+        "type": "package",
+        "dependencies": {
+          "FSharp.Core": "5.0.0",
+          "Fable.Core": "4.1.0",
+          "Fable.Package.SDK": "0.1.0",
+          "Newtonsoft.Json": "13.0.1",
+          "Thoth.Json.Core": "0.3.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Thoth.Json.Newtonsoft.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/Thoth.Json.Newtonsoft.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "YAMLicious/0.0.3": {
+        "type": "package",
+        "dependencies": {
+          "FSharp.Core": "8.0.300",
+          "Fable.Core": "4.3.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/YAMLicious.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/YAMLicious.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "ARCtrl/2.2.4": {
+      "sha512": "C6Ft3XgnAVw/RILb8Csq8Le7cyKNIqKiT+VwwncxpRtw/DUkSI/ai1mI5bS2rWEC3AvPCJHhXUcya2O9GB6qzg==",
+      "type": "package",
+      "path": "arctrl/2.2.4",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "arctrl.2.2.4.nupkg.sha512",
+        "arctrl.nuspec",
+        "fable/ARC.fs",
+        "fable/ARCtrl.Common.props",
+        "fable/ARCtrl.fsproj",
+        "fable/Json.fs",
+        "fable/JsonIO/ARC.fs",
+        "fable/JsonIO/Assay.fs",
+        "fable/JsonIO/Comment.fs",
+        "fable/JsonIO/Data.fs",
+        "fable/JsonIO/DataFile.fs",
+        "fable/JsonIO/DataMap/DataMap.fs",
+        "fable/JsonIO/Decode.fs",
+        "fable/JsonIO/Encode.fs",
+        "fable/JsonIO/Investigation.fs",
+        "fable/JsonIO/LDObject.fs",
+        "fable/JsonIO/OntologyAnnotation.fs",
+        "fable/JsonIO/OntologySourceReference.fs",
+        "fable/JsonIO/Person.fs",
+        "fable/JsonIO/Process/Component.fs",
+        "fable/JsonIO/Process/Factor.fs",
+        "fable/JsonIO/Process/FactorValue.fs",
+        "fable/JsonIO/Process/Material.fs",
+        "fable/JsonIO/Process/MaterialAttribute.fs",
+        "fable/JsonIO/Process/MaterialAttributeValue.fs",
+        "fable/JsonIO/Process/MaterialType.fs",
+        "fable/JsonIO/Process/Process.fs",
+        "fable/JsonIO/Process/ProcessInput.fs",
+        "fable/JsonIO/Process/ProcessOutput.fs",
+        "fable/JsonIO/Process/ProcessParameterValue.fs",
+        "fable/JsonIO/Process/ProcessSequence.fs",
+        "fable/JsonIO/Process/Protocol.fs",
+        "fable/JsonIO/Process/ProtocolParameter.fs",
+        "fable/JsonIO/Process/Sample.fs",
+        "fable/JsonIO/Process/Source.fs",
+        "fable/JsonIO/Process/StudyMaterials.fs",
+        "fable/JsonIO/Process/Value.fs",
+        "fable/JsonIO/Publication.fs",
+        "fable/JsonIO/Study.fs",
+        "fable/JsonIO/Table/ArcTable.fs",
+        "fable/JsonIO/Table/CompositeCell.fs",
+        "fable/JsonIO/Table/CompositeHeader.fs",
+        "fable/JsonIO/Table/Compression.fs",
+        "fable/JsonIO/Table/IOType.fs",
+        "fable/JsonIO/Table/Templates.fs",
+        "fable/Template.Web.fs",
+        "fable/WebRequest/WebRequest.fs",
+        "fable/Xlsx.fs",
+        "lib/netstandard2.0/ARCtrl.dll",
+        "lib/netstandard2.0/ARCtrl.xml",
+        "logo.png"
+      ]
+    },
+    "ARCtrl.Contract/2.2.4": {
+      "sha512": "KE0/cE8/uUgZiKskrraGujiEV5yG4bUuWdu5USKIqNlO5dGbNXiKYFEr17p7J8m488IIO3Ho/7KHkA57RFOfIQ==",
+      "type": "package",
+      "path": "arctrl.contract/2.2.4",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "arctrl.contract.2.2.4.nupkg.sha512",
+        "arctrl.contract.nuspec",
+        "fable/ARC.fs",
+        "fable/ARCtrl.Contract.fsproj",
+        "fable/ArcAssay.fs",
+        "fable/ArcInvestigation.fs",
+        "fable/ArcStudy.fs",
+        "fable/Contract.fs",
+        "fable/Datamap.fs",
+        "fable/Git.fs",
+        "fable/ValidationPackagesConfig.fs",
+        "lib/netstandard2.0/ARCtrl.Contract.dll",
+        "lib/netstandard2.0/ARCtrl.Contract.xml",
+        "logo.png"
+      ]
+    },
+    "ARCtrl.Core/2.2.4": {
+      "sha512": "qc2F0KJ8kN/2corO3j+CCM6/W0/UAftVgGdtOLU+gRl/W5oFHBlEynctEjQW2JaUB76vmIBFtVl42O4WjJ00xg==",
+      "type": "package",
+      "path": "arctrl.core/2.2.4",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "arctrl.core.2.2.4.nupkg.sha512",
+        "arctrl.core.nuspec",
+        "fable/ARCtrl.Core.fsproj",
+        "fable/ArcTypes.fs",
+        "fable/Comment.fs",
+        "fable/CommentList.fs",
+        "fable/Conversion.fs",
+        "fable/Data.fs",
+        "fable/DataContext.fs",
+        "fable/DataFile.fs",
+        "fable/DataMap.fs",
+        "fable/Helper/Collections.fs",
+        "fable/Helper/HashCodes.fs",
+        "fable/Helper/Identifier.fs",
+        "fable/Helper/Printer.fs",
+        "fable/Helper/Regex.fs",
+        "fable/Helper/SemVer.fs",
+        "fable/Helper/Url.fs",
+        "fable/IPropertyValue.fs",
+        "fable/IdentifierSetters.fs",
+        "fable/OntologyAnnotation.fs",
+        "fable/OntologySourceReference.fs",
+        "fable/Person.fs",
+        "fable/Process/ColumnIndex.fs",
+        "fable/Process/Component.fs",
+        "fable/Process/Factor.fs",
+        "fable/Process/FactorValue.fs",
+        "fable/Process/Material.fs",
+        "fable/Process/MaterialAttribute.fs",
+        "fable/Process/MaterialAttributeValue.fs",
+        "fable/Process/MaterialType.fs",
+        "fable/Process/Process.fs",
+        "fable/Process/ProcessInput.fs",
+        "fable/Process/ProcessOutput.fs",
+        "fable/Process/ProcessParameterValue.fs",
+        "fable/Process/ProcessSequence.fs",
+        "fable/Process/Protocol.fs",
+        "fable/Process/ProtocolParameter.fs",
+        "fable/Process/Sample.fs",
+        "fable/Process/Source.fs",
+        "fable/Publication.fs",
+        "fable/Table/ArcTable.fs",
+        "fable/Table/ArcTableAux.fs",
+        "fable/Table/ArcTables.fs",
+        "fable/Table/CompositeCell.fs",
+        "fable/Table/CompositeColumn.fs",
+        "fable/Table/CompositeHeader.fs",
+        "fable/Template.fs",
+        "fable/Templates.fs",
+        "fable/URI.fs",
+        "fable/Value.fs",
+        "lib/netstandard2.0/ARCtrl.Core.dll",
+        "lib/netstandard2.0/ARCtrl.Core.xml",
+        "logo.png"
+      ]
+    },
+    "ARCtrl.CWL/2.2.4": {
+      "sha512": "y+XoMTqqxPRJHeizpX7g+fj/Y/e42TIUubVPVfRVwB/zev6KvDtvdZu1REvllb2pgJfKRGvuyFZKsf88EelR/w==",
+      "type": "package",
+      "path": "arctrl.cwl/2.2.4",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "arctrl.cwl.2.2.4.nupkg.sha512",
+        "arctrl.cwl.nuspec",
+        "fable/ARCtrl.CWL.fsproj",
+        "fable/CWLTypes.fs",
+        "fable/Decode.fs",
+        "fable/Encode.fs",
+        "fable/Inputs.fs",
+        "fable/Outputs.fs",
+        "fable/Requirements.fs",
+        "fable/ToolDescription.fs",
+        "fable/WorkflowDescription.fs",
+        "fable/WorkflowSteps.fs",
+        "lib/netstandard2.0/ARCtrl.CWL.dll",
+        "lib/netstandard2.0/ARCtrl.CWL.xml",
+        "logo.png"
+      ]
+    },
+    "ARCtrl.FileSystem/2.2.4": {
+      "sha512": "SnCeuPxQT3IYvClSs5Dt6gDaA+WpUU1o4ReUyyBeR/C+9xvpQ+IpBcoJGtWArQrHS0GqHAyukGR1DrXr5eGhwA==",
+      "type": "package",
+      "path": "arctrl.filesystem/2.2.4",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "arctrl.filesystem.2.2.4.nupkg.sha512",
+        "arctrl.filesystem.nuspec",
+        "fable/ARCtrl.FileSystem.fsproj",
+        "fable/Commit.fs",
+        "fable/DefaultGitattributes.fs",
+        "fable/DefaultGitignore.fs",
+        "fable/FileSystem.fs",
+        "fable/FileSystemTree.fs",
+        "fable/Path.fs",
+        "lib/netstandard2.0/ARCtrl.FileSystem.dll",
+        "lib/netstandard2.0/ARCtrl.FileSystem.xml",
+        "logo.png"
+      ]
+    },
+    "ARCtrl.Json/2.2.4": {
+      "sha512": "kQNpBbidjPsP0JY8YTy4N0YBTjb+0/mDkwCaTnkRsUBjg6j4gSjl/rJ1jLoESb7xPMF5uM4TZwCVxJXtDqIaSA==",
+      "type": "package",
+      "path": "arctrl.json/2.2.4",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "arctrl.json.2.2.4.nupkg.sha512",
+        "arctrl.json.nuspec",
+        "fable/ARC.fs",
+        "fable/ARCtrl.Json.fsproj",
+        "fable/Assay.fs",
+        "fable/Comment.fs",
+        "fable/ConverterOptions.fs",
+        "fable/Data.fs",
+        "fable/DataFile.fs",
+        "fable/DataMap/DataContext.fs",
+        "fable/DataMap/DataMap.fs",
+        "fable/Decode.fs",
+        "fable/Encode.fs",
+        "fable/IDTable.fs",
+        "fable/Investigation.fs",
+        "fable/LDObject.fs",
+        "fable/OntologyAnnotation.fs",
+        "fable/OntologySourceReference.fs",
+        "fable/Person.fs",
+        "fable/Process/AssayMaterials.fs",
+        "fable/Process/Component.fs",
+        "fable/Process/Factor.fs",
+        "fable/Process/FactorValue.fs",
+        "fable/Process/Material.fs",
+        "fable/Process/MaterialAttribute.fs",
+        "fable/Process/MaterialAttributeValue.fs",
+        "fable/Process/MaterialType.fs",
+        "fable/Process/Process.fs",
+        "fable/Process/ProcessInput.fs",
+        "fable/Process/ProcessOutput.fs",
+        "fable/Process/ProcessParameterValue.fs",
+        "fable/Process/Protocol.fs",
+        "fable/Process/ProtocolParameter.fs",
+        "fable/Process/Sample.fs",
+        "fable/Process/Source.fs",
+        "fable/Process/StudyMaterials.fs",
+        "fable/Process/Value.fs",
+        "fable/PropertyValue.fs",
+        "fable/Publication.fs",
+        "fable/StringTable.fs",
+        "fable/Study.fs",
+        "fable/Table/ArcTable.fs",
+        "fable/Table/CellTable.fs",
+        "fable/Table/CompositeCell.fs",
+        "fable/Table/CompositeHeader.fs",
+        "fable/Table/IOType.fs",
+        "fable/Table/OATable.fs",
+        "fable/Table/Templates.fs",
+        "fable/context/rocrate/isa_assay_context.fs",
+        "fable/context/rocrate/isa_comment_context.fs",
+        "fable/context/rocrate/isa_component_context.fs",
+        "fable/context/rocrate/isa_data_context.fs",
+        "fable/context/rocrate/isa_factor_context.fs",
+        "fable/context/rocrate/isa_factor_value_context.fs",
+        "fable/context/rocrate/isa_investigation_context.fs",
+        "fable/context/rocrate/isa_material_attribute_context.fs",
+        "fable/context/rocrate/isa_material_attribute_value_context.fs",
+        "fable/context/rocrate/isa_material_context.fs",
+        "fable/context/rocrate/isa_ontology_annotation_context.fs",
+        "fable/context/rocrate/isa_ontology_source_reference_context.fs",
+        "fable/context/rocrate/isa_organization_context.fs",
+        "fable/context/rocrate/isa_person_context.fs",
+        "fable/context/rocrate/isa_process_context.fs",
+        "fable/context/rocrate/isa_process_parameter_value_context.fs",
+        "fable/context/rocrate/isa_protocol_context.fs",
+        "fable/context/rocrate/isa_protocol_parameter_context.fs",
+        "fable/context/rocrate/isa_publication_context.fs",
+        "fable/context/rocrate/isa_sample_context.fs",
+        "fable/context/rocrate/isa_source_context.fs",
+        "fable/context/rocrate/isa_study_context.fs",
+        "fable/context/rocrate/property_value_context.fs",
+        "fable/context/rocrate/rocrate_context.fs",
+        "lib/netstandard2.0/ARCtrl.Json.dll",
+        "lib/netstandard2.0/ARCtrl.Json.xml",
+        "logo.png"
+      ]
+    },
+    "ARCtrl.NET/2.0.2": {
+      "sha512": "KXCGojo76hPH/xKSyynJEQfr1A8EhK6AvBRP7AEFZEHpShV6r+cxYFvEGdW2MpBQLgLTUi8Fp0kelZ2E2t1AMw==",
+      "type": "package",
+      "path": "arctrl.net/2.0.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "arctrl.net.2.0.2.nupkg.sha512",
+        "arctrl.net.nuspec",
+        "lib/netstandard2.1/ARCtrl.NET.dll",
+        "lib/netstandard2.1/ARCtrl.NET.xml"
+      ]
+    },
+    "ARCtrl.ROCrate/2.2.4": {
+      "sha512": "lwo5RkzivmJXPUsNmCGEb/JXaWARpgH2UVK4CE/H5LaCj4DmtMlYXdXSC10x7xq/uJDmQ0kMGp5gWyuHkGDKaA==",
+      "type": "package",
+      "path": "arctrl.rocrate/2.2.4",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "arctrl.rocrate.2.2.4.nupkg.sha512",
+        "arctrl.rocrate.nuspec",
+        "fable/ARCtrl.ROCrate.fsproj",
+        "fable/ArcROCrateMetadata.fs",
+        "fable/DynObjExtensions.fs",
+        "fable/ISAProfile/Assay.fs",
+        "fable/ISAProfile/Data.fs",
+        "fable/ISAProfile/Dataset.fs",
+        "fable/ISAProfile/Investigation.fs",
+        "fable/ISAProfile/LabProcess.fs",
+        "fable/ISAProfile/LabProtocol.fs",
+        "fable/ISAProfile/Person.fs",
+        "fable/ISAProfile/PropertyValue.fs",
+        "fable/ISAProfile/Sample.fs",
+        "fable/ISAProfile/ScholarlyArticle.fs",
+        "fable/ISAProfile/Study.fs",
+        "fable/LDObject.fs",
+        "lib/netstandard2.0/ARCtrl.ROCrate.dll",
+        "lib/netstandard2.0/ARCtrl.ROCrate.xml",
+        "logo.png"
+      ]
+    },
+    "ARCtrl.Spreadsheet/2.2.4": {
+      "sha512": "zpGoXfUS9HCNLUeKGPgdE4mdA7kL8r4I5syWCEvLexRqvTIPFY0FUbTZm8RF2NtGdfdllKkztGz3fBcpznfzNg==",
+      "type": "package",
+      "path": "arctrl.spreadsheet/2.2.4",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "arctrl.spreadsheet.2.2.4.nupkg.sha512",
+        "arctrl.spreadsheet.nuspec",
+        "fable/ARCtrl.Spreadsheet.fsproj",
+        "fable/AnnotationTable/ArcTable.fs",
+        "fable/AnnotationTable/CompositeCell.fs",
+        "fable/AnnotationTable/CompositeColumn.fs",
+        "fable/AnnotationTable/CompositeHeader.fs",
+        "fable/ArcAssay.fs",
+        "fable/ArcInvestigation.fs",
+        "fable/ArcStudy.fs",
+        "fable/AssemblyInfo.fs",
+        "fable/CollectionAux.fs",
+        "fable/DataMap.fs",
+        "fable/DataMapTable/DataMapColumn.fs",
+        "fable/DataMapTable/DataMapHeader.fs",
+        "fable/DataMapTable/DataMapTable.fs",
+        "fable/Metadata/Assays.fs",
+        "fable/Metadata/Comment.fs",
+        "fable/Metadata/Contacts.fs",
+        "fable/Metadata/Conversions.fs",
+        "fable/Metadata/DesignDescriptors.fs",
+        "fable/Metadata/Factors.fs",
+        "fable/Metadata/OntologyAnnotation.fs",
+        "fable/Metadata/OntologySourceReference.fs",
+        "fable/Metadata/Protocols.fs",
+        "fable/Metadata/Publication.fs",
+        "fable/Metadata/SparseTable.fs",
+        "fable/Metadata/Study.fs",
+        "fable/Template.fs",
+        "lib/netstandard2.0/ARCtrl.Spreadsheet.dll",
+        "lib/netstandard2.0/ARCtrl.Spreadsheet.xml",
+        "logo.png"
+      ]
+    },
+    "ARCtrl.ValidationPackages/2.2.4": {
+      "sha512": "2sfXpm/8RhOHnXXc8v7s3B5shS79RGf0PiahJBXU6p/MtytRHWttjClDO5NOkX4RoWdkFI9sQCPiZrRhPP+vCw==",
+      "type": "package",
+      "path": "arctrl.validationpackages/2.2.4",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "arctrl.validationpackages.2.2.4.nupkg.sha512",
+        "arctrl.validationpackages.nuspec",
+        "fable/ARCtrl.ValidationPackages.fsproj",
+        "fable/ValidationPackage.fs",
+        "fable/ValidationPackagesConfig.fs",
+        "fable/obj/Debug/netstandard2.0/.NETStandard,Version=v2.0.AssemblyAttributes.fs",
+        "fable/obj/Debug/netstandard2.0/ARCtrl.ValidationPackages.AssemblyInfo.fs",
+        "fable/obj/Release/netstandard2.0/.NETStandard,Version=v2.0.AssemblyAttributes.fs",
+        "fable/obj/Release/netstandard2.0/ARCtrl.ValidationPackages.AssemblyInfo.fs",
+        "lib/netstandard2.0/ARCtrl.ValidationPackages.dll",
+        "lib/netstandard2.0/ARCtrl.ValidationPackages.xml",
+        "logo.png"
+      ]
+    },
+    "ARCtrl.Yaml/2.2.4": {
+      "sha512": "gu++6LLHBc8QzTadlPBd1kjDIcktI+4fmu54qXWyVZMc/sjNAFDxHS/BqrNvJmxiKiiHHwpO/1Mz198HzUjj2A==",
+      "type": "package",
+      "path": "arctrl.yaml/2.2.4",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "arctrl.yaml.2.2.4.nupkg.sha512",
+        "arctrl.yaml.nuspec",
+        "fable/ARCtrl.Yaml.fsproj",
+        "fable/Decode.fs",
+        "fable/Encode.fs",
+        "fable/ValidationPackage.fs",
+        "fable/ValidationPackagesConfig.fs",
+        "lib/netstandard2.0/ARCtrl.Yaml.dll",
+        "lib/netstandard2.0/ARCtrl.Yaml.xml",
+        "logo.png"
+      ]
+    },
+    "Argu/6.2.4": {
+      "sha512": "RuANu8+L1P2HWozmbRXkj6MQGYwP5DL2wdARfBPtRjsLS8TSgwYjOKxMnY5LtjmHLlMBD3u2+MfbAy8xMGg8Qg==",
+      "type": "package",
+      "path": "argu/6.2.4",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "argu.6.2.4.nupkg.sha512",
+        "argu.nuspec",
+        "lib/netstandard2.0/Argu.dll",
+        "lib/netstandard2.0/Argu.xml",
+        "logo.png"
+      ]
+    },
+    "DocumentFormat.OpenXml/2.16.0": {
+      "sha512": "RhpnDgyyx1KjZm98T3w3bSXFHG/7ZNUaVmz4NAUA+jmV3PcVNZeW87Y04CpBNLdDHEMSspirfo0B5kLRaoE97w==",
+      "type": "package",
+      "path": "documentformat.openxml/2.16.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "documentformat.openxml.2.16.0.nupkg.sha512",
+        "documentformat.openxml.nuspec",
+        "icon.png",
+        "lib/net35/DocumentFormat.OpenXml.dll",
+        "lib/net35/DocumentFormat.OpenXml.xml",
+        "lib/net40/DocumentFormat.OpenXml.dll",
+        "lib/net40/DocumentFormat.OpenXml.xml",
+        "lib/net46/DocumentFormat.OpenXml.dll",
+        "lib/net46/DocumentFormat.OpenXml.xml",
+        "lib/netstandard1.3/DocumentFormat.OpenXml.dll",
+        "lib/netstandard1.3/DocumentFormat.OpenXml.xml",
+        "lib/netstandard2.0/DocumentFormat.OpenXml.dll",
+        "lib/netstandard2.0/DocumentFormat.OpenXml.xml"
+      ]
+    },
+    "DynamicObj/4.0.3": {
+      "sha512": "lC9H9sMEBZPOCfPKrUFm9Hsh2RGWTIoy7yJCmZDn1+A564E4QFPMKki+FxNEVhKPLI6YkNANeaerU4BebfOBiw==",
+      "type": "package",
+      "path": "dynamicobj/4.0.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "dynamicobj.4.0.3.nupkg.sha512",
+        "dynamicobj.nuspec",
+        "fable/DynObj.fs",
+        "fable/DynamicObj.fs",
+        "fable/DynamicObj.fsproj",
+        "fable/FableJS.fs",
+        "fable/FablePy.fs",
+        "fable/HashCodes.fs",
+        "fable/PropertyHelper.fs",
+        "fable/ReflectionUtils.fs",
+        "fable/obj/Debug/netstandard2.0/.NETStandard,Version=v2.0.AssemblyAttributes.fs",
+        "fable/obj/Debug/netstandard2.0/DynamicObj.AssemblyInfo.fs",
+        "fable/obj/Release/netstandard2.0/.NETStandard,Version=v2.0.AssemblyAttributes.fs",
+        "fable/obj/Release/netstandard2.0/DynamicObj.AssemblyInfo.fs",
+        "lib/netstandard2.0/DynamicObj.dll",
+        "lib/netstandard2.0/DynamicObj.xml"
+      ]
+    },
+    "Fable.Browser.Blob/1.1.0": {
+      "sha512": "xMX7hPFwBUGuj75xLlH6VsVThZjRlGW4zOqXb1X+byRPLSBE91vtn9EueNUB+YpGhE9LfrtakIPNGy+dkoMkjg==",
+      "type": "package",
+      "path": "fable.browser.blob/1.1.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "fable.browser.blob.1.1.0.nupkg.sha512",
+        "fable.browser.blob.nuspec",
+        "lib/netstandard2.0/Browser.Blob.dll",
+        "lib/netstandard2.0/Browser.Blob.xml"
+      ]
+    },
+    "Fable.Browser.Dom/1.0.0": {
+      "sha512": "ZodpIKYuKnUnqN71Fi103mh0joFYrRPGwpYOrpbZ149PkVAW7DNKXgxad5lsi9df7vAe5+sBhhO71TPREZaWlw==",
+      "type": "package",
+      "path": "fable.browser.dom/1.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "fable.browser.dom.1.0.0.nupkg.sha512",
+        "fable.browser.dom.nuspec",
+        "lib/netstandard2.0/Browser.Dom.dll",
+        "lib/netstandard2.0/Browser.Dom.xml"
+      ]
+    },
+    "Fable.Browser.Event/1.0.0": {
+      "sha512": "T1bGrlRJ4A2fxOfAVPzJpxanR6lkzPgJroPdSN1IU5CLdKtvRakWmYq6QKqu4dz6ZV9Z3fIPTWLZkoGKEOEo3w==",
+      "type": "package",
+      "path": "fable.browser.event/1.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "fable.browser.event.1.0.0.nupkg.sha512",
+        "fable.browser.event.nuspec",
+        "lib/netstandard2.0/Browser.Event.dll",
+        "lib/netstandard2.0/Browser.Event.xml"
+      ]
+    },
+    "Fable.Browser.WebStorage/1.0.0": {
+      "sha512": "ZqnZKYkhPO+wmJPxQqtiwSc3zCC/mB37SPlVi4ZLiHoPFnra7SQ3qaRn4/ENYTeaVtVq92eVaYbTyAOnFn+GPA==",
+      "type": "package",
+      "path": "fable.browser.webstorage/1.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "fable.browser.webstorage.1.0.0.nupkg.sha512",
+        "fable.browser.webstorage.nuspec",
+        "lib/netstandard2.0/Browser.WebStorage.dll",
+        "lib/netstandard2.0/Browser.WebStorage.xml"
+      ]
+    },
+    "Fable.Browser.XMLHttpRequest/1.1.0": {
+      "sha512": "27p/F8781NrnV9vQ23RhX10ww9MDkX+Yi3yTiV9s8U8Bufi/VCCjS4swX0LXvgKQANN3k87CwaNeiO75r2U7gw==",
+      "type": "package",
+      "path": "fable.browser.xmlhttprequest/1.1.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "fable.browser.xmlhttprequest.1.1.0.nupkg.sha512",
+        "fable.browser.xmlhttprequest.nuspec",
+        "lib/netstandard2.0/Browser.XMLHttpRequest.dll",
+        "lib/netstandard2.0/Browser.XMLHttpRequest.xml"
+      ]
+    },
+    "Fable.Core/4.3.0": {
+      "sha512": "sbK+hYs7H7I3b3sbgttI4GlvQfNPcIqSz1qPSagF3QbVA46KJ/pWSXC/Dwv0s9M6AeRGmoqcIeD7GUaLn41zkA==",
+      "type": "package",
+      "path": "fable.core/4.3.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE",
+        "README.md",
+        "content/CHANGELOG.md",
+        "contentFiles/any/netstandard2.0/CHANGELOG.md",
+        "fable.core.4.3.0.nupkg.sha512",
+        "fable.core.nuspec",
+        "fable_logo.png",
+        "lib/netstandard2.0/Fable.Core.dll",
+        "lib/netstandard2.0/Fable.Core.xml"
+      ]
+    },
+    "Fable.Package.SDK/1.0.0": {
+      "sha512": "TIXktcGpeqE3QOr2coV+w5erpLtfijpfBilhb0MNV2OSao/Y5Zg3r7StF+wZ4jSm4Pkid4HpjshZB/V9fUc/Ew==",
+      "type": "package",
+      "path": "fable.package.sdk/1.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.txt",
+        "README.md",
+        "build/Fable.Package.SDK.props",
+        "build/Fable.Package.SDK.targets",
+        "fable.package.sdk.1.0.0.nupkg.sha512",
+        "fable.package.sdk.nuspec"
+      ]
+    },
+    "Fable.SimpleHttp/3.5.0": {
+      "sha512": "SWYshvAI90JcdGLsUmTWBG9eaazY6ihdIk/uehrEz/VqMx9qX+e7+PzYaw31DMwGYSva9/mpq9s69T/z8Ubl5Q==",
+      "type": "package",
+      "path": "fable.simplehttp/3.5.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "fable.simplehttp.3.5.0.nupkg.sha512",
+        "fable.simplehttp.nuspec",
+        "fable/Fable.SimpleHttp.fsproj",
+        "fable/Http.fs",
+        "fable/Types.fs",
+        "lib/netstandard2.0/Fable.SimpleHttp.dll",
+        "lib/netstandard2.0/Fable.SimpleHttp.xml"
+      ]
+    },
+    "FSharp.Core/9.0.100": {
+      "sha512": "ye8yagHGsH08H2Twno5GRWkSbrMtxK/SWiHuPcF+3nODpW65/VJ8RO0aWxp8n9+KQbmahg90wAEL3TEXjF0r6A==",
+      "type": "package",
+      "path": "fsharp.core/9.0.100",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "fsharp.core.9.0.100.nupkg.sha512",
+        "fsharp.core.nuspec",
+        "lib/netstandard2.0/FSharp.Core.dll",
+        "lib/netstandard2.0/FSharp.Core.xml",
+        "lib/netstandard2.0/cs/FSharp.Core.resources.dll",
+        "lib/netstandard2.0/de/FSharp.Core.resources.dll",
+        "lib/netstandard2.0/es/FSharp.Core.resources.dll",
+        "lib/netstandard2.0/fr/FSharp.Core.resources.dll",
+        "lib/netstandard2.0/it/FSharp.Core.resources.dll",
+        "lib/netstandard2.0/ja/FSharp.Core.resources.dll",
+        "lib/netstandard2.0/ko/FSharp.Core.resources.dll",
+        "lib/netstandard2.0/pl/FSharp.Core.resources.dll",
+        "lib/netstandard2.0/pt-BR/FSharp.Core.resources.dll",
+        "lib/netstandard2.0/ru/FSharp.Core.resources.dll",
+        "lib/netstandard2.0/tr/FSharp.Core.resources.dll",
+        "lib/netstandard2.0/zh-Hans/FSharp.Core.resources.dll",
+        "lib/netstandard2.0/zh-Hant/FSharp.Core.resources.dll",
+        "lib/netstandard2.1/FSharp.Core.dll",
+        "lib/netstandard2.1/FSharp.Core.xml",
+        "lib/netstandard2.1/cs/FSharp.Core.resources.dll",
+        "lib/netstandard2.1/de/FSharp.Core.resources.dll",
+        "lib/netstandard2.1/es/FSharp.Core.resources.dll",
+        "lib/netstandard2.1/fr/FSharp.Core.resources.dll",
+        "lib/netstandard2.1/it/FSharp.Core.resources.dll",
+        "lib/netstandard2.1/ja/FSharp.Core.resources.dll",
+        "lib/netstandard2.1/ko/FSharp.Core.resources.dll",
+        "lib/netstandard2.1/pl/FSharp.Core.resources.dll",
+        "lib/netstandard2.1/pt-BR/FSharp.Core.resources.dll",
+        "lib/netstandard2.1/ru/FSharp.Core.resources.dll",
+        "lib/netstandard2.1/tr/FSharp.Core.resources.dll",
+        "lib/netstandard2.1/zh-Hans/FSharp.Core.resources.dll",
+        "lib/netstandard2.1/zh-Hant/FSharp.Core.resources.dll"
+      ]
+    },
+    "FsSpreadsheet/6.3.0-alpha.4": {
+      "sha512": "XBjvsfQ3aC3q7W2BcoMJ9Wo6DkH1FLmuAmsGa4CSWmIcDSXPu/Gsg3cl7kDQfdOKonAe1uEnb5KPqEHdjGkNQg==",
+      "type": "package",
+      "path": "fsspreadsheet/6.3.0-alpha.4",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "fable/Cells/FsCell.fs",
+        "fable/Cells/FsCellsCollection.fs",
+        "fable/DSL/CellBuilder.fs",
+        "fable/DSL/ColumnBuilder.fs",
+        "fable/DSL/DSL.fs",
+        "fable/DSL/Expression.fs",
+        "fable/DSL/Operators.fs",
+        "fable/DSL/RowBuilder.fs",
+        "fable/DSL/SheetBuilder.fs",
+        "fable/DSL/TableBuilder.fs",
+        "fable/DSL/Transform.fs",
+        "fable/DSL/Types.fs",
+        "fable/DSL/WorkbookBuilder.fs",
+        "fable/FsAddress.fs",
+        "fable/FsColumn.fs",
+        "fable/FsRow.fs",
+        "fable/FsSpreadsheet.fsproj",
+        "fable/FsWorkbook.fs",
+        "fable/FsWorksheet.fs",
+        "fable/Json/Cell.fs",
+        "fable/Json/Column.fs",
+        "fable/Json/Row.fs",
+        "fable/Json/Table.fs",
+        "fable/Json/Value.fs",
+        "fable/Json/Workbook.fs",
+        "fable/Json/Worksheet.fs",
+        "fable/Ranges/FsRange.fs",
+        "fable/Ranges/FsRangeAddress.fs",
+        "fable/Ranges/FsRangeBase.fs",
+        "fable/Ranges/FsRangeColumn.fs",
+        "fable/Ranges/FsRangeRow.fs",
+        "fable/SheetBuilder.fs",
+        "fable/Tables/FsTable.fs",
+        "fable/Tables/FsTableField.fs",
+        "fable/Tables/FsTableRow.fs",
+        "fable/obj/Debug/netstandard2.0/.NETStandard,Version=v2.0.AssemblyAttributes.fs",
+        "fable/obj/Debug/netstandard2.0/FsSpreadsheet.AssemblyInfo.fs",
+        "fable/obj/Release/netstandard2.0/.NETStandard,Version=v2.0.AssemblyAttributes.fs",
+        "fable/obj/Release/netstandard2.0/FsSpreadsheet.AssemblyInfo.fs",
+        "fsspreadsheet.6.3.0-alpha.4.nupkg.sha512",
+        "fsspreadsheet.nuspec",
+        "lib/netstandard2.0/FsSpreadsheet.dll",
+        "lib/netstandard2.0/FsSpreadsheet.xml",
+        "logo.png"
+      ]
+    },
+    "FsSpreadsheet.Net/6.2.0": {
+      "sha512": "D+N6r3nSwOaIAQhmBuI7pgBPs3CtsZXkachHPSEcJ7aQru1NpHJeSJnxEy85sVsjD0gPpKgM6D2NYsUeYlqTWQ==",
+      "type": "package",
+      "path": "fsspreadsheet.net/6.2.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "fsspreadsheet.net.6.2.0.nupkg.sha512",
+        "fsspreadsheet.net.nuspec",
+        "lib/netstandard2.0/FsSpreadsheet.Net.dll",
+        "lib/netstandard2.0/FsSpreadsheet.Net.xml",
+        "logo.png"
+      ]
+    },
+    "JsonDSL/0.0.5": {
+      "sha512": "YVjHkBmaD129hhw7FfQN2KIiPs+Bs0E1SDkNPax4koPNRUYRUBvh6CfkKNXJ6bZz814P+6kEpnxl/w1yMNg/HA==",
+      "type": "package",
+      "path": "jsondsl/0.0.5",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "jsondsl.0.0.5.nupkg.sha512",
+        "jsondsl.nuspec",
+        "lib/netstandard2.0/JsonDSL.dll"
+      ]
+    },
+    "LitXml/0.1.0": {
+      "sha512": "hSCzlK5V4f5Krlt3YjnEgFWmMUJZ8Ixp2BmTPnNEg4Cjat3NJ+QFejykC5REkXqtfI1U9AWoCLrBs4u2gRV7Mg==",
+      "type": "package",
+      "path": "litxml/0.1.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netstandard2.0/LitXml.dll",
+        "litxml.0.1.0.nupkg.sha512",
+        "litxml.nuspec"
+      ]
+    },
+    "Newtonsoft.Json/13.0.1": {
+      "sha512": "ppPFpBcvxdsfUonNcvITKqLl3bqxWbDCZIzDWHzjpdAHRFfZe0Dw9HmA0+za13IdyrgJwpkDTDA9fHaxOrt20A==",
+      "type": "package",
+      "path": "newtonsoft.json/13.0.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.md",
+        "lib/net20/Newtonsoft.Json.dll",
+        "lib/net20/Newtonsoft.Json.xml",
+        "lib/net35/Newtonsoft.Json.dll",
+        "lib/net35/Newtonsoft.Json.xml",
+        "lib/net40/Newtonsoft.Json.dll",
+        "lib/net40/Newtonsoft.Json.xml",
+        "lib/net45/Newtonsoft.Json.dll",
+        "lib/net45/Newtonsoft.Json.xml",
+        "lib/netstandard1.0/Newtonsoft.Json.dll",
+        "lib/netstandard1.0/Newtonsoft.Json.xml",
+        "lib/netstandard1.3/Newtonsoft.Json.dll",
+        "lib/netstandard1.3/Newtonsoft.Json.xml",
+        "lib/netstandard2.0/Newtonsoft.Json.dll",
+        "lib/netstandard2.0/Newtonsoft.Json.xml",
+        "newtonsoft.json.13.0.1.nupkg.sha512",
+        "newtonsoft.json.nuspec",
+        "packageIcon.png"
+      ]
+    },
+    "NLog/5.1.2": {
+      "sha512": "JfQY93ure3IPVTN3eabBewBGvrcXcWIlaesFEXdy5UzIymfIT9yCgLISYtM0cOhjWziIaUr/6Z9NC2RwtjwrsQ==",
+      "type": "package",
+      "path": "nlog/5.1.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "N.png",
+        "lib/net35/NLog.dll",
+        "lib/net35/NLog.xml",
+        "lib/net45/NLog.dll",
+        "lib/net45/NLog.xml",
+        "lib/net46/NLog.dll",
+        "lib/net46/NLog.xml",
+        "lib/netstandard1.3/NLog.dll",
+        "lib/netstandard1.3/NLog.xml",
+        "lib/netstandard1.5/NLog.dll",
+        "lib/netstandard1.5/NLog.xml",
+        "lib/netstandard2.0/NLog.dll",
+        "lib/netstandard2.0/NLog.xml",
+        "nlog.5.1.2.nupkg.sha512",
+        "nlog.nuspec"
+      ]
+    },
+    "System.Configuration.ConfigurationManager/4.4.0": {
+      "sha512": "gWwQv/Ug1qWJmHCmN17nAbxJYmQBM/E94QxKLksvUiiKB1Ld3Sc/eK1lgmbSjDFxkQhVuayI/cGFZhpBSodLrg==",
+      "type": "package",
+      "path": "system.configuration.configurationmanager/4.4.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/net461/System.Configuration.ConfigurationManager.dll",
+        "lib/netstandard2.0/System.Configuration.ConfigurationManager.dll",
+        "ref/net461/System.Configuration.ConfigurationManager.dll",
+        "ref/net461/System.Configuration.ConfigurationManager.xml",
+        "ref/netstandard2.0/System.Configuration.ConfigurationManager.dll",
+        "ref/netstandard2.0/System.Configuration.ConfigurationManager.xml",
+        "system.configuration.configurationmanager.4.4.0.nupkg.sha512",
+        "system.configuration.configurationmanager.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
+      ]
+    },
+    "System.IO.Packaging/4.7.0": {
+      "sha512": "9VV4KAbgRQZ79iEoG40KIeZy38O30oWwewScAST879+oki8g/Wa2HXZQgrhDDxQM4GkP1PnRJll05NMiVPbYAw==",
+      "type": "package",
+      "path": "system.io.packaging/4.7.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/net46/System.IO.Packaging.dll",
+        "lib/net46/System.IO.Packaging.xml",
+        "lib/netstandard1.3/System.IO.Packaging.dll",
+        "lib/netstandard1.3/System.IO.Packaging.xml",
+        "lib/netstandard2.0/System.IO.Packaging.dll",
+        "lib/netstandard2.0/System.IO.Packaging.xml",
+        "ref/net46/System.IO.Packaging.dll",
+        "ref/net46/System.IO.Packaging.xml",
+        "ref/netstandard1.3/System.IO.Packaging.dll",
+        "ref/netstandard1.3/System.IO.Packaging.xml",
+        "ref/netstandard2.0/System.IO.Packaging.dll",
+        "ref/netstandard2.0/System.IO.Packaging.xml",
+        "system.io.packaging.4.7.0.nupkg.sha512",
+        "system.io.packaging.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
+      ]
+    },
+    "System.Security.Cryptography.ProtectedData/4.4.0": {
+      "sha512": "cJV7ScGW7EhatRsjehfvvYVBvtiSMKgN8bOVI0bQhnF5bU7vnHVIsH49Kva7i7GWaWYvmEzkYVk1TC+gZYBEog==",
+      "type": "package",
+      "path": "system.security.cryptography.protecteddata/4.4.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/net46/System.Security.Cryptography.ProtectedData.dll",
+        "lib/net461/System.Security.Cryptography.ProtectedData.dll",
+        "lib/netstandard1.3/System.Security.Cryptography.ProtectedData.dll",
+        "lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "lib/xamarintvos10/_._",
+        "lib/xamarinwatchos10/_._",
+        "ref/MonoAndroid10/_._",
+        "ref/MonoTouch10/_._",
+        "ref/net46/System.Security.Cryptography.ProtectedData.dll",
+        "ref/net461/System.Security.Cryptography.ProtectedData.dll",
+        "ref/net461/System.Security.Cryptography.ProtectedData.xml",
+        "ref/netstandard1.3/System.Security.Cryptography.ProtectedData.dll",
+        "ref/netstandard2.0/System.Security.Cryptography.ProtectedData.dll",
+        "ref/netstandard2.0/System.Security.Cryptography.ProtectedData.xml",
+        "ref/xamarinios10/_._",
+        "ref/xamarinmac20/_._",
+        "ref/xamarintvos10/_._",
+        "ref/xamarinwatchos10/_._",
+        "runtimes/win/lib/net46/System.Security.Cryptography.ProtectedData.dll",
+        "runtimes/win/lib/net461/System.Security.Cryptography.ProtectedData.dll",
+        "runtimes/win/lib/netstandard1.3/System.Security.Cryptography.ProtectedData.dll",
+        "runtimes/win/lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll",
+        "system.security.cryptography.protecteddata.4.4.0.nupkg.sha512",
+        "system.security.cryptography.protecteddata.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
+      ]
+    },
+    "System.Text.Encodings.Web/7.0.0": {
+      "sha512": "OP6umVGxc0Z0MvZQBVigj4/U31Pw72ITihDWP9WiWDm+q5aoe0GaJivsfYGq53o6dxH7DcXWiCTl7+0o2CGdmg==",
+      "type": "package",
+      "path": "system.text.encodings.web/7.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "buildTransitive/net461/System.Text.Encodings.Web.targets",
+        "buildTransitive/net462/_._",
+        "buildTransitive/net6.0/_._",
+        "buildTransitive/netcoreapp2.0/System.Text.Encodings.Web.targets",
+        "lib/net462/System.Text.Encodings.Web.dll",
+        "lib/net462/System.Text.Encodings.Web.xml",
+        "lib/net6.0/System.Text.Encodings.Web.dll",
+        "lib/net6.0/System.Text.Encodings.Web.xml",
+        "lib/net7.0/System.Text.Encodings.Web.dll",
+        "lib/net7.0/System.Text.Encodings.Web.xml",
+        "lib/netstandard2.0/System.Text.Encodings.Web.dll",
+        "lib/netstandard2.0/System.Text.Encodings.Web.xml",
+        "runtimes/browser/lib/net6.0/System.Text.Encodings.Web.dll",
+        "runtimes/browser/lib/net6.0/System.Text.Encodings.Web.xml",
+        "runtimes/browser/lib/net7.0/System.Text.Encodings.Web.dll",
+        "runtimes/browser/lib/net7.0/System.Text.Encodings.Web.xml",
+        "system.text.encodings.web.7.0.0.nupkg.sha512",
+        "system.text.encodings.web.nuspec",
+        "useSharedDesignerContext.txt"
+      ]
+    },
+    "System.Text.Json/7.0.2": {
+      "sha512": "/LZf/JrGyilojqwpaywb+sSz8Tew7ij4K/Sk+UW8AKfAK7KRhR6mKpKtTm06cYA7bCpGTWfYksIW+mVsdxPegQ==",
+      "type": "package",
+      "path": "system.text.json/7.0.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "LICENSE.TXT",
+        "README.md",
+        "THIRD-PARTY-NOTICES.TXT",
+        "analyzers/dotnet/roslyn3.11/cs/System.Text.Json.SourceGeneration.dll",
+        "analyzers/dotnet/roslyn3.11/cs/cs/System.Text.Json.SourceGeneration.resources.dll",
+        "analyzers/dotnet/roslyn3.11/cs/de/System.Text.Json.SourceGeneration.resources.dll",
+        "analyzers/dotnet/roslyn3.11/cs/es/System.Text.Json.SourceGeneration.resources.dll",
+        "analyzers/dotnet/roslyn3.11/cs/fr/System.Text.Json.SourceGeneration.resources.dll",
+        "analyzers/dotnet/roslyn3.11/cs/it/System.Text.Json.SourceGeneration.resources.dll",
+        "analyzers/dotnet/roslyn3.11/cs/ja/System.Text.Json.SourceGeneration.resources.dll",
+        "analyzers/dotnet/roslyn3.11/cs/ko/System.Text.Json.SourceGeneration.resources.dll",
+        "analyzers/dotnet/roslyn3.11/cs/pl/System.Text.Json.SourceGeneration.resources.dll",
+        "analyzers/dotnet/roslyn3.11/cs/pt-BR/System.Text.Json.SourceGeneration.resources.dll",
+        "analyzers/dotnet/roslyn3.11/cs/ru/System.Text.Json.SourceGeneration.resources.dll",
+        "analyzers/dotnet/roslyn3.11/cs/tr/System.Text.Json.SourceGeneration.resources.dll",
+        "analyzers/dotnet/roslyn3.11/cs/zh-Hans/System.Text.Json.SourceGeneration.resources.dll",
+        "analyzers/dotnet/roslyn3.11/cs/zh-Hant/System.Text.Json.SourceGeneration.resources.dll",
+        "analyzers/dotnet/roslyn4.0/cs/System.Text.Json.SourceGeneration.dll",
+        "analyzers/dotnet/roslyn4.0/cs/cs/System.Text.Json.SourceGeneration.resources.dll",
+        "analyzers/dotnet/roslyn4.0/cs/de/System.Text.Json.SourceGeneration.resources.dll",
+        "analyzers/dotnet/roslyn4.0/cs/es/System.Text.Json.SourceGeneration.resources.dll",
+        "analyzers/dotnet/roslyn4.0/cs/fr/System.Text.Json.SourceGeneration.resources.dll",
+        "analyzers/dotnet/roslyn4.0/cs/it/System.Text.Json.SourceGeneration.resources.dll",
+        "analyzers/dotnet/roslyn4.0/cs/ja/System.Text.Json.SourceGeneration.resources.dll",
+        "analyzers/dotnet/roslyn4.0/cs/ko/System.Text.Json.SourceGeneration.resources.dll",
+        "analyzers/dotnet/roslyn4.0/cs/pl/System.Text.Json.SourceGeneration.resources.dll",
+        "analyzers/dotnet/roslyn4.0/cs/pt-BR/System.Text.Json.SourceGeneration.resources.dll",
+        "analyzers/dotnet/roslyn4.0/cs/ru/System.Text.Json.SourceGeneration.resources.dll",
+        "analyzers/dotnet/roslyn4.0/cs/tr/System.Text.Json.SourceGeneration.resources.dll",
+        "analyzers/dotnet/roslyn4.0/cs/zh-Hans/System.Text.Json.SourceGeneration.resources.dll",
+        "analyzers/dotnet/roslyn4.0/cs/zh-Hant/System.Text.Json.SourceGeneration.resources.dll",
+        "analyzers/dotnet/roslyn4.4/cs/System.Text.Json.SourceGeneration.dll",
+        "analyzers/dotnet/roslyn4.4/cs/cs/System.Text.Json.SourceGeneration.resources.dll",
+        "analyzers/dotnet/roslyn4.4/cs/de/System.Text.Json.SourceGeneration.resources.dll",
+        "analyzers/dotnet/roslyn4.4/cs/es/System.Text.Json.SourceGeneration.resources.dll",
+        "analyzers/dotnet/roslyn4.4/cs/fr/System.Text.Json.SourceGeneration.resources.dll",
+        "analyzers/dotnet/roslyn4.4/cs/it/System.Text.Json.SourceGeneration.resources.dll",
+        "analyzers/dotnet/roslyn4.4/cs/ja/System.Text.Json.SourceGeneration.resources.dll",
+        "analyzers/dotnet/roslyn4.4/cs/ko/System.Text.Json.SourceGeneration.resources.dll",
+        "analyzers/dotnet/roslyn4.4/cs/pl/System.Text.Json.SourceGeneration.resources.dll",
+        "analyzers/dotnet/roslyn4.4/cs/pt-BR/System.Text.Json.SourceGeneration.resources.dll",
+        "analyzers/dotnet/roslyn4.4/cs/ru/System.Text.Json.SourceGeneration.resources.dll",
+        "analyzers/dotnet/roslyn4.4/cs/tr/System.Text.Json.SourceGeneration.resources.dll",
+        "analyzers/dotnet/roslyn4.4/cs/zh-Hans/System.Text.Json.SourceGeneration.resources.dll",
+        "analyzers/dotnet/roslyn4.4/cs/zh-Hant/System.Text.Json.SourceGeneration.resources.dll",
+        "buildTransitive/net461/System.Text.Json.targets",
+        "buildTransitive/net462/System.Text.Json.targets",
+        "buildTransitive/net6.0/System.Text.Json.targets",
+        "buildTransitive/netcoreapp2.0/System.Text.Json.targets",
+        "buildTransitive/netstandard2.0/System.Text.Json.targets",
+        "lib/net462/System.Text.Json.dll",
+        "lib/net462/System.Text.Json.xml",
+        "lib/net6.0/System.Text.Json.dll",
+        "lib/net6.0/System.Text.Json.xml",
+        "lib/net7.0/System.Text.Json.dll",
+        "lib/net7.0/System.Text.Json.xml",
+        "lib/netstandard2.0/System.Text.Json.dll",
+        "lib/netstandard2.0/System.Text.Json.xml",
+        "system.text.json.7.0.2.nupkg.sha512",
+        "system.text.json.nuspec",
+        "useSharedDesignerContext.txt"
+      ]
+    },
+    "Thoth.Json.Core/0.4.0": {
+      "sha512": "+9ECg/XDpLHsa5pPW8x9ZsZL4bWZqhgTScHHuhxqgjxYRwwoi41oushdfEHZ8WoQwmNdCPCljSkX1nTZ91muVw==",
+      "type": "package",
+      "path": "thoth.json.core/0.4.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.txt",
+        "README.md",
+        "fable/Decode.fs",
+        "fable/Encode.fs",
+        "fable/Thoth.Json.Core.fsproj",
+        "fable/Types.fs",
+        "lib/netstandard2.0/Thoth.Json.Core.dll",
+        "lib/netstandard2.0/Thoth.Json.Core.xml",
+        "thoth.json.core.0.4.0.nupkg.sha512",
+        "thoth.json.core.nuspec"
+      ]
+    },
+    "Thoth.Json.Newtonsoft/0.2.0": {
+      "sha512": "dMQOT6TJftO97c8gHWFegfSw/0/E+VdhGaSkf3e1Ba+DjrAESLA9HMlYyE30x7nhn7w5SfH1WO9YyzSRTV4Ysg==",
+      "type": "package",
+      "path": "thoth.json.newtonsoft/0.2.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.txt",
+        "README.md",
+        "fable/Decode.fs",
+        "fable/Encode.fs",
+        "fable/Fable.Package.SDK.targets",
+        "lib/netstandard2.0/Thoth.Json.Newtonsoft.dll",
+        "lib/netstandard2.0/Thoth.Json.Newtonsoft.xml",
+        "thoth.json.newtonsoft.0.2.0.nupkg.sha512",
+        "thoth.json.newtonsoft.nuspec"
+      ]
+    },
+    "YAMLicious/0.0.3": {
+      "sha512": "hpvlVVMi+ZNMKt2Eg4XTo2VQtp7alcJdzNuRWiej9b2cD6N0Z4Ly4ksoju8H4Od20lNR29ftMg+Bb5ZuLZt7Wg==",
+      "type": "package",
+      "path": "yamlicious/0.0.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "fable/Decode.fs",
+        "fable/Encode.fs",
+        "fable/Interop/JsInterop.fs",
+        "fable/Interop/PyInterop.fs",
+        "fable/Library.fs",
+        "fable/Persil.fs",
+        "fable/Preprocessing.fs",
+        "fable/Reader.fs",
+        "fable/Regex.fs",
+        "fable/RegexActivePatterns.fs",
+        "fable/Writer.fs",
+        "fable/YAMLicious.fsproj",
+        "fable/YAMLiciousTypes.fs",
+        "fable/obj/Debug/netstandard2.0/.NETStandard,Version=v2.0.AssemblyAttributes.fs",
+        "fable/obj/Debug/netstandard2.0/YAMLicious.AssemblyInfo.fs",
+        "fable/obj/Release/netstandard2.0/.NETStandard,Version=v2.0.AssemblyAttributes.fs",
+        "fable/obj/Release/netstandard2.0/YAMLicious.AssemblyInfo.fs",
+        "lib/netstandard2.0/YAMLicious.dll",
+        "yamlicious.0.0.3.nupkg.sha512",
+        "yamlicious.nuspec"
+      ]
+    }
+  },
+  "projectFileDependencyGroups": {
+    "net8.0": [
+      "ARCtrl >= 2.2.4",
+      "ARCtrl.NET >= 2.0.2",
+      "Argu >= 6.2.4",
+      "FSharp.Core >= 9.0.100"
+    ]
+  },
+  "packageFolders": {
+    "/Users/olescholz/.nuget/packages/": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "/Users/olescholz/Desktop/ARC-Summary/ARCSummary/src/Core/Core.fsproj",
+      "projectName": "Core",
+      "projectPath": "/Users/olescholz/Desktop/ARC-Summary/ARCSummary/src/Core/Core.fsproj",
+      "packagesPath": "/Users/olescholz/.nuget/packages/",
+      "outputPath": "/Users/olescholz/Desktop/ARC-Summary/ARCSummary/src/Core/obj/",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "/Users/olescholz/.nuget/NuGet/NuGet.Config"
+      ],
+      "originalTargetFrameworks": [
+        "net8.0"
+      ],
+      "sources": {
+        "/usr/local/share/dotnet/sdk/9.0.100/FSharp/library-packs": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "projectReferences": {}
+        }
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "all"
+      },
+      "SdkAnalysisLevel": "9.0.100"
+    },
+    "frameworks": {
+      "net8.0": {
+        "targetAlias": "net8.0",
+        "dependencies": {
+          "ARCtrl": {
+            "target": "Package",
+            "version": "[2.2.4, )",
+            "generatePathProperty": true
+          },
+          "ARCtrl.NET": {
+            "target": "Package",
+            "version": "[2.0.2, )",
+            "generatePathProperty": true
+          },
+          "Argu": {
+            "target": "Package",
+            "version": "[6.2.4, )",
+            "generatePathProperty": true
+          },
+          "FSharp.Core": {
+            "include": "Runtime, Compile, Build, Native, Analyzers, BuildTransitive",
+            "target": "Package",
+            "version": "[9.0.100, )",
+            "generatePathProperty": true
+          }
+        },
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48",
+          "net481"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[8.0.11, 8.0.11]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[8.0.11, 8.0.11]"
+          }
+        ],
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.100/PortableRuntimeIdentifierGraph.json"
+      }
+    }
+  },
+  "logs": [
+    {
+      "code": "NU1903",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'System.Text.Json' 7.0.2 has a known high severity vulnerability, https://github.com/advisories/GHSA-hh2w-p6rv-4g7w",
+      "libraryId": "System.Text.Json",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    }
+  ]
+}
