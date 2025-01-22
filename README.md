@@ -1,4 +1,4 @@
-#ARCSummary
+# ARCSummary
 
 >ARCSummary Library to create or update markdown content of ARCs dynamically
 
