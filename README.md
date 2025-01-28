@@ -1,7 +1,8 @@
 # ARCSummary
 
 >Library to create or update markdown content of ARCs dynamically
-
+ARCSummary aims to facilitate the dynamic generation of markdown content, either as a base or adding to the already established markdown documentation of your investigation.
+It serves as a up-to-date overview of the ARCs current state since all the information is derived from the content from an already established or starting project.
 
 ## Local Setup
 ### Run via App
@@ -23,10 +24,10 @@ or
 *File is already updated
 README.md updated successfully at /arc*
 
-## Release Notes / Documentation
+## Installation
+Clone this repository locally and run with or without docker. Publication on NuGet will follow.
 
 ### Dependencies + Versions
-_dotnet list package_ 
 
 Project 'Core' has the following package references [net8.0]: 
 
