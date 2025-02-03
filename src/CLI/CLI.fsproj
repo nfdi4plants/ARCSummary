@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.fsproj" />
+    <ProjectReference Include="..\API\API.fsproj" />
   </ItemGroup>
 
   <ItemGroup>

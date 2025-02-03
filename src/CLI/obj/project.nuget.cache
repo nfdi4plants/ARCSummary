@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "dHtZ806nhzA=",
+  "dgSpecHash": "ulDXFQOvAgE=",
   "success": true,
   "projectFilePath": "/Users/olescholz/Desktop/ARC-Summary/src/CLI/CLI.fsproj",
   "expectedPackageFiles": [
@@ -27,6 +27,14 @@
     "/Users/olescholz/.nuget/packages/fable.package.sdk/1.0.0/fable.package.sdk.1.0.0.nupkg.sha512",
     "/Users/olescholz/.nuget/packages/fable.simplehttp/3.5.0/fable.simplehttp.3.5.0.nupkg.sha512",
     "/Users/olescholz/.nuget/packages/fsharp.core/9.0.100/fsharp.core.9.0.100.nupkg.sha512",
+    "/Users/olescholz/.nuget/packages/fsharp.data/6.4.1/fsharp.data.6.4.1.nupkg.sha512",
+    "/Users/olescholz/.nuget/packages/fsharp.data.csv.core/6.4.1/fsharp.data.csv.core.6.4.1.nupkg.sha512",
+    "/Users/olescholz/.nuget/packages/fsharp.data.html.core/6.4.1/fsharp.data.html.core.6.4.1.nupkg.sha512",
+    "/Users/olescholz/.nuget/packages/fsharp.data.http/6.4.1/fsharp.data.http.6.4.1.nupkg.sha512",
+    "/Users/olescholz/.nuget/packages/fsharp.data.json.core/6.4.1/fsharp.data.json.core.6.4.1.nupkg.sha512",
+    "/Users/olescholz/.nuget/packages/fsharp.data.runtime.utilities/6.4.1/fsharp.data.runtime.utilities.6.4.1.nupkg.sha512",
+    "/Users/olescholz/.nuget/packages/fsharp.data.worldbank.core/6.4.1/fsharp.data.worldbank.core.6.4.1.nupkg.sha512",
+    "/Users/olescholz/.nuget/packages/fsharp.data.xml.core/6.4.1/fsharp.data.xml.core.6.4.1.nupkg.sha512",
     "/Users/olescholz/.nuget/packages/fsspreadsheet/6.3.1/fsspreadsheet.6.3.1.nupkg.sha512",
     "/Users/olescholz/.nuget/packages/fsspreadsheet.net/6.3.1/fsspreadsheet.net.6.3.1.nupkg.sha512",
     "/Users/olescholz/.nuget/packages/jsondsl/0.0.5/jsondsl.0.0.5.nupkg.sha512",
@@ -41,9 +49,9 @@
     "/Users/olescholz/.nuget/packages/thoth.json.core/0.4.0/thoth.json.core.0.4.0.nupkg.sha512",
     "/Users/olescholz/.nuget/packages/thoth.json.newtonsoft/0.2.0/thoth.json.newtonsoft.0.2.0.nupkg.sha512",
     "/Users/olescholz/.nuget/packages/yamlicious/0.0.3/yamlicious.0.0.3.nupkg.sha512",
+    "/Users/olescholz/.nuget/packages/microsoft.netcore.app.ref/8.0.11/microsoft.netcore.app.ref.8.0.11.nupkg.sha512",
     "/Users/olescholz/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.11/microsoft.aspnetcore.app.ref.8.0.11.nupkg.sha512",
-    "/Users/olescholz/.nuget/packages/microsoft.netcore.app.host.osx-arm64/8.0.11/microsoft.netcore.app.host.osx-arm64.8.0.11.nupkg.sha512",
-    "/Users/olescholz/.nuget/packages/microsoft.netcore.app.ref/8.0.11/microsoft.netcore.app.ref.8.0.11.nupkg.sha512"
+    "/Users/olescholz/.nuget/packages/microsoft.netcore.app.host.osx-arm64/8.0.11/microsoft.netcore.app.host.osx-arm64.8.0.11.nupkg.sha512"
   ],
   "logs": [
     {

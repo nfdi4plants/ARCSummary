@@ -4,6 +4,7 @@ open ARCtrl
 open Argu
 open prototypeCLI
 open READMEAutomation
+open MergeRequest
 
 module CLI =
 
@@ -13,9 +14,9 @@ module CLI =
         try
             let res = parser.ParseCommandLine(args)
             
-            match res.TryGetResult ARC_Directory with
+            match res.TryGetResult ARC_Directory, res.TryGetResult CreateMR with
             // check if a valid directory has been found
-            | Some arcPath ->
+            | Some arcPath, None  ->
                 match ARC.load(arcPath).ISA with
                 //further check if investigation can be accessed and used to append the markdown
                 | Some investigation ->
@@ -25,9 +26,17 @@ module CLI =
                 | None ->
                     printfn "Failed to load investigation from ARC at %s" arcPath
                     1 
-            | None ->
+            | None, Some (pathOrId, newBranch, mainBranch, commitMessage) ->
+                printfn "Creating Merge Request for %s..." pathOrId
+                let response = createMR pathOrId newBranch mainBranch commitMessage
+                printfn "Response: %s" response
+                0
+            | None, None -> 
                 printfn "Invalid arguments.\n\n%s" (parser.PrintUsage())
-                1 
+                1
+            | Some _, Some _ -> // prevent from running simultaneously
+                printfn "Error: You cannot use both ARC_Directory and CreateMR commands simultaneously."
+                1                
         with
         | :? ArguParseException as errorMessage ->
             eprintfn "Error parsing arguments: %s" errorMessage.Message
@@ -35,6 +44,8 @@ module CLI =
         | ex ->
             eprintfn "Unexpected error: %s" ex.Message
             1 
+
+
 
 
 
