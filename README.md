@@ -1,47 +1,76 @@
 # ARCSummary
 
->Library to create or update markdown content of ARCs dynamically
-ARCSummary aims to facilitate the dynamic generation of markdown content, either as a base or adding to the already established markdown documentation of your investigation.
-It serves as a up-to-date overview of the ARCs current state since all the information is derived from the content from an already established or starting project.
+>Create or update markdown content of ARCs dynamically
 
-## Local Setup
+ARCSummary aims to facilitate the dynamic generation of markdown content. It serves as a up-to-date overview of the ARCs current state since all the information is derived from the content from an already established or starting investigation.
+
+## Setup
+Clone this repository locally and run with or without docker. 
+
+### ARCsummary currently supports three main subcommands:
+
+- **summary**     Updates your README.md to the current version
+- **createmr**    Creates a new merge request
+- **createnewbranch**   Creates a new branch
+
+
 ### Run via App
 ```bash
 cd /path/to/your/CLI
 dotnet restore
-dotnet run --arc-directory /path/to/your/arc
+dotnet build
+dotnet run summary /path/to/your/arc
+dotnet run createmr idorurl updatedBranch main UpdatedREADME
+dotnet run createnewbranch idorurl updatedBranch main
 ```
 
 ### Run via Docker environment
+For reference as this is based on the docker setup provided by arc-export see the [docs](https://github.com/nfdi4plants/arc-export)
 ```bash
-docker build -t arc-export8:latest .   
-docker run -v "/path/to/your/arc" arc-export8:latest --arc-directory /arc
+docker build -t dockerimage:latest .   
+docker run -v "/path/to/your/arc:/arc" dockerimage:latest summary --arc-directory /arc
+docker run arc-summary:latest createmr --pathorid idorurl --sourcebranch updatedBranch --mainbranch main --committitle UpdatedREADME
+docker run arc-summary:latest createnewbranch --pathorid  idorurl --newbranch updatedBranch --refbranch main 
 ```
 
-This should result in one of the following messages:
-*README.md updated successfully at /arc*
-or
-*File is already updated
-README.md updated successfully at /arc*
 
-## Installation
-Clone this repository locally and run with or without docker. Publication on NuGet will follow.
+## Help 
+### For Summary:
+```bash
+USAGE: ARCSummary summary [--help] --arc-directory <arcPath>
 
-### Dependencies + Versions
+OPTIONS:
 
-Project 'Core' has the following package references [net8.0]: 
+    --arc-directory <arcPath>
+                          Specify your ARC directory
+    --help                display this list of options.
+```
 
-|Top-level Package   |    Requested  | Resolved|
-| ------------------ | ------------- | --------|
-|  ARCtrl            |    2.2.4      | 2.2.4   |
-|  ARCtrl.NET        |    2.0.2      | 2.0.2   |
-|  Argu              |    6.2.4      | 6.2.4   |
-|  FSharp.Core       |    9.0.100    | 9.0.100 |
+### For CreateNewBranch:
+```bash
+USAGE: ARCSummary createnewbranch [--help] --pathorid <string>
+                                  --newbranch <string> --refbranch <string>
 
-Project 'CLI' has the following package references [net8.0]: 
+OPTIONS:
 
-|Top-level Package   |    Requested  | Resolved|
-| ------------------ | ------------- | --------|
-|  ARCtrl            |    2.3.1      | 2.3.1   |
-|  Argu              |    6.2.4      | 6.2.4   |
-|  FSharp.Core       |    9.0.100    | 9.0.100 |
+    --pathorid <string>   ID or URL-encdoded path of the project after .org/
+    --newbranch <string>  Name of the new branch
+    --refbranch <string>  Name of the target branch
+    --help                display this list of options.
+```
+
+### For CreateMR:
+```bash
+USAGE: ARCSummary createmr [--help] --pathorid <string> --sourcebranch <string>
+                           --mainbranch <string> --committitle <string>
+
+OPTIONS:
+
+    --pathorid <string>   ID or URL-encdoded path of the project after .org/
+    --sourcebranch <string>
+                          Name of the source branch
+    --mainbranch <string> Name of the target branch
+    --committitle <string>
+                          Title of the MR
+    --help                display this list of options.
+```

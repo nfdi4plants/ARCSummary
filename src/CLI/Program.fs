@@ -4,21 +4,52 @@
 open Argu
 
 
-module prototypeCLI =
-
-    type CLIArguments =
-        // could be mandatory
+module mainCLI =
+    
+    type SummaryArgs =
         | [<Mandatory>] ARC_Directory of arcPath : string 
-        // add some more arguments such as specified help or selected content like only assay or study overview
-        | [<Mandatory>] CreateMR of pathOrId: string * newBranch: string * main: string * commitMessage: string
         interface IArgParserTemplate with
             member s.Usage =
                 match s with
-                | ARC_Directory  _ -> "specify your ARC directory" 
-                | CreateMR _ -> "creates a new merge request. requires: <projectPathOrId> <newBranch> <mainBranch> <commitMessage>"
+                | ARC_Directory  _ -> "Specify your ARC directory" 
+
+    and MRArgs =
+        | [<Mandatory>] PathOrID of string 
+        | [<Mandatory>] SourceBranch of string 
+        | [<Mandatory>] MainBranch of string
+        | [<Mandatory>] CommitTitle of string
+        interface IArgParserTemplate with
+            member s.Usage =
+                match s with
+                | PathOrID _ -> "ID or URL-encdoded path of the project after .org/"
+                | SourceBranch _ -> "Name of the source branch"
+                | MainBranch _ -> "Name of the target branch"
+                | CommitTitle _ -> "Title of the MR"
+                // consider adding description as optional parameter
+    
+    and BranchArgs =
+        | [<Mandatory>] PathOrId of string 
+        | [<Mandatory>] NewBranch of string 
+        | [<Mandatory>] RefBranch of string 
+        interface IArgParserTemplate with
+            member s.Usage =
+                match s with
+                | PathOrId _ -> "ID or URL-encdoded path of the project after .org/"
+                | NewBranch _ -> "Name of the new branch"
+                | RefBranch _ -> "Name of the target branch"
+                            
+    and CLIArgs =
+        | [<CliPrefix(CliPrefix.None)>] Summary of ParseResults<SummaryArgs>
+        | [<CliPrefix(CliPrefix.None)>] CreateMR of ParseResults<MRArgs>
+        | [<CliPrefix(CliPrefix.None)>] CreateNewBranch of ParseResults<BranchArgs>
+        interface IArgParserTemplate with
+            member s.Usage =
+                match s with 
+                | Summary _ -> "Updates your README.md to current version"
+                | CreateMR _ -> "Creates a new merge request"
+                | CreateNewBranch _ -> "Creates a new branch"
+
+        // add some more arguments such as selected content like only assay or study overview
 
 
-// https://fsprojects.github.io/Argu/tutorial.html
-// https://www.nuget.org/packages/Argu
-// For more information see https://aka.ms/fsharp-console-apps
-// printfn "Hello from F#"
+

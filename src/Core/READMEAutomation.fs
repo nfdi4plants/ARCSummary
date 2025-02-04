@@ -8,10 +8,10 @@ open Instances
 open Template
 
 
-module READMEAutomation = // better name rttrfh
+module READMEAutomation = // better name 
 
 
-    let createMarkdownOverview (investigation:ArcInvestigation) : string = //createMarkdownOverview
+    let createMarkdownOverview (investigation:ArcInvestigation) : string = 
         let tlm =
             getTopLevelMetadata investigation
         let assayOVs =
@@ -26,7 +26,7 @@ module READMEAutomation = // better name rttrfh
             createIntroSection tlm investigation assayOVs studyOVs  
         let toC =
             getTableOfContents tlm assayOVs studyOVs
-        let contacts = // Names to similar here
+        let contacts = 
             createContactsSection tlm
         let publications = 
             createPublicationsSection tlm
@@ -86,14 +86,4 @@ module READMEAutomation = // better name rttrfh
         readmePath      
 
 
-
-
-// Useful links
-
-// https://learn.microsoft.com/en-us/dotnet/fsharp/get-started/get-started-command-line
-// https://learn.microsoft.com/en-gb/dotnet/fsharp/language-reference/functions/entry-point
-// https://learn.microsoft.com/en-us/dotnet/fsharp/style-guide/conventions
-// https://learn.microsoft.com/en-us/dotnet/fsharp/style-guide/#five-principles-of-good-f-code
-// https://fsprojects.github.io/Argu/tutorial.html#Introduction
-// https://github.com/nfdi4plants/arc-export/tree/main/.github/workflows
 

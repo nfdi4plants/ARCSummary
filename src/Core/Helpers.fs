@@ -18,7 +18,7 @@ module Option =
         if list.IsEmpty then failwith "Consider adding information to this list"
         else list
 
-module ArcTable =    //
+module ArcTable =    // Functions to access information from ArcTables
 
     let getAllCharacteristics (table:ArcTable) =
         table.Headers
@@ -63,7 +63,7 @@ module ArcTable =    //
                     col.Cells
             | None -> [||]
 
-module ArcQuerying = 
+module ArcQuerying = // Functions for direct querying such as specific ontology search
 
     // predicate replaced by selectColumn
     let getReplicates (table:ArcTable) =
@@ -87,7 +87,7 @@ module ArcQuerying =
             ArcTable.tryGetColumnByHeaderBy (fun (header:CompositeHeader) -> 
             match header with
             | CompositeHeader.Parameter oa -> oa.NameText = "Time point"
-            //   | CompositeHeader.Factor oa -> oa.NameText = "Time point"
+            //   | CompositeHeader.Factor oa -> oa.NameText = "Time point" is also present in some ARCs
             | _ -> false
             ) table
         match selectColumn with 
@@ -98,11 +98,10 @@ module ArcQuerying =
                         |> Array.length
                 | None -> 0
 
-    // Anmerkung: Was ist bei samples die mehr als einmal vorkommen? Reicht hier Seq.max?
     let getSampleCount (arcTables:ResizeArray<ArcTable>) =
         arcTables
         |> ResizeArray.map (fun (table:ArcTable) -> table.RowCount)
-        |> Seq.max
+        |> Seq.max // if samples occur repeatedly there might be a need for Seq.distinct here
 
     let getDataFiles (table:ArcTable) =
         let selectColumn =

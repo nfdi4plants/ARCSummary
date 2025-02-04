@@ -10,7 +10,7 @@ module MergeRequest =
     let inline encodedBranchPath (pathOrId) = $"{baseAPIURL}/projects/{pathOrId}/repository/branches"
     let createNewBranch (pathOrId) (newBranchIdentifier : string) (refBranch : string) =
         Http.RequestString(
-            url = (encodedBranchPath pathOrId),
+            url = (encodedBranchPath (pathOrId |> System.Uri.EscapeDataString)),
             httpMethod = "POST",
             headers = [ "PRIVATE-TOKEN", personalAccessToken ],
             body = HttpRequestBody.FormValues [
@@ -22,17 +22,16 @@ module MergeRequest =
 
     let inline encodedAPIPath (pathOrId) = $"{baseAPIURL}/projects/{pathOrId}/merge_requests"
 
-    let createMR (pathOrId) (newBranch) (main : string)  (commitMessage : string)=
+    let createMR (pathOrId) (newBranch) (main : string)  (commitTitle: string)=
         Http.RequestString(
-            url = (encodedAPIPath pathOrId),
+            url = (encodedAPIPath (pathOrId |> System.Uri.EscapeDataString)),
             httpMethod = "POST",
             headers = [ "PRIVATE-TOKEN", personalAccessToken ],
             body = HttpRequestBody.FormValues [
                 "id", pathOrId
                 "source_branch", newBranch
                 "target_branch", main
-                "title", commitMessage
+                "title", commitTitle
             ]
         )
     
-

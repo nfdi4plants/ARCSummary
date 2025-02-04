@@ -1,3 +1,9 @@
+
+
+// FSX for testing purposes only
+
+
+
 #r "nuget: FSharp.Data, 6.4.1"
 
 open FSharp.Data 
@@ -7,7 +13,7 @@ let baseAPIURL = "https://git.nfdi4plants.org/api/v4"
 let projectPathEncoded = "scholz/SFB175AraCore" |> System.Uri.EscapeDataString
 let personalAccessToken = "Xk1tuPqKhx4fti-nMWEh"
 
-let inline encodedBranchPath (pathOrId) = $"{baseAPIURL}/projects/{pathOrId}/repository/branches"
+let inline encodedBranchPath (pathOrId) = $"{baseAPIURL}/projects/{pathOrId}/repository/branches" 
 let createNewBranch (pathOrId) (newBranchIdentifier : string) (refBranch : string) =
     Http.RequestString(
         url = (encodedBranchPath pathOrId),
@@ -19,8 +25,9 @@ let createNewBranch (pathOrId) (newBranchIdentifier : string) (refBranch : strin
             "ref", refBranch
         ]
     )
+let newEP = "scholz/api-testing-arcsummary" |> System.Uri.EscapeDataString
 
-createNewBranch "scholz/api-testing-arcsummary" "test2" "main"
+createNewBranch  newEP"test2" "main"
 
 
 let inline commitsEndpoint (pathOrId) = $"{baseAPIURL}/projects/{pathOrId}/repository/commits"

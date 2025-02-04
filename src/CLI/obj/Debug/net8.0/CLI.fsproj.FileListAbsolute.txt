@@ -64,3 +64,14 @@
 /Users/olescholz/Desktop/ARC-Summary/src/CLI/obj/Debug/net8.0/CLI.pdb
 /Users/olescholz/Desktop/ARC-Summary/src/CLI/obj/Debug/net8.0/CLI.genruntimeconfig.cache
 /Users/olescholz/Desktop/ARC-Summary/src/CLI/obj/Debug/net8.0/ref/CLI.dll
+/Users/olescholz/Desktop/ARC-Summary/src/CLI/bin/Debug/net8.0/FSharp.Data.dll
+/Users/olescholz/Desktop/ARC-Summary/src/CLI/bin/Debug/net8.0/FSharp.Data.Csv.Core.dll
+/Users/olescholz/Desktop/ARC-Summary/src/CLI/bin/Debug/net8.0/FSharp.Data.Html.Core.dll
+/Users/olescholz/Desktop/ARC-Summary/src/CLI/bin/Debug/net8.0/FSharp.Data.Http.dll
+/Users/olescholz/Desktop/ARC-Summary/src/CLI/bin/Debug/net8.0/FSharp.Data.Json.Core.dll
+/Users/olescholz/Desktop/ARC-Summary/src/CLI/bin/Debug/net8.0/FSharp.Data.Runtime.Utilities.dll
+/Users/olescholz/Desktop/ARC-Summary/src/CLI/bin/Debug/net8.0/FSharp.Data.WorldBank.Core.dll
+/Users/olescholz/Desktop/ARC-Summary/src/CLI/bin/Debug/net8.0/FSharp.Data.Xml.Core.dll
+/Users/olescholz/Desktop/ARC-Summary/src/CLI/bin/Debug/net8.0/API.dll
+/Users/olescholz/Desktop/ARC-Summary/src/CLI/bin/Debug/net8.0/API.pdb
+/Users/olescholz/Desktop/ARC-Summary/src/CLI/bin/Debug/net8.0/API.xml
