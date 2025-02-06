@@ -30,20 +30,22 @@ module CLI =
                     printfn "Invalid arguments for summary.\n\n%s" (parser.PrintUsage())
                     1
             | CreateMR mRArgs ->
+                let personalAccessToken= mRArgs.GetResult PersonalAccessToken
                 let pathOrId = mRArgs.GetResult PathOrID
                 let sourceBranch = mRArgs.GetResult SourceBranch
                 let main = mRArgs.GetResult MainBranch
                 let title = mRArgs.GetResult CommitTitle
 
-                createMR pathOrId sourceBranch main title |> ignore
+                createMR personalAccessToken pathOrId sourceBranch main title |> ignore
                 printfn "Merge Request created successfully"
                 0
             | CreateNewBranch branchArgs ->
+                let personalAccessToken = branchArgs.GetResult PersonalAccToken
                 let pathOrId = branchArgs.GetResult PathOrId
                 let newBranchId = branchArgs.GetResult NewBranch
                 let main = branchArgs.GetResult RefBranch
 
-                createNewBranch pathOrId newBranchId main |> ignore
+                createNewBranch personalAccessToken pathOrId newBranchId main |> ignore
                 printfn "New Branch has been created"
                 0
         with

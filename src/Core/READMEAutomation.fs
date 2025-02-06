@@ -4,7 +4,7 @@ open ARCtrl
 open System
 open System.IO
 open TemplateHelpers
-open Instances
+open ARCInstances
 open Template
 
 

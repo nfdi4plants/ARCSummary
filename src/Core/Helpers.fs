@@ -20,6 +20,7 @@ module Option =
 
 module ArcTable =    // Functions to access information from ArcTables
 
+
     let getAllCharacteristics (table:ArcTable) =
         table.Headers
         |> Seq.choose (fun x ->
@@ -65,7 +66,6 @@ module ArcTable =    // Functions to access information from ArcTables
 
 module ArcQuerying = // Functions for direct querying such as specific ontology search
 
-    // predicate replaced by selectColumn
     let getReplicates (table:ArcTable) =
         let selectColumn =
             ArcTable.tryGetColumnByHeaderBy (fun (header:CompositeHeader) -> 
@@ -82,12 +82,11 @@ module ArcQuerying = // Functions for direct querying such as specific ontology 
                         |> Seq.max
                 | None -> 0
 
-    let getTimepoints (table:ArcTable) =
+    let getTimepoints (table:ArcTable) = // This function currently accounts for Timepoints that are defined as a Parameter, but some ARCs use Timepoints as a Factor instead
         let selectColumn =
             ArcTable.tryGetColumnByHeaderBy (fun (header:CompositeHeader) -> 
             match header with
             | CompositeHeader.Parameter oa -> oa.NameText = "Time point"
-            //   | CompositeHeader.Factor oa -> oa.NameText = "Time point" is also present in some ARCs
             | _ -> false
             ) table
         match selectColumn with 
@@ -140,7 +139,7 @@ module ArcQuerying = // Functions for direct querying such as specific ontology 
     let getGenotype (table:ArcTable) =
         getOntologyListByHeaderOntology table "Genotype"
 
-    let nodesEqual (node1:CompositeCell) (node2:CompositeCell) : bool =
+    let nodesAreEqual (node1:CompositeCell) (node2:CompositeCell) : bool =
         node1.ToString() = node2.ToString()    
 
     // Anmerkung: Naming der Funktion. Rückgabewert ist bool, also eher "is", "are" oder ähnliches verwenden
@@ -153,7 +152,7 @@ module ArcQuerying = // Functions for direct querying such as specific ontology 
             |> Seq.exists (fun inNode ->
                 outCol.Cells
                 |> Seq.exists (fun outNode ->
-                    nodesEqual inNode outNode
+                    nodesAreEqual inNode outNode
                 )
             )
         | _ -> false
@@ -201,9 +200,9 @@ module ArcQuerying = // Functions for direct querying such as specific ontology 
 
     // Anmerkung: Sehr viel repetitiver Code ab hier. Versuch mal den generischen Teil in eine Funktion auszulagern   
 
-    // Anmerkung: "For" (CamelCase)
-    // Anmerkung: Assay(s)?
-    let getPreviousStudyIdentifiersforAssays (assay: ArcAssay) (investigation: ArcInvestigation) : list<string> =
+
+
+    let getPreviousStudyIdsForAssay (assay: ArcAssay) (investigation: ArcInvestigation) : list<string> =
         investigation.Studies
         |> Seq.choose (fun (study: ArcStudy) ->
             if linkTables study assay then
@@ -212,9 +211,8 @@ module ArcQuerying = // Functions for direct querying such as specific ontology 
             ) 
         |> Seq.toList 
 
-    // Anmerkung: "For" (CamelCase)
-    // Anmerkung: Assay(s)?
-    let getPreviousAssayIdentifiersforAssays (assay: ArcAssay) (investigation: ArcInvestigation) : list<string> =
+
+    let getPreviousAssayIdsForAssay (assay: ArcAssay) (investigation: ArcInvestigation) : list<string> =
         investigation.Assays
         |> Seq.choose (fun (precedingAssay: ArcAssay) ->
             if precedingAssay.Identifier <> assay.Identifier then 
@@ -225,9 +223,7 @@ module ArcQuerying = // Functions for direct querying such as specific ontology 
             )
         |> Seq.toList 
 
-    // Anmerkung: "For" (CamelCase)
-    // Anmerkung: Assay(s)?
-    let getFollowingStudyIdentifiersforAssays (assay: ArcAssay) (investigation: ArcInvestigation) : list<string> =
+    let getFollowingStudyIdsForAssay (assay: ArcAssay) (investigation: ArcInvestigation) : list<string> =
         let assayTables = ArcTables.ofSeq(assay.Tables)
         investigation.Studies
         |> Seq.choose (fun (study: ArcStudy) ->
@@ -238,9 +234,7 @@ module ArcQuerying = // Functions for direct querying such as specific ontology 
             ) 
         |> Seq.toList 
 
-    // Anmerkung: "For" (CamelCase)
-    // Anmerkung: Assay(s)?
-    let getFollowingAssayIdentifiersforAssays (assay: ArcAssay) (investigation: ArcInvestigation) : list<string> =   
+    let getFollowingAssayIdsForAssay (assay: ArcAssay) (investigation: ArcInvestigation) : list<string> =   
         let assayTables = ArcTables.ofSeq(assay.Tables)        
         investigation.Assays
         |> Seq.choose (fun (followingAssay: ArcAssay) ->
@@ -254,9 +248,7 @@ module ArcQuerying = // Functions for direct querying such as specific ontology 
         |> Seq.toList 
 
 
-    // Anmerkung: "For" (CamelCase)
-    // Anmerkung: Study(ies)?
-    let getPreviousStudyIdentifiersforStudies (study: ArcStudy) (investigation: ArcInvestigation) : list<string> =
+    let getPreviousStudyIdsForStudy (study: ArcStudy) (investigation: ArcInvestigation) : list<string> =
         investigation.Studies
         |> Seq.choose (fun (precedingStudy: ArcStudy) ->
             if precedingStudy.Identifier <> study.Identifier then 
@@ -267,9 +259,7 @@ module ArcQuerying = // Functions for direct querying such as specific ontology 
             )
         |> Seq.toList 
 
-    // Anmerkung: "For" (CamelCase)
-    // Anmerkung: Study(ies)?
-    let getPreviousAssayIdentifiersforStudies (study: ArcStudy) (investigation: ArcInvestigation) : list<string> =
+    let getPreviousAssayIdsForStudy (study: ArcStudy) (investigation: ArcInvestigation) : list<string> =
         investigation.Assays
         |> Seq.choose (fun (assay: ArcAssay) ->
             if linkTables assay study then
@@ -278,9 +268,7 @@ module ArcQuerying = // Functions for direct querying such as specific ontology 
             ) 
         |> Seq.toList 
 
-    // Anmerkung: "For" (CamelCase)
-    // Anmerkung: Study(ies)?
-    let getFollowingStudyIdentifiersforStudies (study: ArcStudy) (investigation: ArcInvestigation) : list<string> =
+    let getFollowingStudyIdsForStudy (study: ArcStudy) (investigation: ArcInvestigation) : list<string> =
         let studyTables = ArcTables.ofSeq(study.Tables)
         investigation.Studies    
         |> Seq.choose (fun (followingStudy: ArcStudy) ->
@@ -293,9 +281,7 @@ module ArcQuerying = // Functions for direct querying such as specific ontology 
             )
         |> Seq.toList 
 
-    // Anmerkung: "For" (CamelCase)
-    // Anmerkung: Study(ies)?
-    let getFollowingAssayIdentifiersforStudies (study: ArcStudy) (investigation: ArcInvestigation) : list<string> =
+    let getFollowingAssayIdsForStudy (study: ArcStudy) (investigation: ArcInvestigation) : list<string> =
         let studyTables = ArcTables.ofSeq(study.Tables)
         investigation.Assays
         |> Seq.choose (fun (assay: ArcAssay) ->
@@ -314,9 +300,9 @@ module Formating =
     let removeUnderscoreAndNumbers (input:string) =
         Regex.Replace(input, @"_\d+", "")
 
-    let getHyperlinks (anheaders:list<OntologyAnnotation>) = 
+    let getHyperlinks (annotationheaders:list<OntologyAnnotation>) = 
         let formated =
-            anheaders 
+            annotationheaders 
             |> List.map (fun (oa:OntologyAnnotation) ->  
                 let name = oa.NameText |> removeHashAndNumbers |> removeUnderscoreAndNumbers
                 let link = oa.TermAccessionOntobeeUrl
@@ -330,7 +316,7 @@ module Formating =
 module TemplateHelpers = // Better names
 
 
-    // mermaid graph Helpers
+    //Changes mermaid graph Helpers
 
     let studyToAssayRelationships (studyOVs:seq<StudyOverview>) = 
         studyOVs
@@ -424,7 +410,6 @@ graph TB") |> ignore
 
 
     // create TOC with numbered list and bullet point for the options such as multiple assays
-    //Reworked, but could be still improved (Check iff it works as intended)
     let getTableOfContents (tlm:TopLevelMetadata) (assayOVs : seq<AssayOverview>) (studyOVs:seq<StudyOverview>) =
         let sb = StringBuilder()
         sb.AppendLine($"## Table of Contents \n") |> ignore

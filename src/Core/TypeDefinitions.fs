@@ -15,6 +15,7 @@ type TopLevelMetadata = {
     StudyCount : int option
 }
 
+
 // Record type Overview for shared fields between study and assay might be beneficial
 type StudyOverview = {
     StudyIdentifier : string ; 

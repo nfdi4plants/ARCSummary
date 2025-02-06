@@ -10,7 +10,7 @@ open ArcQuerying
 open Formating
 open TemplateHelpers
 
-module Instances =
+module ARCInstances =
     let getTopLevelMetadata (selectISA:ArcInvestigation) : TopLevelMetadata = {
         Title = selectISA.Title ;
         Description = selectISA.Description ;
@@ -38,10 +38,10 @@ module Instances =
         Parameters = study.Tables |> Seq.map ArcTable.getAllParameters |> Seq.concat |> Seq.distinct |> Seq.toList
         Factors = study.Tables |> Seq.map ArcTable.getAllFactors |> Seq.concat |> Seq.distinct |> Seq.toList
         AssociatedAssays = associatedAssays investigation study
-        PreviousAssayIdentifiers = getPreviousAssayIdentifiersforStudies study investigation
-        PreviousStudyIdentifiers = getPreviousStudyIdentifiersforStudies study investigation
-        FollowingAssayIdentifiers = getFollowingAssayIdentifiersforStudies study investigation
-        FollowingStudyIdentifiers = getFollowingStudyIdentifiersforStudies study investigation
+        PreviousAssayIdentifiers = getPreviousAssayIdsForStudy study investigation
+        PreviousStudyIdentifiers = getPreviousStudyIdsForStudy study investigation
+        FollowingAssayIdentifiers = getFollowingAssayIdsForStudy study investigation
+        FollowingStudyIdentifiers = getFollowingStudyIdsForStudy study investigation
         DataFileCount = Some (study.Tables |> ResizeArray.map getDataFiles |> Seq.sum)
     } 
 
@@ -58,10 +58,10 @@ module Instances =
         Parameters =  assay.Tables |> Seq.map ArcTable.getAllParameters |> Seq.concat |> Seq.distinct |> Seq.toList
         Factors = assay.Tables |> Seq.map ArcTable.getAllFactors |> Seq.concat |> Seq.distinct |> Seq.toList
         AssociatedStudies = associatedStudies investigation assay
-        PreviousAssayIdentifiers = getPreviousAssayIdentifiersforAssays assay investigation
-        PreviousStudyIdentifiers = getPreviousStudyIdentifiersforAssays assay investigation
-        FollowingAssayIdentifiers = getFollowingAssayIdentifiersforAssays assay investigation
-        FollowingStudyIdentifiers = getFollowingStudyIdentifiersforAssays assay investigation
+        PreviousAssayIdentifiers = getPreviousAssayIdsForAssay assay investigation
+        PreviousStudyIdentifiers = getPreviousStudyIdsForAssay assay investigation
+        FollowingAssayIdentifiers = getFollowingAssayIdsForAssay assay investigation
+        FollowingStudyIdentifiers = getFollowingStudyIdsForAssay assay investigation
         DataFileCount = Some (assay.Tables |> ResizeArray.map getDataFiles |> Seq.sum)
     }
 
@@ -209,18 +209,15 @@ module Template =    // template part definitions
             sb.AppendLine($"### Description\n{aOV.AssayDescription.Value}") |> ignore
         else sb.AppendLine("### Description\n tba") |> ignore
 
-        sb.AppendLine("### Additional details") |> ignore // changed to ignore since the value else is unused
+        sb.AppendLine("### Additional details") |> ignore 
         sb.AppendLine("| Meta Data | Description |") |> ignore
         sb.AppendLine("| --------- | ----------- |") |> ignore
-        if aOV.MeasurementType.IsSome then
-            sb.AppendLine($"| Measurement Type | {aOV.MeasurementType.Value.NameText} |") |> ignore  //let measurementType = maybe here not
-        // else sb.AppendLine("") |> ignore 
+        if aOV.MeasurementType.IsSome = true then // change to = true
+            sb.AppendLine($"| Measurement Type | {aOV.MeasurementType.Value.NameText} |") |> ignore 
         if aOV.MeasurementDevice.IsEmpty = false then 
-            sb.AppendLine($"| Measurement Device | {aOV.MeasurementDevice.Head.Name.Value} |") |> ignore // check if oa to value.NameText is needed
-        // else sb.AppendLine("") |> ignore
-        if aOV.TechnologyType.IsSome then
+            sb.AppendLine($"| Measurement Device | {aOV.MeasurementDevice.Head.Name.Value} |") |> ignore 
+        if aOV.TechnologyType.IsSome = true then
             sb.AppendLine($"| Technology Type | {aOV.TechnologyType.Value.NameText} |") |> ignore
-        // else sb.AppendLine("") |> ignore
         sb.AppendLine($"| Table Count | {aOV.TableCount.Value} |") |> ignore
         let tableNamesString = String.Join(" , ", aOV.TableNames)
         sb.AppendLine($"| Table Names | {tableNamesString} |") |> ignore

@@ -13,7 +13,8 @@ module mainCLI =
                 match s with
                 | ARC_Directory  _ -> "Specify your ARC directory" 
 
-    and MRArgs =
+    and MRArgs = 
+        | [<Mandatory>] PersonalAccessToken of string
         | [<Mandatory>] PathOrID of string 
         | [<Mandatory>] SourceBranch of string 
         | [<Mandatory>] MainBranch of string
@@ -21,6 +22,7 @@ module mainCLI =
         interface IArgParserTemplate with
             member s.Usage =
                 match s with
+                | PersonalAccessToken _ -> "Personal access token for gitlab"
                 | PathOrID _ -> "ID or URL-encdoded path of the project after .org/"
                 | SourceBranch _ -> "Name of the source branch"
                 | MainBranch _ -> "Name of the target branch"
@@ -28,12 +30,14 @@ module mainCLI =
                 // consider adding description as optional parameter
     
     and BranchArgs =
+        | [<Mandatory>] PersonalAccToken of string
         | [<Mandatory>] PathOrId of string 
         | [<Mandatory>] NewBranch of string 
         | [<Mandatory>] RefBranch of string 
         interface IArgParserTemplate with
             member s.Usage =
                 match s with
+                | PersonalAccToken _ -> "Personal access token for gitlab"
                 | PathOrId _ -> "ID or URL-encdoded path of the project after .org/"
                 | NewBranch _ -> "Name of the new branch"
                 | RefBranch _ -> "Name of the target branch"

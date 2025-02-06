@@ -11,7 +11,7 @@ open System.IO
 
 let baseAPIURL = "https://git.nfdi4plants.org/api/v4"
 let projectPathEncoded = "scholz/SFB175AraCore" |> System.Uri.EscapeDataString
-let personalAccessToken = "Xk1tuPqKhx4fti-nMWEh"
+let personalAccessToken = "youraccesstoken"
 
 let inline encodedBranchPath (pathOrId) = $"{baseAPIURL}/projects/{pathOrId}/repository/branches" 
 let createNewBranch (pathOrId) (newBranchIdentifier : string) (refBranch : string) =
