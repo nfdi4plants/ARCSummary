@@ -27,10 +27,10 @@ dotnet run createnewbranch idorurl updatedBranch main
 ### Run via Docker environment
 For reference as this is based on the docker setup provided by arc-export see the [docs](https://github.com/nfdi4plants/arc-export)
 ```bash
-docker build -t dockerimage:latest .   
+docker build -t dockerimage:latest /path/to/ARCSummary 
 docker run -v "/path/to/your/arc:/arc" dockerimage:latest summary --arc-directory /arc
-docker run arc-summary:latest createmr --pathorid idorurl --sourcebranch updatedBranch --mainbranch main --committitle UpdatedREADME
-docker run arc-summary:latest createnewbranch --pathorid  idorurl --newbranch updatedBranch --refbranch main 
+docker run arc-summary:latest createmr --token personalAccessToken --pathorid idorurl --sourcebranch updatedBranch --mainbranch main --committitle UpdatedREADME
+docker run arc-summary:latest createnewbranch --token personalAccessToken --pathorid  idorurl --newbranch updatedBranch --mainbranch main 
 ```
 
 
@@ -48,24 +48,27 @@ OPTIONS:
 
 ### For CreateNewBranch:
 ```bash
-USAGE: ARCSummary createnewbranch [--help] --pathorid <string>
-                                  --newbranch <string> --refbranch <string>
+USAGE: ARCSummary createnewbranch [--help] --token <string> --pathorid <string>
+                                  --newbranch <string> --mainbranch <string>
 
 OPTIONS:
 
+    --token <string>      Personal access token for gitlab
     --pathorid <string>   ID or URL-encdoded path of the project after .org/
     --newbranch <string>  Name of the new branch
-    --refbranch <string>  Name of the target branch
+    --mainbranch <string> Name of the target branch usally main
     --help                display this list of options.
 ```
 
 ### For CreateMR:
 ```bash
-USAGE: ARCSummary createmr [--help] --pathorid <string> --sourcebranch <string>
-                           --mainbranch <string> --committitle <string>
+USAGE: ARCSummary createmr [--help] --token <string> --pathorid <string>
+                           --sourcebranch <string> --mainbranch <string>
+                           --committitle <string>
 
 OPTIONS:
 
+    --token <string>      Personal access token for gitlab
     --pathorid <string>   ID or URL-encdoded path of the project after .org/
     --sourcebranch <string>
                           Name of the source branch

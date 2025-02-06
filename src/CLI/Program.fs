@@ -1,59 +1,57 @@
-﻿namespace ARCSummary
+namespace ARCSummary
 
-
+open ARCtrl
 open Argu
+open mainCLI
+open READMEAutomation
+open MergeRequest
 
+module CLI =
 
-module mainCLI =
-    
-    type SummaryArgs =
-        | [<Mandatory>] ARC_Directory of arcPath : string 
-        interface IArgParserTemplate with
-            member s.Usage =
-                match s with
-                | ARC_Directory  _ -> "Specify your ARC directory" 
+    [<EntryPoint>]
+    let main args =
+        let parser = ArgumentParser.Create<CLIArgs>(programName = "ARCSummary")
+        try
+            let res = parser.ParseCommandLine(args, raiseOnUsage = true)
 
-    and MRArgs = 
-        | [<Mandatory>] PersonalAccessToken of string
-        | [<Mandatory>] PathOrID of string 
-        | [<Mandatory>] SourceBranch of string 
-        | [<Mandatory>] MainBranch of string
-        | [<Mandatory>] CommitTitle of string
-        interface IArgParserTemplate with
-            member s.Usage =
-                match s with
-                | PersonalAccessToken _ -> "Personal access token for gitlab"
-                | PathOrID _ -> "ID or URL-encdoded path of the project after .org/"
-                | SourceBranch _ -> "Name of the source branch"
-                | MainBranch _ -> "Name of the target branch"
-                | CommitTitle _ -> "Title of the MR"
-                // consider adding description as optional parameter
-    
-    and BranchArgs =
-        | [<Mandatory>] PersonalAccToken of string
-        | [<Mandatory>] PathOrId of string 
-        | [<Mandatory>] NewBranch of string 
-        | [<Mandatory>] RefBranch of string 
-        interface IArgParserTemplate with
-            member s.Usage =
-                match s with
-                | PersonalAccToken _ -> "Personal access token for gitlab"
-                | PathOrId _ -> "ID or URL-encdoded path of the project after .org/"
-                | NewBranch _ -> "Name of the new branch"
-                | RefBranch _ -> "Name of the target branch"
-                            
-    and CLIArgs =
-        | [<CliPrefix(CliPrefix.None)>] Summary of ParseResults<SummaryArgs>
-        | [<CliPrefix(CliPrefix.None)>] CreateMR of ParseResults<MRArgs>
-        | [<CliPrefix(CliPrefix.None)>] CreateNewBranch of ParseResults<BranchArgs>
-        interface IArgParserTemplate with
-            member s.Usage =
-                match s with 
-                | Summary _ -> "Updates your README.md to current version"
-                | CreateMR _ -> "Creates a new merge request"
-                | CreateNewBranch _ -> "Creates a new branch"
+            match res.GetSubCommand() with
+            | Summary summaryArgs -> 
+                match summaryArgs.TryGetResult ARC_Directory with
+                | Some arcPath  ->
+                    match ARC.load(arcPath).ISA with
+                    | Some investigation ->
+                        updateREADME arcPath investigation |> ignore
+                        printfn "README.md updated successfully at %s" arcPath
+                        0 
+                    | None ->
+                        printfn "Failed to load investigation from ARC at %s" arcPath
+                        1 
+                | None -> 
+                    printfn "Invalid arguments for summary.\n\n%s" (parser.PrintUsage())
+                    1
+            | CreateMR mRArgs ->
+                let personalAccessToken= mRArgs.GetResult MRArgs.Token
+                let pathOrId = mRArgs.GetResult MRArgs.PathOrId
+                let sourceBranch = mRArgs.GetResult SourceBranch
+                let main = mRArgs.GetResult MRArgs.MainBranch
+                let title = mRArgs.GetResult CommitTitle
 
-        // add some more arguments such as selected content like only assay or study overview
+                createMR personalAccessToken pathOrId sourceBranch main title |> ignore
+                printfn "Merge Request created successfully"
+                0
+            | CreateNewBranch branchArgs ->
+                let personalAccessToken = branchArgs.GetResult BranchArgs.Token
+                let pathOrId = branchArgs.GetResult BranchArgs.PathOrId
+                let newBranchId = branchArgs.GetResult NewBranch
+                let main = branchArgs.GetResult BranchArgs.MainBranch
+
+                createNewBranch personalAccessToken pathOrId newBranchId main |> ignore
+                printfn "New Branch has been created"
+                0
+        with
+        :? ArguParseException as e ->
+            eprintfn "Error parsing arguments: %s" e.Message
+            1 
 
 
 

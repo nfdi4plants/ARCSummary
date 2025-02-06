@@ -409,7 +409,7 @@ graph TB") |> ignore
         sb.ToString()
 
 
-    // create TOC with numbered list and bullet point for the options such as multiple assays
+    // create TOC with numbered list and bullet point for the options such as multiple assays !!!more generic!! mapi
     let getTableOfContents (tlm:TopLevelMetadata) (assayOVs : seq<AssayOverview>) (studyOVs:seq<StudyOverview>) =
         let sb = StringBuilder()
         sb.AppendLine($"## Table of Contents \n") |> ignore
