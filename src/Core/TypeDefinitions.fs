@@ -40,7 +40,7 @@ type StudyOverview = {
 
 type AssayOverview = {
     AssayIdentifier : string ;
-    AssayDescription : string option ;
+    // AssayDescription : string option ;
     MeasurementType : OntologyAnnotation option ; 
     MeasurementDevice : OntologyAnnotation list  ;    
     TechnologyType : OntologyAnnotation option ;

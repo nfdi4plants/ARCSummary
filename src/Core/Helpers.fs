@@ -354,7 +354,7 @@ module TemplateHelpers = // Better names
         )
         |> Seq.toArray
 
-    let relationshipGraph (studyOVs:seq<StudyOverview>) (assayOVs:seq<AssayOverview>) =
+    let mermaidGraphNodes (studyOVs:seq<StudyOverview>) (assayOVs:seq<AssayOverview>) =
         let comb =
             [|
                 studyToAssayRelationships studyOVs
@@ -368,7 +368,7 @@ module TemplateHelpers = // Better names
             comb 
             |> Array.reduce (fun acc current -> $"{acc};\n{current} ")    
 
-    let getMermaidGraph (investigation:ArcInvestigation) (assayOVs:seq<AssayOverview>) (studyOVs:seq<StudyOverview>) : string =
+    let getRelationshipGraph (investigation:ArcInvestigation) (assayOVs:seq<AssayOverview>) (studyOVs:seq<StudyOverview>) : string =
         let sb = StringBuilder()
 
         let studyNodes = 
@@ -399,7 +399,7 @@ title: {investigation.Identifier}
 graph TB") |> ignore
         sb.AppendLine(studyNodes) |> ignore
         sb.AppendLine(assayNodes) |> ignore
-        sb.AppendLine($"{relationshipGraph studyOVs assayOVs}") |> ignore
+        sb.AppendLine($"{mermaidGraphNodes studyOVs assayOVs}") |> ignore
         sb.AppendLine($"class {studyClass} study;") |> ignore
         sb.AppendLine($"class {assayClass} assay;") |> ignore
         sb.AppendLine("classDef assay fill:#4FB3D9,stroke:#333,stroke-width:2px,color:#3A3A3A;") |> ignore
@@ -409,37 +409,14 @@ graph TB") |> ignore
         sb.ToString()
 
 
-    // create TOC with numbered list and bullet point for the options such as multiple assays !!!more generic!! mapi
-    let getTableOfContents (tlm:TopLevelMetadata) (assayOVs : seq<AssayOverview>) (studyOVs:seq<StudyOverview>) =
-        let sb = StringBuilder()
-        sb.AppendLine($"## Table of Contents \n") |> ignore
+// Function to add the legend either as subgraph or below as seperate graph
 
-        let createAnchor (prefix:string) (ids:seq<string>) =
-            ids
-            |> Seq.map (fun (id:string) ->
-                $"     - [{id}](#{prefix}--{id.ToLower()})")
-            |> String.concat "\n"
-
-        let anchorS = createAnchor "study" (studyOVs |> Seq.map (fun (sOV:StudyOverview) -> sOV.StudyIdentifier))
-        let anchorA = createAnchor "assay" (assayOVs |> Seq.map (fun (aOV:AssayOverview) -> aOV.AssayIdentifier))           
-
-        if not tlm.Contacts.IsEmpty && not tlm.Publications.IsEmpty then 
-            sb.AppendLine("1. [Contacts](#contacts)") |> ignore
-            sb.AppendLine("\n 2. [Publication](#publication)") |> ignore
-            sb.AppendLine("\n 3. Studies \n") |> ignore
-            sb.AppendJoin("\n", anchorS) |> ignore
-            sb.AppendLine("\n 4. Assays \n") |> ignore     
-            sb.AppendJoin("\n", anchorA) |> ignore    
-            sb.AppendLine("\n 5. [References](#references)") |> ignore    
-
-        else 
-            sb.AppendLine("\n 1. Studies \n") |> ignore
-            sb.AppendJoin("\n", anchorS) |> ignore
-            sb.AppendLine("\n 2. Assays \n") |> ignore
-            sb.AppendJoin("\n", anchorA) |> ignore
-            sb.AppendLine("\n 3. [References](#references)") |> ignore
- 
-        sb.ToString()
-
-// Instead of StringBuilder appproach it could be manipulated within a ResizeArray<string> like tocSection.Add and later String.concat "\n\n" to seperate within text
-
+// ---
+// title: Legend 
+// ---
+// graph TB
+//     study_legend["Study"]:::study
+//     assay_legend["Assay"]:::assay
+// classDef assay fill:#4FB3D9,stroke:#3A3A3A,stroke-width:2px,color:#3A3A3A;
+// classDef study fill:#B4CE82,stroke:#3A3A3A,stroke-width:2px,color:#3A3A3A;
+// subgraph directions LR

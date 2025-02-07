@@ -23,9 +23,11 @@ module READMEAutomation = // better name
             |> Seq.filter (fun (study:ArcStudy) -> study.TableCount <> 0)
             |> Seq.map (fun (study:ArcStudy) -> getStudyOverview investigation study)
         let intro =
-            createIntroSection tlm investigation assayOVs studyOVs  
+            createIntroSection tlm 
+        let relGraph =
+            createRelationshipGraph tlm investigation assayOVs studyOVs
         let toC =
-            getTableOfContents tlm assayOVs studyOVs
+            createTableOfContents tlm assayOVs studyOVs
         let contacts = 
             createContactsSection tlm
         let publications = 
@@ -43,8 +45,7 @@ module READMEAutomation = // better name
                 |> Seq.toList
             String.Join("\n", assayString) 
             
-        let refs = "## References \n _add your references here_"
-        String.Join("\n", [intro;toC;contacts;publications;studyOV;assayOV;refs])
+        String.Join("\n", [intro;toC;relGraph;contacts;publications;studyOV;assayOV])
 
     /// function that handles creation of appended markdown, checks if content is already or in need of an update
     let updateMarkdownContent (preexistingMD:string) (investigation:ArcInvestigation) : string = 
