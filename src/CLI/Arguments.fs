@@ -7,18 +7,18 @@ open Argu
 module mainCLI =
     
     type SummaryArgs =
-        | [<Mandatory>] ARC_Directory of arcPath : string 
+        | [<Mandatory>] [<AltCommandLine("-ap")>] ARC_Directory of arcPath : string 
         interface IArgParserTemplate with
             member s.Usage =
                 match s with
                 | ARC_Directory  _ -> "Specify your ARC directory" 
 
     and MRArgs = 
-        | [<Mandatory>] Token of string
-        | [<Mandatory>] PathOrId of string 
-        | [<Mandatory>] SourceBranch of string 
-        | [<Mandatory>] MainBranch of string
-        | [<Mandatory>] CommitTitle of string
+        | [<Mandatory>] [<AltCommandLine("-t")>] Token of string
+        | [<Mandatory>] [<AltCommandLine("-pi")>] PathOrId of string 
+        | [<Mandatory>] [<AltCommandLine("-sb")>] SourceBranch of string 
+        | [<Mandatory>] [<AltCommandLine("-mb")>] MainBranch of string
+        | [<Mandatory>] [<AltCommandLine("-ct")>] CommitTitle of string
         interface IArgParserTemplate with
             member s.Usage =
                 match s with
@@ -30,10 +30,10 @@ module mainCLI =
                 // consider adding description as optional parameter
     
     and BranchArgs =
-        | [<Mandatory>] Token of string
-        | [<Mandatory>] PathOrId of string 
-        | [<Mandatory>] NewBranch of string 
-        | [<Mandatory>] MainBranch of string 
+        | [<Mandatory>] [<AltCommandLine("-t")>] Token of string
+        | [<Mandatory>] [<AltCommandLine("-pi")>] PathOrId of string 
+        | [<Mandatory>] [<AltCommandLine("-nb")>] NewBranch of string 
+        | [<Mandatory>] [<AltCommandLine("-mb")>] MainBranch of string 
         interface IArgParserTemplate with
             member s.Usage =
                 match s with
