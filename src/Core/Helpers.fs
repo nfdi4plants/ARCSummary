@@ -158,7 +158,7 @@ module ArcQuerying = // Functions for direct querying such as specific ontology 
         | _ -> false
 
     // Anmerkung: Naming der Funktion. Rückgabewert ist bool, also eher "is", "are" oder ähnliches verwenden
-    let linkTables (preceedingTables : ArcTables) (succeedingTables: ArcTables) : bool =
+    let tablesAreLinked (preceedingTables : ArcTables) (succeedingTables: ArcTables) : bool = //previous linkTables
         preceedingTables
         |> Seq.exists (fun preceedingTable -> 
             succeedingTables
@@ -168,7 +168,7 @@ module ArcQuerying = // Functions for direct querying such as specific ontology 
         )
 
     // Anmerkung: Naming der Funktion. Rückgabewert ist bool, also eher "is", "are" oder ähnliches verwenden
-    let linkAssayToStudy (preceedingStudy : ArcStudy) (succeedingAssay : ArcAssay) : bool =
+    let linkAssayToStudy (preceedingStudy : ArcStudy) (succeedingAssay : ArcAssay) : bool = // previous linkAssayToStudy
         preceedingStudy.Tables
         |> Seq.exists (fun preceedingTable -> 
             succeedingAssay.Tables
@@ -205,7 +205,7 @@ module ArcQuerying = // Functions for direct querying such as specific ontology 
     let getPreviousStudyIdsForAssay (assay: ArcAssay) (investigation: ArcInvestigation) : list<string> =
         investigation.Studies
         |> Seq.choose (fun (study: ArcStudy) ->
-            if linkTables study assay then
+            if tablesAreLinked study assay = true then
                 Some study.Identifier 
             else None
             ) 
@@ -216,7 +216,7 @@ module ArcQuerying = // Functions for direct querying such as specific ontology 
         investigation.Assays
         |> Seq.choose (fun (precedingAssay: ArcAssay) ->
             if precedingAssay.Identifier <> assay.Identifier then 
-                if linkTables precedingAssay assay then
+                if tablesAreLinked precedingAssay assay = true then
                     Some precedingAssay.Identifier 
                 else None
             else None
@@ -228,7 +228,7 @@ module ArcQuerying = // Functions for direct querying such as specific ontology 
         investigation.Studies
         |> Seq.choose (fun (study: ArcStudy) ->
             let studyTables = ArcTables.ofSeq(study.Tables)
-            if linkTables assayTables studyTables then
+            if tablesAreLinked assayTables studyTables = true then
                 Some study.Identifier 
             else None
             ) 
@@ -240,7 +240,7 @@ module ArcQuerying = // Functions for direct querying such as specific ontology 
         |> Seq.choose (fun (followingAssay: ArcAssay) ->
             if followingAssay.Identifier <> assay.Identifier then 
                 let followingAssayTables = ArcTables.ofSeq(followingAssay.Tables)
-                if linkTables  assayTables followingAssayTables then
+                if tablesAreLinked  assayTables followingAssayTables = true then
                     Some followingAssay.Identifier 
                 else None
             else None
@@ -252,7 +252,7 @@ module ArcQuerying = // Functions for direct querying such as specific ontology 
         investigation.Studies
         |> Seq.choose (fun (precedingStudy: ArcStudy) ->
             if precedingStudy.Identifier <> study.Identifier then 
-                if linkTables precedingStudy study then
+                if tablesAreLinked precedingStudy study = true then
                     Some precedingStudy.Identifier 
                 else None
             else None
@@ -262,7 +262,7 @@ module ArcQuerying = // Functions for direct querying such as specific ontology 
     let getPreviousAssayIdsForStudy (study: ArcStudy) (investigation: ArcInvestigation) : list<string> =
         investigation.Assays
         |> Seq.choose (fun (assay: ArcAssay) ->
-            if linkTables assay study then
+            if tablesAreLinked assay study = true then
                 Some assay.Identifier 
             else None
             ) 
@@ -274,7 +274,7 @@ module ArcQuerying = // Functions for direct querying such as specific ontology 
         |> Seq.choose (fun (followingStudy: ArcStudy) ->
             if followingStudy.Identifier <> study.Identifier then 
                 let followingStudyTables = ArcTables.ofSeq(followingStudy.Tables)
-                if linkTables  studyTables followingStudyTables then
+                if tablesAreLinked  studyTables followingStudyTables = true then
                     Some followingStudy.Identifier 
                 else None
             else None
@@ -286,7 +286,7 @@ module ArcQuerying = // Functions for direct querying such as specific ontology 
         investigation.Assays
         |> Seq.choose (fun (assay: ArcAssay) ->
             let assayTables = ArcTables.ofSeq(assay.Tables)
-            if linkTables studyTables assayTables  then
+            if tablesAreLinked studyTables assayTables = true  then
                 Some assay.Identifier 
             else None
             ) 

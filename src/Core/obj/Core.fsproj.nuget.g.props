@@ -16,6 +16,5 @@
     <PkgFSharp_Core Condition=" '$(PkgFSharp_Core)' == '' ">/Users/olescholz/.nuget/packages/fsharp.core/9.0.100</PkgFSharp_Core>
     <PkgArgu Condition=" '$(PkgArgu)' == '' ">/Users/olescholz/.nuget/packages/argu/6.2.5</PkgArgu>
     <PkgARCtrl Condition=" '$(PkgARCtrl)' == '' ">/Users/olescholz/.nuget/packages/arctrl/2.3.1</PkgARCtrl>
-    <PkgARCtrl_NET Condition=" '$(PkgARCtrl_NET)' == '' ">/Users/olescholz/.nuget/packages/arctrl.net/2.0.2</PkgARCtrl_NET>
   </PropertyGroup>
 </Project>
