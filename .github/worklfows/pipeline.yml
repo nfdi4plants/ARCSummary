@@ -41,7 +41,7 @@ jobs:
           files_yaml: |
             global:
               - '**'
-            tests:
+            tests: 
               - tests/**
             src:
               - src/**
@@ -85,7 +85,7 @@ jobs:
     if: needs.setup.outputs.trigger-build-and-test == 'true'
     uses: nfdi4plants/actions-workflows/.github/workflows/build-and-test-solution.yml@main
     with:
-      solution: ./arc-export.sln #Should be replaced with current library sln ??
+      solution: ./ARCSummary.sln #Replaced with sln
       checkout-submodules: true
       configuration: Release
 
@@ -96,7 +96,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       REGISTRY: ghcr.io
-      IMAGE_NAME: nfdi4plants/arc-export #Other name???
+      IMAGE_NAME: nfdi4plants/arc-summary # Previously export
     permissions:
       contents: read
       packages: write
