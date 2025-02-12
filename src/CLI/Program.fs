@@ -13,7 +13,6 @@ module CLI =
         let parser = ArgumentParser.Create<CLIArgs>(programName = "ARCSummary")
         try
             let res = parser.ParseCommandLine(args, raiseOnUsage = true)
-
             match res.GetSubCommand() with
             | Summary summaryArgs -> 
                 match summaryArgs.TryGetResult ARC_Directory with
@@ -35,8 +34,10 @@ module CLI =
                 let sourceBranch = mRArgs.GetResult SourceBranch
                 let main = mRArgs.GetResult MRArgs.MainBranch
                 let title = mRArgs.GetResult CommitTitle
+                let apiAddress = mRArgs.TryGetResult MRArgs.APIAdress
 
-                createMR personalAccessToken pathOrId sourceBranch main title |> ignore
+                
+                APIRequest.CreateMR(personalAccessToken, pathOrId, sourceBranch, main, title, ?apiAddress = apiAddress) |> ignore
                 printfn "Merge Request created successfully"
                 0
             | CreateNewBranch branchArgs ->
@@ -44,8 +45,9 @@ module CLI =
                 let pathOrId = branchArgs.GetResult BranchArgs.PathOrId
                 let newBranchId = branchArgs.GetResult NewBranch
                 let main = branchArgs.GetResult BranchArgs.MainBranch
+                let apiAddress = branchArgs.TryGetResult BranchArgs.APIAdress
 
-                createNewBranch personalAccessToken pathOrId newBranchId main |> ignore
+                APIRequest.CreateNewBranch(personalAccessToken, pathOrId, newBranchId, main, ?apiAddress = apiAddress)  |> ignore
                 printfn "New Branch has been created"
                 0
         with

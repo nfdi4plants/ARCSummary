@@ -19,6 +19,7 @@ module mainCLI =
         | [<Mandatory>] [<AltCommandLine("-sb")>] SourceBranch of string 
         | [<Mandatory>] [<AltCommandLine("-mb")>] MainBranch of string
         | [<Mandatory>] [<AltCommandLine("-ct")>] CommitTitle of string
+        | [<EqualsAssignment>] [<AltCommandLine("-aa")>] APIAdress of string
         interface IArgParserTemplate with
             member s.Usage =
                 match s with
@@ -27,6 +28,7 @@ module mainCLI =
                 | SourceBranch _ -> "Name of the source branch"
                 | MainBranch _ -> "Name of the target branch"
                 | CommitTitle _ -> "Title of the MR"
+                | APIAdress _ -> "Address of API, default is "
                 // consider adding description as optional parameter
     
     and BranchArgs =
@@ -34,6 +36,7 @@ module mainCLI =
         | [<Mandatory>] [<AltCommandLine("-pi")>] PathOrId of string 
         | [<Mandatory>] [<AltCommandLine("-nb")>] NewBranch of string 
         | [<Mandatory>] [<AltCommandLine("-mb")>] MainBranch of string 
+        | [<EqualsAssignment>] [<AltCommandLine("-aa")>] APIAdress of string
         interface IArgParserTemplate with
             member s.Usage =
                 match s with
@@ -41,6 +44,7 @@ module mainCLI =
                 | PathOrId _ -> "ID or URL-encdoded path of the project after .org/"
                 | NewBranch _ -> "Name of the new branch"
                 | MainBranch _ -> "Name of the target branch usally main"
+                | APIAdress _ -> "Testing Server URL"
                             
     and CLIArgs =
         | [<CliPrefix(CliPrefix.None)>] Summary of ParseResults<SummaryArgs>
