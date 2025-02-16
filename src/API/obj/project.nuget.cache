@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "U16HC2pYYfw=",
+  "dgSpecHash": "gJQOt5/OTwQ=",
   "success": true,
   "projectFilePath": "/Users/olescholz/Desktop/ARC-Summary/src/API/API.fsproj",
   "expectedPackageFiles": [
@@ -13,8 +13,22 @@
     "/Users/olescholz/.nuget/packages/fsharp.data.runtime.utilities/6.4.1/fsharp.data.runtime.utilities.6.4.1.nupkg.sha512",
     "/Users/olescholz/.nuget/packages/fsharp.data.worldbank.core/6.4.1/fsharp.data.worldbank.core.6.4.1.nupkg.sha512",
     "/Users/olescholz/.nuget/packages/fsharp.data.xml.core/6.4.1/fsharp.data.xml.core.6.4.1.nupkg.sha512",
+    "/Users/olescholz/.nuget/packages/jsondsl/0.2.0/jsondsl.0.2.0.nupkg.sha512",
+    "/Users/olescholz/.nuget/packages/system.text.encodings.web/7.0.0/system.text.encodings.web.7.0.0.nupkg.sha512",
+    "/Users/olescholz/.nuget/packages/system.text.json/7.0.2/system.text.json.7.0.2.nupkg.sha512",
     "/Users/olescholz/.nuget/packages/microsoft.netcore.app.ref/8.0.11/microsoft.netcore.app.ref.8.0.11.nupkg.sha512",
     "/Users/olescholz/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.11/microsoft.aspnetcore.app.ref.8.0.11.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1903",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'System.Text.Json' 7.0.2 has a known high severity vulnerability, https://github.com/advisories/GHSA-hh2w-p6rv-4g7w",
+      "libraryId": "System.Text.Json",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    }
+  ]
 }

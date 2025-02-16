@@ -50,6 +50,11 @@
               "target": "Package",
               "version": "[6.4.1, )",
               "generatePathProperty": true
+            },
+            "JsonDSL": {
+              "target": "Package",
+              "version": "[0.2.0, )",
+              "generatePathProperty": true
             }
           },
           "imports": [
