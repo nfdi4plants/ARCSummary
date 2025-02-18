@@ -4,7 +4,7 @@ open ARCtrl
 open Argu
 open mainCLI
 open READMEAutomation
-open MergeRequest
+open ARCSummary.GitLabAPI
 
 module CLI =
 
@@ -15,72 +15,66 @@ module CLI =
             let res = parser.ParseCommandLine(args, raiseOnUsage = true)
             match res.GetSubCommand() with
             | Summary summaryArgs -> 
-                match summaryArgs.TryGetResult ARC_Directory with
-                | Some arcPath  ->
-                    match ARC.load(arcPath).ISA with
-                    | Some investigation ->
-                        updateREADME arcPath investigation |> ignore
-                        printfn "README.md updated successfully at %s" arcPath
-                        0 
-                    | None ->
-                        printfn "Failed to load investigation from ARC at %s" arcPath
-                        1 
-                | None -> 
-                    printfn "Invalid arguments for summary.\n\n%s" (parser.PrintUsage())
-                    1
-            | CreateNewBranch branchArgs ->
-                let personalAccessToken = branchArgs.GetResult BranchArgs.Token
-                let pathOrId = branchArgs.GetResult BranchArgs.PathOrId
-                let newBranchId = branchArgs.GetResult BranchArgs.NewBranch
-                let main = branchArgs.GetResult BranchArgs.MainBranch
-                let apiAddress = branchArgs.TryGetResult BranchArgs.APIAdress
+                let arcPath = summaryArgs.GetResult SummaryArgs.ARC_Directory
+                match ARC.load(arcPath).ISA with
+                | Some investigation ->
+                    updateREADME arcPath investigation |> ignore
+                    printfn "README.md updated successfully at %s" arcPath
+                    1 
+                | None ->
+                    printfn "Failed to load investigation from ARC at %s" arcPath
+                    0
+            | SummaryMR summaryMRArgs ->
+                let arcPath = summaryMRArgs.GetResult SummaryMRArgs.ARC_Directory
+                let personalAccessToken = summaryMRArgs.GetResult SummaryMRArgs.Token
+                let pathOrId = summaryMRArgs.GetResult SummaryMRArgs.PathOrId
+                let commitMessage = 
+                    summaryMRArgs.TryGetResult SummaryMRArgs.CommitMessage
+                    |> Option.defaultValue "Updated Readme with automatic summary."
+                let title = 
+                    summaryMRArgs.TryGetResult SummaryMRArgs.MRTitle
+                    |> Option.defaultValue "Automatic README Summary Update"
+                let sourceBranch = 
+                    summaryMRArgs.TryGetResult SummaryMRArgs.SourceBranch
+                    |> Option.defaultValue "arc-summary"
+                let targetBranch = 
+                    summaryMRArgs.TryGetResult SummaryMRArgs.TargetBranch
+                    |> Option.defaultValue "main"
+                let userName = 
+                    summaryMRArgs.TryGetResult SummaryMRArgs.UserName
+                    |> Option.defaultValue "ARC-Summary Bot"
+                let userEmail =
+                    summaryMRArgs.TryGetResult SummaryMRArgs.UserEmail
+                let apiAddress = summaryMRArgs.TryGetResult SummaryMRArgs.APIAdress
 
-                APIRequest.CreateNewBranch(personalAccessToken, pathOrId, newBranchId, main, ?apiAddress = apiAddress)  |> ignore
-                printfn "New Branch has been created"
-                0
+                let readmePath = System.IO.Path.Combine(arcPath, "README.md")
+                let readmeContent = System.IO.File.ReadAllText(readmePath)
+                let action_Create = CommitAction.create ActionType.Create "README.md" readmeContent
+                let action_Update = CommitAction.create ActionType.Update "README.md" readmeContent
 
-            | CreateMR mRArgs ->
-                let personalAccessToken= mRArgs.GetResult MRArgs.Token
-                let pathOrId = mRArgs.GetResult MRArgs.PathOrId
-                let sourceBranch = mRArgs.GetResult SourceBranch
-                let main = mRArgs.GetResult MRArgs.MainBranch
-                let title = mRArgs.GetResult MRArgs.CommitTitle
-                let apiAddress = mRArgs.TryGetResult MRArgs.APIAdress
-    
-                APIRequest.CreateMR(personalAccessToken, pathOrId, sourceBranch, main, title, ?apiAddress = apiAddress) |> ignore
-                printfn "Merge Request created successfully"
-                0
+                printfn "Create new Branch"
+                                    
+                Branch.CreateNewBranch(personalAccessToken, pathOrId, sourceBranch, targetBranch, ?apiAddress = apiAddress)
+                |> ignore
 
-            | CreateCommitWorkflow commitArgs ->
-                let personalAccessToken = commitArgs.GetResult CommitArgs.Token
-                let pathOrId = commitArgs.GetResult CommitArgs.PathOrId
-                let main = commitArgs.GetResult CommitArgs.MainBranch                
-                let newBranchId = commitArgs.GetResult CommitArgs.NewBranch
-                let title = commitArgs.GetResult CommitArgs.CommitTitle
-                let commitMesage = commitArgs.GetResult CommitMessage      
-                let filePath = commitArgs.GetResult FilePath 
-                let usrEmail = commitArgs.TryGetResult UserEmail
-                let usrName = commitArgs.TryGetResult UserName     
-                let force = commitArgs.TryGetResult Force
-                let apiAddress = commitArgs.TryGetResult CommitArgs.APIAdress
-                let content = 
-                    WorkflowRequest.GetMarkdownContent(personalAccessToken, pathOrId, main,?apiAddress = apiAddress)       
-                let updatedContent =
-                    let arc = (ARC.load(filePath).ISA.Value)  
-                    updateREADME  content arc
-                WorkflowRequest.CreateCommit(pathOrId, main, newBranchId,commitMesage, filePath, updatedContent, ?userEmail = usrEmail, ?userName = usrName,?force = force, ?apiAddress = apiAddress) |> ignore
-                printfn "Commit created successfully"
-                0 |> ignore
+                printfn "Create Commit"
+                let commitResponse = 
+                    Commit.CreateCommit(personalAccessToken, pathOrId, sourceBranch, commitMessage, [action_Create], ?userEmail = userEmail, userName = userName, ?apiAddress = apiAddress)
+                if commitResponse.StatusCode <> 201 && commitResponse.Body.ToString().Contains("A file with this name already exists") then
+                    Commit.CreateCommit(personalAccessToken, pathOrId, sourceBranch, commitMessage, [action_Update], ?userEmail = userEmail, userName = userName, ?apiAddress = apiAddress)
+                    |> ignore
 
-                APIRequest.CreateMR(personalAccessToken, pathOrId, newBranchId, main, title, ?apiAddress = apiAddress) |> ignore
-                printfn "Merge Request created  successfully"
-                0
+                printfn "Create MR"
+                MergeRequest.CreateMR(personalAccessToken, pathOrId, sourceBranch, targetBranch, title, ?apiAddress = apiAddress) |> ignore
+                
+                1
+
 
 
         with
         :? ArguParseException as e ->
             eprintfn "Error parsing arguments: %s" e.Message
-            1 
+            0 
 
 
 
