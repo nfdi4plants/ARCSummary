@@ -28,7 +28,7 @@ dotnet run createnewbranch idorurl updatedBranch main
 For reference as this is based on the docker setup provided by arc-export see the [docs](https://github.com/nfdi4plants/arc-export)
 ```bash
 docker build -t dockerimage:latest /path/to/ARCSummary 
-docker run -v "/path/to/your/arc:/arc" dockerimage:latest summary -ap /arc
+docker run -v "</path_to_your_arc>:/arc" dockerimage:latest summary -ap /arc
 docker run arc-summary:latest createmr -t personalAccessToken -pi idorurl -sb updatedBranch -mb main -ct UpdatedREADME
 docker run arc-summary:latest createnewbranch -t personalAccessToken -pi  idorurl -nb updatedBranch -mb main 
 ```
