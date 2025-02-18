@@ -9,7 +9,7 @@
     <Compile Include="Common.fs" />
     <Compile Include="Branch.fs" />
     <Compile Include="Commit.fs" />
-    <Compile Include="MRRequest.fs" />
+    <Compile Include="MergeRequest.fs" />
   </ItemGroup>
 
   <ItemGroup>
