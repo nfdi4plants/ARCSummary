@@ -20,10 +20,10 @@ module CLI =
                 | Some investigation ->
                     updateREADME arcPath investigation |> ignore
                     printfn "README.md updated successfully at %s" arcPath
-                    1 
+                    0 
                 | None ->
                     printfn "Failed to load investigation from ARC at %s" arcPath
-                    0
+                    1
             | SummaryMR summaryMRArgs ->
                 let arcPath = summaryMRArgs.GetResult SummaryMRArgs.ARC_Directory
                 let personalAccessToken = summaryMRArgs.GetResult SummaryMRArgs.Token
@@ -54,27 +54,34 @@ module CLI =
 
                 printfn "Create new Branch"
                                     
-                Branch.CreateNewBranch(personalAccessToken, pathOrId, sourceBranch, targetBranch, ?apiAddress = apiAddress)
-                |> ignore
+                let branchResponse = 
+                    Branch.CreateNewBranch(personalAccessToken, pathOrId, sourceBranch, targetBranch, ?apiAddress = apiAddress)
+                if branchResponse.StatusCode <> 201 then
+                    printfn "Branch creation failed with: \n%s" (branchResponse.Body.ToString())
 
                 printfn "Create Commit"
                 let commitResponse = 
                     Commit.CreateCommit(personalAccessToken, pathOrId, sourceBranch, commitMessage, [action_Create], ?userEmail = userEmail, userName = userName, ?apiAddress = apiAddress)
                 if commitResponse.StatusCode <> 201 && commitResponse.Body.ToString().Contains("A file with this name already exists") then
-                    Commit.CreateCommit(personalAccessToken, pathOrId, sourceBranch, commitMessage, [action_Update], ?userEmail = userEmail, userName = userName, ?apiAddress = apiAddress)
-                    |> ignore
+                    printfn "File already exists, updating instead"
+                    let commitResponse = Commit.CreateCommit(personalAccessToken, pathOrId, sourceBranch, commitMessage, [action_Update], ?userEmail = userEmail, userName = userName, ?apiAddress = apiAddress)
+                    if commitResponse.StatusCode <> 201 then
+                        printfn "Commit creation failed with: \n%s" (commitResponse.Body.ToString())
 
                 printfn "Create MR"
-                MergeRequest.CreateMR(personalAccessToken, pathOrId, sourceBranch, targetBranch, title, ?apiAddress = apiAddress) |> ignore
-                
-                1
+                let mergeResponse = MergeRequest.CreateMR(personalAccessToken, pathOrId, sourceBranch, targetBranch, title, ?apiAddress = apiAddress)
+                if mergeResponse.StatusCode <> 201 then
+                    printfn "Merge Request creation failed with: \n%s" (mergeResponse.Body.ToString())
+                    1
+                else 
+                    0
 
 
 
         with
         :? ArguParseException as e ->
             eprintfn "Error parsing arguments: %s" e.Message
-            0 
+            1 
 
 
 

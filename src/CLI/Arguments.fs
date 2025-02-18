@@ -27,16 +27,16 @@ module mainCLI =
         interface IArgParserTemplate with
             member s.Usage =
                 match s with
-                | ARC_Directory  _ -> "MANDATORY: Location of the ARC in the Filesystem" 
-                | Token _ -> "MANDATORY: Personal access token for gitlab"
-                | PathOrId _ -> "MANDATORY: ID or URL-encdoded path of the project after .org/, e.g. username/myprojectname"
+                | ARC_Directory  _ -> "MANDATORY: Location of the ARC in the Filesystem." 
+                | Token _ -> "MANDATORY: Personal access token for gitlab."
+                | PathOrId _ -> "MANDATORY: ID or URL-encdoded path of the project after .org/, e.g. username/myprojectname."
                 | CommitMessage _ -> "OPTIONAL: Message to be used for the commit."
-                | MRTitle _ -> "OPTIONAL: Title of the Merge Request"
-                | SourceBranch _ -> "OPTIONAL: Name of the branch to which the commit should be pushed, and which will be the source branch of the MR. Default is `arc-summary`"
-                | TargetBranch _ -> "OPTIONAL: Name of the reference branch which is the target for the MR. Default is `main`"
-                | UserName _ -> "OPTIONAL: Username to be used for the commit"
-                | UserEmail _ -> "OPTIONAL: Email to be used for the commit"
-                | APIAdress _ -> "OPTIONAL: Testing Server URL"
+                | MRTitle _ -> "OPTIONAL: Title of the Merge Request."
+                | SourceBranch _ -> "OPTIONAL: Name of the branch to which the commit should be pushed, and which will be the source branch of the MR. Default is `arc-summary`."
+                | TargetBranch _ -> "OPTIONAL: Name of the reference branch which is the target for the MR. Default is `main`."
+                | UserName _ -> "OPTIONAL: Username to be used for the commit."
+                | UserEmail _ -> "OPTIONAL: Email to be used for the commit."
+                | APIAdress _ -> $"OPTIONAL: Target GitLab API address. Default is {GitLabAPI.Common.dataHUBAPI}."
 
     and CLIArgs =
         | [<CliPrefix(CliPrefix.None)>] Summary of ParseResults<SummaryArgs>
