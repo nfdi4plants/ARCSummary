@@ -25,8 +25,9 @@ dotnet run summarymr -d /path/to/your/arc -t your_access_token -i user/repositor
 For reference as this is based on the docker setup provided by arc-export see the [docs](https://github.com/nfdi4plants/arc-export)
 ```bash
 docker build -t dockerimage:latest /path/to/ARCSummary 
-docker run -v "/path/to/your/arc:/arc" dockerimage:latest summary -d /arc
-docker run -v "/path/to/your/arc:/arc" dockerimage:latest summarymr -d /arc -t your_access_token -i user/repository
+
+docker run -v "</path_to_your_arc>:/arc" dockerimage:latest summary -d /arc
+docker run -v "</path_to_your_arc>:/arc" dockerimage:latest summarymr -d /arc -t your_access_token -i user/repository
 ```
 
 
