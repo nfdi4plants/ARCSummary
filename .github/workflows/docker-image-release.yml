@@ -52,7 +52,7 @@ jobs:
           echo "trigger-release-docker=true" >> $GITHUB_OUTPUT
 
 
-          echo "$GITHUB_OUTPUT"
+          echo $GITHUB_OUTPUT
 
       - name: list outputs
         run: |
@@ -90,7 +90,6 @@ jobs:
   release-docker-image:
     name: "Release Docker image"
     needs: [setup, build-and-test]
-    if: needs.setup.outputs.trigger-release-docker == 'true'
     runs-on: ubuntu-latest
     env:
       REGISTRY: ghcr.io
