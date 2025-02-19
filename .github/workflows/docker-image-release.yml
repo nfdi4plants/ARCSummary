@@ -1,12 +1,8 @@
-name: "pipeline"
+name: "docker-image-release"
 
 on:
   push:
     branches: ['main']
-
-  pull_request:
-    branches: ['main']
-
 
 jobs:   
   setup:
