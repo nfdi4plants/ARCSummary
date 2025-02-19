@@ -12,16 +12,15 @@ Clone this repository locally and run with or without docker.
 - **summary**     Updates your README.md to the current version
 - **summarymr**    Pushes Updated Summary to side branch and opens a MergeRequest onto main branch.
 
-### Run via App
+### Download and run Docker image
 ```bash
-cd /path/to/your/CLI
-dotnet restore
-dotnet build
-dotnet run summary -d /path/to/your/arc
-dotnet run summarymr -d /path/to/your/arc -t your_access_token -i user/repository
+docker pull ghcr.io/nfdi4plants/arc-summary:main
+
+docker run -v "</path_to_your_arc>:/arc" ghcr.io/nfdi4plants/arc-summary:main summary -d /arc
+docker run -v "</path_to_your_arc>:/arc" ghcr.io/nfdi4plants/arc-summary:main summarymr -d /arc -t your_access_token -i user/repository
 ```
 
-### Run via Docker environment
+### Build and run Docker image
 For reference as this is based on the docker setup provided by arc-export see the [docs](https://github.com/nfdi4plants/arc-export)
 ```bash
 docker build -t dockerimage:latest /path/to/ARCSummary 
@@ -30,6 +29,14 @@ docker run -v "</path_to_your_arc>:/arc" dockerimage:latest summary -d /arc
 docker run -v "</path_to_your_arc>:/arc" dockerimage:latest summarymr -d /arc -t your_access_token -i user/repository
 ```
 
+### Build and run .NET app
+```bash
+cd /path/to/your/CLI
+dotnet restore
+dotnet build
+dotnet run summary -d /path/to/your/arc
+dotnet run summarymr -d /path/to/your/arc -t your_access_token -i user/repository
+```
 
 ## Help 
 ### For Summary:

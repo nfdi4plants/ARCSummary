@@ -103,15 +103,15 @@ module Template =    // template part definitions
             sb.AppendLine("1. [Contacts](#contacts)") |> ignore
             sb.AppendLine("\n 2. [Publication](#publication)") |> ignore
             sb.AppendLine("\n 3. Studies \n") |> ignore
-            sb.AppendJoin("\n", anchorS) |> ignore
+            sb.AppendLine(anchorS) |> ignore
             sb.AppendLine("\n 4. Assays \n") |> ignore     
-            sb.AppendJoin("\n", anchorA) |> ignore    
+            sb.AppendLine(anchorA) |> ignore    
 
         else 
             sb.AppendLine("\n 1. Studies \n") |> ignore
-            sb.AppendJoin("\n", anchorS) |> ignore
+            sb.AppendLine(anchorS) |> ignore
             sb.AppendLine("\n 2. Assays \n") |> ignore
-            sb.AppendJoin("\n", anchorA) |> ignore
+            sb.AppendLine(anchorA) |> ignore
  
         sb.ToString()
 
