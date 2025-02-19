@@ -76,20 +76,9 @@ jobs:
           echo "build-and-test-projects: ${{steps.set-triggers.outputs.trigger-build-and-test}}"
           echo "release-docker-image: ${{steps.set-triggers.outputs.trigger-release-docker}}"
 
-  build-and-test:
-    name: "Build and test"
-    needs: setup
-    # https://github.com/actions/runner/issues/1173
-    if: needs.setup.outputs.trigger-build-and-test == 'true'
-    uses: nfdi4plants/actions-workflows/.github/workflows/build-and-test-solution.yml@main
-    with:
-      solution: ./ARCSummary.sln #Replaced with sln
-      checkout-submodules: true
-      configuration: Release
-
   release-docker-image:
     name: "Release Docker image"
-    needs: [setup, build-and-test]
+    needs: [setup]
     runs-on: ubuntu-latest
     env:
       REGISTRY: ghcr.io
