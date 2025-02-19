@@ -7,30 +7,27 @@ ARCSummary aims to facilitate the dynamic generation of markdown content. It ser
 ## Setup
 Clone this repository locally and run with or without docker. 
 
-### ARCsummary currently supports three main subcommands:
+### ARCsummary currently supports two main subcommands:
 
 - **summary**     Updates your README.md to the current version
-- **createmr**    Creates a new merge request
-- **createnewbranch**   Creates a new branch
-
+- **summarymr**    Pushes Updated Summary to side branch and opens a MergeRequest onto main branch.
 
 ### Run via App
 ```bash
 cd /path/to/your/CLI
 dotnet restore
 dotnet build
-dotnet run summary /path/to/your/arc
-dotnet run createmr idorurl updatedBranch main UpdatedREADME
-dotnet run createnewbranch idorurl updatedBranch main
+dotnet run summary -d /path/to/your/arc
+dotnet run summarymr -d /path/to/your/arc -t your_access_token -i user/repository
 ```
 
 ### Run via Docker environment
 For reference as this is based on the docker setup provided by arc-export see the [docs](https://github.com/nfdi4plants/arc-export)
 ```bash
 docker build -t dockerimage:latest /path/to/ARCSummary 
-docker run -v "</path_to_your_arc>:/arc" dockerimage:latest summary -ap /arc
-docker run arc-summary:latest createmr -t personalAccessToken -pi idorurl -sb updatedBranch -mb main -ct UpdatedREADME
-docker run arc-summary:latest createnewbranch -t personalAccessToken -pi  idorurl -nb updatedBranch -mb main 
+
+docker run -v "</path_to_your_arc>:/arc" dockerimage:latest summary -d /arc
+docker run -v "</path_to_your_arc>:/arc" dockerimage:latest summarymr -d /arc -t your_access_token -i user/repository
 ```
 
 
@@ -41,37 +38,48 @@ USAGE: ARCSummary summary [--help] --arc-directory <arcPath>
 
 OPTIONS:
 
-    --arc-directory, -ap <arcPath>
-                          Specify your ARC directory
+    --arc-directory, -d, -ap <arcPath>
+                          Location of the ARC in the Filesystem
     --help                display this list of options.
 ```
 
-### For CreateNewBranch:
+### For SummaryMR:
 ```bash
-USAGE: ARCSummary createnewbranch [--help] --token <string> --pathorid <string>
-                                  --newbranch <string> --mainbranch <string>
+USAGE: ARCSummary summarymr [--help] --arc-directory <string> --token <string> --pathorid <string> [--commitmessage <string>] [--mrtitle <string>] [--sourcebranch <string>] [--targetbranch <string>] [--username <string>] [--useremail <string>] [--apiadress <string>]
 
 OPTIONS:
 
-    --token <string>, -t      Personal access token for gitlab
-    --pathorid <string>, -pi   ID or URL-encdoded path of the project after .org/
-    --newbranch <string>, -nb  Name of the new branch
-    --mainbranch <string>, -mb Name of the target branch usally main
-    --help                display this list of options.
-```
+    --arc-directory, -d <string> 
+        MANDATORY: Location of the ARC in the Filesystem
 
-### For CreateMR:
-```bash
-USAGE: ARCSummary createmr [--help] --token <string> --pathorid <string>
-                           --sourcebranch <string> --mainbranch <string>
-                           --committitle <string>
+    --token, -t <string>  
+        MANDATORY: Personal access token for gitlab
 
-OPTIONS:
+    --pathorid, -i <string> 
+        MANDATORY: ID or URL-encdoded path of the project after .org/, e.g. username/myprojectname
 
-    --token <string>, -t      Personal access token for gitlab
-    --pathorid <string>, -pi   ID or URL-encdoded path of the project after .org/
-    --sourcebranch <string>, -sb  Name of the source branch
-    --mainbranch <string>, -mb Name of the target branch
-    --committitle <string>, -ct  Title of the MR
-    --help                display this list of options.
+    --commitmessage, --message <string>
+        OPTIONAL: Message to be used for the commit.
+
+    --mrtitle, --title <string>
+        OPTIONAL: Title of the Merge Request
+
+    --sourcebranch <string>
+        OPTIONAL: Name of the branch to which the commit should be pushed, and which will be the
+                          source branch of the MR. Default is `arc-summary`
+
+    --targetbranch <string>
+        OPTIONAL: Name of the reference branch which is the target for the MR. Default is `main`
+
+    --username, --name <string>
+        OPTIONAL: Username to be used for the commit
+
+    --useremail, --email <string>
+        OPTIONAL: Email to be used for the commit
+
+    --apiadress, --api <string>
+        OPTIONAL: Testing Server URL
+        
+    --help 
+        display this list of options.
 ```
