@@ -18,6 +18,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Yaml", "src\Yaml\Yaml.fsproj", "{D9CBC730-16AE-408D-AC8A-D26BEB3FC058}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,6 +38,10 @@ Global
 		{6F0F515F-A3FB-4300-A419-CA9CB819A3BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6F0F515F-A3FB-4300-A419-CA9CB819A3BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6F0F515F-A3FB-4300-A419-CA9CB819A3BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9CBC730-16AE-408D-AC8A-D26BEB3FC058}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9CBC730-16AE-408D-AC8A-D26BEB3FC058}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9CBC730-16AE-408D-AC8A-D26BEB3FC058}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9CBC730-16AE-408D-AC8A-D26BEB3FC058}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -44,6 +50,7 @@ Global
 		{B1A577E1-33B9-40DF-9F6B-C96C0C7A7438} = {B5A05678-C8A2-4E65-B6D4-9B0A8A490A91}
 		{9DF6E071-1A42-4DFC-B0E2-DFD3A411CF27} = {B5A05678-C8A2-4E65-B6D4-9B0A8A490A91}
 		{6F0F515F-A3FB-4300-A419-CA9CB819A3BE} = {B5A05678-C8A2-4E65-B6D4-9B0A8A490A91}
+		{D9CBC730-16AE-408D-AC8A-D26BEB3FC058} = {B5A05678-C8A2-4E65-B6D4-9B0A8A490A91}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AD93BD77-B92D-45DF-A321-753C204443F5}
