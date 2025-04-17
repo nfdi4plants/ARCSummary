@@ -8,7 +8,7 @@ open YAMLicious.YAMLiciousTypes
 open READMEAutomation
 
 
-module ConfigFileDecode =
+module ConfigFileTypes =
 
 
     type InvestigationSubSection =
@@ -17,7 +17,7 @@ module ConfigFileDecode =
         | Publication
         | Contacts 
 
-        static member fromString (s:string) =
+        static member FromString (s:string) =
             match s.ToLower() with
             | "title" -> Some Title
             | "description" -> Some Description 
@@ -31,7 +31,7 @@ module ConfigFileDecode =
                 elements 
                 |> List.choose (fun el ->
                     match el with 
-                    | YAMLElement.Value v -> InvestigationSubSection.fromString v.Value
+                    | YAMLElement.Object [YAMLElement.Value v] -> InvestigationSubSection.FromString v.Value
                     | _ -> None
                 )
             | _ -> []
@@ -97,38 +97,5 @@ module ConfigFileDecode =
     // themes as parameter that can be overwritten by custom
 
 
-        static member templateTypeDecoder : (YAMLElement -> Theme) = // additonal case-insensitivity handling with .Trim().ToLower or optional instead of required
-            Decode.object (fun (get:Decode.IGetters) -> 
-                match get.Optional.Field "Theme" Decode.string with 
-                | Some "publicationstyle" -> PublicationStyle
-                | _ -> failwith "No valid theme selected"
-            )
 
 
-    let yamlContent (yamlPath:string) :string =
-        File.ReadAllText(yamlPath)
-
-    // let returnDefault =
-    //     if yamlContent |> Seq.isEmpty = true then
-    //         updateREADME  
-
-
-
-        // Decode.fromYamlString
-
-    // createYamlFile function
-
-
-
-//     - TOC
-//   - ISA Relationship Graph
-//   - Overview Table
-
-//   - Studies
-//     - Description
-//     - Additionaldetails
-//     - Annotationheaders
-//   - Assays
-//     - Description
-//     - Additionaldetails
-//     - Annotationheaders

@@ -8,6 +8,7 @@ open System.IO
 open YAMLicious 
 open YAMLicious.YAMLiciousTypes
 // open READMEAutomation
+// open ConfigFileTypes
 
 
 
@@ -81,7 +82,7 @@ module ConfigTypes =
         | Publication
         | Contacts 
 
-        static member fromString (s:string) =
+        static member ISSFromString (s:string) =
             match s.ToLower() with
             | "title" -> Some Title
             | "description" -> Some Description 
@@ -89,56 +90,44 @@ module ConfigTypes =
             | "contacts" -> Some Contacts 
             | _ -> None
             
-        static member fromYamlElement (value:YAMLElement) : InvestigationSubSection list =
+        static member ISSFromYamlElement (value:YAMLElement) : InvestigationSubSection list =
             match value with
             | YAMLElement.Sequence elements -> 
                 elements 
                 |> List.choose (fun el ->
                     match el with 
-                    | YAMLElement.Value v -> InvestigationSubSection.fromString v.Value
+                    | YAMLElement.Object [YAMLElement.Value v] -> InvestigationSubSection.ISSFromString v.Value
                     | _ -> None
                 )
             | _ -> []
 
-open ConfigTypes
-open YAMLiciousTypes
+    type AssaySubSection =
+        | Description
+        | AdditionalInfo
+        | AnnotationHeaders
+
+
+
 
 
         
-let parsed = Reader.read yamlContent
-
-let invsubsec = 
-    match parsed with 
-    | YAMLElement.Object v -> 
-        v
-        |> List.choose (function
-            | YAMLElement.Object [YAMLElement.Value key ; YAMLElement.Sequence subsections]
-                when key.Value.ToLower() = "investigation" ->
-                    Some subsections
-            | _ -> None
-        )
-        |> List.map InvestigationSubSection.fromYamlElement    
-    | _ -> []
-
-            // | YAMLElement.Value.ToLower() = "investigation" -> 
-            //     YAMLElement.Sequence
+// let parsed = Reader.read yamlContent
 
 
+// let decodeInvestigationSubSection =
+//     match parsed with 
+//         | YAMLElement.Object [YAMLElement.Sequence v] ->
+//             v
+//             |> List.choose (function 
+//                 | YAMLElement.Object [YAMLElement.Value key ; YAMLElement.Sequence subsections]
+//                     when key.Value.ToLower() = "investigation" ->
+//                         Some (InvestigationSubSection.fromYamlElement (YAMLElement.Sequence subsections))
+//                 | _ -> None
+//             )
+//             |> List.concat
+//         | _ -> []
 
-            // if v. ToLower() = "investigation" then 
-            //     Some 
-            // else None
-            
-        // |> List.choose (function
-        //     | YAMLElement.Object [YAMLElement.Value key ; YAMLElement.Sequence subsections]
-        //         when key.Value.ToLowerInvariant() = "investigation" ->
-        //             Some (YAMLElement.Sequence subsections)
-        //     | _ -> None
-        // )
-        |> List.map InvestigationSubSection.fromYamlElement
-    | _ -> []
 
-invsubsec
 
 
 
