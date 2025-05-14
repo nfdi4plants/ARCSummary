@@ -7,10 +7,12 @@ open TemplateHelpers
 open ARCInstances
 open Template
 
-
+module String= 
+    let join (sep : string) (vals : string array) =
+        String.Join(sep, vals)
 module READMEAutomation = // better name 
 
-
+    
     let createMarkdownOverview (investigation:ArcInvestigation) : string = 
         let tlm =
             getTopLevelMetadata investigation

@@ -10,86 +10,32 @@ open READMEAutomation
 
 module ConfigFileTypes =
 
-
-    type InvestigationSubSection =
+    type InvestigationSection =
         | Title
         | Description 
         | Publication
         | Contacts 
-
-        static member FromString (s:string) =
-            match s.ToLower() with
-            | "title" -> Some Title
-            | "description" -> Some Description 
-            | "publication" -> Some Publication
-            | "contacts" -> Some Contacts 
-            | _ -> None
-            
-        static member fromYamlElement (value:YAMLElement) : InvestigationSubSection list =
-            match value with
-            | YAMLElement.Sequence elements -> 
-                elements 
-                |> List.choose (fun el ->
-                    match el with 
-                    | YAMLElement.Object [YAMLElement.Value v] -> InvestigationSubSection.FromString v.Value
-                    | _ -> None
-                )
-            | _ -> []
-
-
-    type AssaySubSection =
+    type AssaySection =
         | Description
-        | AdditionalInfo
+        | AdditionalDetails
         | AnnotationHeaders
-
-        static member fromString (s:string) =
-            match s.Trim().ToLower() with
-            | "description" -> Some Description 
-            | "additionalinfo" -> Some AdditionalInfo
-            | "annotationheaders" -> Some AnnotationHeaders 
-            | _ -> None
-            
-        static member fromYamlElement (value:YAMLElement) : AssaySubSection list =
-            match value with
-            | YAMLElement.Sequence elements -> 
-                elements 
-                |> List.choose (fun el ->
-                    match el with 
-                    | YAMLElement.Value v -> AssaySubSection.fromString v.Value
-                    | _ -> None
-                )
-            | _ -> []
-
-    type StudySubSection =
+    type StudySection =
         | Description 
-        | AdditionalInfo
+        | AdditionalDetails
         | AnnotationHeaders
-
-        static member fromString (s:string) =
-            match s.Trim().ToLower() with
-            | "description" -> Some Description 
-            | "additionalinfo" -> Some AdditionalInfo
-            | "annotationheaders" -> Some AnnotationHeaders 
-            | _ -> None
-            
-        static member fromYamlElement (value:YAMLElement) : StudySubSection list =
-            match value with
-            | YAMLElement.Sequence elements -> 
-                elements 
-                |> List.choose (fun el ->
-                    match el with 
-                    | YAMLElement.Value v -> StudySubSection.fromString v.Value
-                    | _ -> None
-                )
-            | _ -> []
 
     type Section =
-        | Investigation of InvestigationSubSection list
-        | TOC
+        | Investigation of InvestigationSection //option
+        | TOC        //| Layout of LayoutSubSection list
         | ISAGraph
-        | OverviewTable
-        | Assays of AssaySubSection list
-        | Studies of StudySubSection list
+        | OverviewTable        
+        | Assays of AssaySection 
+        | Studies of StudySection 
+
+    type ARCSummaryConfig = {
+        Theme : unit option;
+        Custom : Section list
+    }
 
     type Theme =
         | PublicationStyle // Title, Description, Contacts, Publication (check if available title with publication title)
