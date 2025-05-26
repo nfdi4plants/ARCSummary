@@ -19,10 +19,10 @@ module ConfigFileDecode =
         match element with
         | YAMLElement.Object [YAMLElement.Value v] ->
             match v.Value.ToLower() with
-            | "title" -> Some Title // (Sections.Investigation Title)
-            | "description" -> Some InvestigationSection.Description //(Sections.Investigation InvestigationSection.Description)
-            | "publication" -> Some Publication //(Sections.Investigation Publication)
-            | "contacts" -> Some Contacts //(Sections.Investigation Contacts)
+            | "title" -> Some Title 
+            | "description" -> Some InvestigationSection.Description 
+            | "publication" -> Some Publication 
+            | "contacts" -> Some Contacts 
             | _ -> None
         | _ -> None
 
@@ -30,9 +30,9 @@ module ConfigFileDecode =
         match element with
         | YAMLElement.Object [YAMLElement.Value v] ->
             match v.Value.ToLower() with
-            | "description" -> Some AssaySection.Description //(Sections.Assays AssaySection.Description)
-            | "additionaldetails" -> Some AssaySection.AdditionalDetails //(Sections.Assays AssaySection.AdditionalDetails)
-            | "annotationheaders" -> Some AssaySection.AnnotationHeaders //(Sections.Assays AssaySection.AnnotationHeaders)
+            | "intro" -> Some AssaySection.Intro 
+            | "additionaldetails" -> Some AssaySection.AdditionalDetails 
+            | "annotationheaders" -> Some AssaySection.AnnotationHeaders 
             | _ -> None
         | _ -> None
 
@@ -41,9 +41,9 @@ module ConfigFileDecode =
         match element with       
         | YAMLElement.Object [YAMLElement.Value v] ->
             match v.Value.ToLower() with
-            | "description" -> Some StudySection.Description //(Sections.Studies StudySection.Description)
-            | "additionaldetails" -> Some StudySection.AdditionalDetails //(Sections.Studies StudySection.AdditionalDetails)
-            | "annotationheaders" -> Some StudySection.AnnotationHeaders //(Sections.Studies StudySection.AnnotationHeaders)
+            | "intro" -> Some StudySection.Intro 
+            | "additionaldetails" -> Some StudySection.AdditionalDetails 
+            | "annotationheaders" -> Some StudySection.AnnotationHeaders 
             | _ -> None
         | _ -> None
 
@@ -92,28 +92,3 @@ module ConfigFileDecode =
 
 
 
-
-    // let returnDefault =
-    //     if yamlContent |> Seq.isEmpty = true then
-    //         updateREADME  
-
-
-
-        // Decode.fromYamlString
-
-    // createYamlFile function
-
-
-
-//     - TOC
-//   - ISA Relationship Graph
-//   - Overview Table
-
-//   - Studies
-//     - Description
-//     - Additionaldetails
-//     - Annotationheaders
-//   - Assays
-//     - Description
-//     - Additionaldetails
-//     - Annotationheaders

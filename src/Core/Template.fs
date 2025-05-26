@@ -9,6 +9,8 @@ open Option
 open ArcQuerying
 open Formating
 open TemplateHelpers
+open SummaryTypes
+open ConfigFileTypes
 
 module ARCInstances =
     let getTopLevelMetadata (selectISA:ArcInvestigation) : TopLevelMetadata = {
@@ -47,7 +49,7 @@ module ARCInstances =
 
     let getAssayOverview (investigation:ArcInvestigation) (assay:ArcAssay) = {  
         AssayIdentifier = assay.Identifier
-        // AssayDescription = assay.Identifier // Not yet implemented could be an option in the future depending on ARCtrl 
+        AssayDescription = assay.Description // Not yet implemented could be an option in the future depending on ARCtrl 
         MeasurementType = assay.MeasurementType
         MeasurementDevice = assay.Tables |> ResizeArray.collect getMeasurementDevice |> Seq.toList    
         TechnologyType = assay.TechnologyType                                                    
@@ -70,81 +72,23 @@ module ARCInstances =
 module Template =    // template part definitions 
 
 
-    //Part 1: Title, Description, Table of Contents
-    let createIntroSection (tlm:TopLevelMetadata) : string =
+
+    //Part 1: Title, Description, Contacts and Publication of Investigation
+    let createInvTitle (tlm:TopLevelMetadata) : string =
         let sb = StringBuilder()
 
         if tlm.Title.IsSome then 
             sb.AppendLine($"# {tlm.Title.Value}") |> ignore
         else sb.AppendLine("# Please add a valid title for your ArcInvestigation") |> ignore
+        sb.ToString()
 
+    let createInvDescription (tlm:TopLevelMetadata) : string =
+        let sb = StringBuilder()
         if tlm.Description.IsSome then
             sb.AppendLine($"### Description\n{tlm.Description.Value}") |> ignore
         else sb.AppendLine("### Please add a valid description to your ArcInvestigation") |> ignore
 
         sb.ToString()
-
-
-    // create TOC with numbered list and bullet point for the options such as multiple assays !!!more generic!! mapi
-    let createTableOfContents (tlm:TopLevelMetadata) (assayOVs : seq<AssayOverview>) (studyOVs:seq<StudyOverview>) =
-        let sb = StringBuilder()
-        sb.AppendLine($"## Table of Contents \n") |> ignore
-
-        let createAnchor (prefix:string) (ids:seq<string>) =
-            ids
-            |> Seq.map (fun (id:string) ->
-                $"     - [{id}](#{prefix}--{id.ToLower()})")
-            |> String.concat "\n"
-
-        let anchorS = createAnchor "study" (studyOVs |> Seq.map (fun (sOV:StudyOverview) -> sOV.StudyIdentifier))
-        let anchorA = createAnchor "assay" (assayOVs |> Seq.map (fun (aOV:AssayOverview) -> aOV.AssayIdentifier))           
-
-        if not tlm.Contacts.IsEmpty && not tlm.Publications.IsEmpty then 
-            sb.AppendLine("1. [Contacts](#contacts)") |> ignore
-            sb.AppendLine("\n 2. [Publication](#publication)") |> ignore
-            sb.AppendLine("\n 3. Studies \n") |> ignore
-            sb.AppendLine(anchorS) |> ignore
-            sb.AppendLine("\n 4. Assays \n") |> ignore     
-            sb.AppendLine(anchorA) |> ignore    
-
-        else 
-            sb.AppendLine("\n 1. Studies \n") |> ignore
-            sb.AppendLine(anchorS) |> ignore
-            sb.AppendLine("\n 2. Assays \n") |> ignore
-            sb.AppendLine(anchorA) |> ignore
- 
-        sb.ToString()
-
-    // Instead of StringBuilder appproach it could be manipulated within a ResizeArray<string> like tocSection.Add and later String.concat "\n\n" to seperate within text        
-
-
-
-    // Part 2: Relationship Graph & TLM data , Publications & Contacts if given 
-    let createRelationshipGraph (tlm:TopLevelMetadata) (investigation:ArcInvestigation) (assayOVs:seq<AssayOverview>) (studyOVs:seq<StudyOverview>) : string =
-        let sb = StringBuilder()
-
-        let relationshipGraph = getRelationshipGraph investigation assayOVs studyOVs
-        sb.AppendLine($" ## Relationships between Assays and Studies \n {relationshipGraph} ")|> ignore
-        // sb.AppendLine("_This flowchart highlights the relationship between assays (highlighted in blue) and studies (highlighted in green)_") |> ignore
-        
-        sb.AppendLine("### Additional details") |> ignore
-        sb.AppendLine("| Meta Data | Description |") |> ignore
-        sb.AppendLine("| --------- | ----------- |") |> ignore
-        if tlm.SubmissionDate.IsSome then
-            sb.AppendLine($"| Submission Date | {tlm.SubmissionDate.Value} |") |> ignore
-        else sb.AppendLine("| Submission Date  | tba |") |> ignore
-        if tlm.PublicReleaseDate.IsSome then
-            sb.AppendLine($"| Public Release Date | {tlm.PublicReleaseDate.Value} |") |> ignore
-        else sb.AppendLine("| Public Release Date | tba |") |> ignore
-        let studyIDs = String.Join(" , ", tlm.StudyIdentifiers)
-        sb.AppendLine($"| Study identifiers | {studyIDs} |") |> ignore
-        sb.AppendLine($"| Study Count | {tlm.StudyCount.Value} |") |> ignore
-        let assayIDs = String.Join(" , ", tlm.AssayIdentifiers)
-        sb.AppendLine($"| Assay identifiers | {assayIDs} |") |> ignore
-        sb.AppendLine($"| Assay Count | {tlm.AssayCount.Value} |") |> ignore
-
-        sb.ToString()
-
 
     let createContactsSection (tlm:TopLevelMetadata) : string = // Optional
         let sb = StringBuilder()
@@ -193,18 +137,52 @@ module Template =    // template part definitions
                 let getStat = tlm.Publications |> List.map (fun p -> p.Status.Value.NameText)
                 String.Join(" , ", getStat)
             sb.AppendLine($"| Current status | {status} |") |> ignore
+        sb.ToString()
+
+
+    // Part 2: Relationship Graph & Overview Table
+    let createRelationshipGraph (tlm:TopLevelMetadata) (investigation:ArcInvestigation) (assayOVs:seq<AssayOverview>) (studyOVs:seq<StudyOverview>) : string =
+        let sb = StringBuilder()
+
+        let relationshipGraph = getRelationshipGraph investigation assayOVs studyOVs
+        sb.AppendLine($"## Relationships between Assays and Studies \n {relationshipGraph} ")|> ignore
+        // sb.AppendLine("_This flowchart highlights the relationship between assays (highlighted in blue) and studies (highlighted in green)_") |> ignore
+        sb.ToString()
+
+    let createOverviewTable (tlm:TopLevelMetadata) : string =
+        let sb = StringBuilder()
         
+        sb.AppendLine("### Overview Table") |> ignore
+        sb.AppendLine("| Meta Data | Description |") |> ignore
+        sb.AppendLine("| --------- | ----------- |") |> ignore
+        if tlm.SubmissionDate.IsSome then
+            sb.AppendLine($"| Submission Date | {tlm.SubmissionDate.Value} |") |> ignore
+        else sb.AppendLine("| Submission Date  | tba |") |> ignore
+        if tlm.PublicReleaseDate.IsSome then
+            sb.AppendLine($"| Public Release Date | {tlm.PublicReleaseDate.Value} |") |> ignore
+        else sb.AppendLine("| Public Release Date | tba |") |> ignore
+        let studyIDs = String.Join(" , ", tlm.StudyIdentifiers)
+        sb.AppendLine($"| Study identifiers | {studyIDs} |") |> ignore
+        sb.AppendLine($"| Study Count | {tlm.StudyCount.Value} |") |> ignore
+        let assayIDs = String.Join(" , ", tlm.AssayIdentifiers)
+        sb.AppendLine($"| Assay identifiers | {assayIDs} |") |> ignore
+        sb.AppendLine($"| Assay Count | {tlm.AssayCount.Value} |") |> ignore
 
         sb.ToString()
 
-    //Part 3: Studies
-    let createStudyMarkdownSection (sOV:StudyOverview) : string =
-        let sb = StringBuilder()
 
+
+
+   
+    //Part 3: Studies: Description, Additional details, Annotation headers
+    let createStudyIntro (sOV:StudyOverview) : string =
+        let sb = StringBuilder()
         sb.AppendLine($"## Study: _{sOV.StudyIdentifier}_") |> ignore
-        if sOV.StudyDescription.IsSome then
-            sb.AppendLine($"### Description\n{sOV.StudyDescription.Value}") |> ignore
-        else sb.AppendLine($"### Description\n tba ") |> ignore
+        if sOV.StudyDescription.IsSome then sb.AppendLine($"### Description\n{sOV.StudyDescription.Value}") |> ignore
+        sb.ToString()
+
+    let createStudyAdditionalDetails (sOV:StudyOverview) : string =
+        let sb = StringBuilder()
 
         sb.AppendLine("### Additional details") |> ignore
         sb.AppendLine("| Meta Data | Description |") |> ignore
@@ -226,7 +204,10 @@ module Template =    // template part definitions
         if sOV.TimepointCount.Value > 0 = true then 
             let tps = String.Join(" , ", sOV.TimepointCount.Value)
             sb.AppendLine($"| Time points | {tps} |") |> ignore
+        sb.ToString()
 
+    let createStudyAnnotationHeaders (sOV:StudyOverview) : string =
+        let sb = StringBuilder()
         sb.AppendLine("### Annotation headers") |> ignore
         if sOV.Characteristics.IsEmpty = false then 
             let charString = getHyperlinks sOV.Characteristics
@@ -237,19 +218,18 @@ module Template =    // template part definitions
         if sOV.Factors.IsEmpty = false then 
             let factString = getHyperlinks sOV.Factors    
             sb.AppendLine($"\n**Factors**: {factString}") |> ignore
-
         sb.ToString()
 
-    // Part 4: Assays
-    let createAssayMarkdownSection (aOV:AssayOverview) : string =
+    // Part 4: Assays: Description, Additional details, Annotation headers
+    let createAssayIntro (aOV:AssayOverview) : string =
         let sb = StringBuilder()
-        
-        
         sb.AppendLine($"## Assay: _{aOV.AssayIdentifier}_") |> ignore
-        // if aOV.AssayDescription.IsSome then // Not yet implemented see line 50
-        //     sb.AppendLine($"### Description\n{aOV.AssayDescription.Value}") |> ignore
-        // else sb.AppendLine("### Description\n tba") |> ignore
+        if aOV.AssayDescription.IsSome then sb.AppendLine($"### Description\n{aOV.AssayDescription.Value}") |> ignore
+        sb.ToString()
 
+
+    let createAssayAdditionalDetails (aOV:AssayOverview) : string =
+        let sb = StringBuilder()
         sb.AppendLine("### Additional details") |> ignore 
         sb.AppendLine("| Meta Data | Description |") |> ignore
         sb.AppendLine("| --------- | ----------- |") |> ignore
@@ -266,7 +246,10 @@ module Template =    // template part definitions
         sb.AppendLine($"| Data File Count | {aOV.DataFileCount.Value} |") |> ignore
         let lsString = String.Join(" , ", aOV.AssociatedStudies)
         sb.AppendLine($"| Associated studies | {lsString} |") |> ignore
+        sb.ToString()
 
+    let createAssayAnnotationHeaders (aOV:AssayOverview) : string =
+        let sb = StringBuilder()
         sb.AppendLine("### Annotation headers") |> ignore
         if aOV.Characteristics.IsEmpty = false then 
             let charString = getHyperlinks aOV.Characteristics
@@ -277,5 +260,51 @@ module Template =    // template part definitions
         if aOV.Factors.IsEmpty = false then 
             let factString = getHyperlinks aOV.Factors    
             sb.AppendLine($"\n**Factors**: {factString}") |> ignore
-
         sb.ToString()
+
+
+    type TableOfContents =
+
+
+        static member createAnchor (prefix:string) (ids:seq<string>) =
+                ids
+                |> Seq.map (fun (id:string) ->
+                    $"     - [{id}](#{prefix}-{id.ToLower()})")
+                |> String.concat "\n"
+
+        static member createTOC(sections : Section list, tlm : TopLevelMetadata , ?assayOVs : seq<AssayOverview>, ?studyOVs : seq<StudyOverview>) =    
+            let mutable studiesHeaderSet = false              
+            let mutable assayHeaderSet = false
+
+            let studyOVs = Option.defaultValue Seq.empty studyOVs
+            let assayOVs = Option.defaultValue Seq.empty assayOVs
+
+            let sb = StringBuilder()
+            sb.AppendLine("## Table of Contents \n") |> ignore
+
+            for sec in sections do
+                match sec with 
+                | Section.ISAGraph -> // no check if Empty 
+                    sb.AppendLine("- [ISA Graph](#relationships-between-assays-and-studies)") |> ignore
+                | Section.OverviewTable -> // no check if Empty 
+                    sb.AppendLine("- [Overview Table](#overview-table)") |> ignore
+
+                | Section.Investigation InvestigationSection.Contacts when not (tlm.Contacts.IsEmpty) ->
+                    sb.AppendLine("- [Contacts](#contacts)") |> ignore
+                | Section.Investigation InvestigationSection.Publication when not (tlm.Publications.IsEmpty) ->
+                    sb.AppendLine("- [Publication](#publication)") |> ignore     
+                | Section.Studies subSection when not (Seq.isEmpty studyOVs) ->
+                    if not studiesHeaderSet then 
+                        sb.AppendLine("- Studies \n ") |> ignore
+                        studiesHeaderSet <- true
+                        sb.AppendLine(TableOfContents.createAnchor "study" (studyOVs |> Seq.map (fun (sOV:StudyOverview) -> sOV.StudyIdentifier))) |> ignore
+
+                | Section.Assays subSection when not (Seq.isEmpty assayOVs) -> 
+                    if not assayHeaderSet then 
+                        sb.AppendLine("- Assays \n ") |> ignore
+                        assayHeaderSet <- true
+                        sb.AppendLine(TableOfContents.createAnchor "assay" (assayOVs |> Seq.map (fun (aOV:AssayOverview) -> aOV.AssayIdentifier))) |> ignore            
+                | Section.Investigation InvestigationSection.Title 
+                | Section.Investigation InvestigationSection.Description
+                | Section.TOC -> ()
+            sb.ToString()

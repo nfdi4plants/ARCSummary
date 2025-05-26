@@ -15,10 +15,11 @@
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.fsproj" />
     <ProjectReference Include="..\API\GitLabAPI.fsproj" />
+    <ProjectReference Include="..\Yaml\Yaml.fsproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="ARCtrl" Version="2.3.1" />
+    <PackageReference Include="ARCtrl" Version="3.0.0-alpha.3" />
     <PackageReference Include="Argu" Version="6.2.5" />
   </ItemGroup>
 

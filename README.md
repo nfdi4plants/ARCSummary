@@ -2,15 +2,15 @@
 
 >Create or update markdown content of ARCs dynamically
 
-ARCSummary aims to facilitate the dynamic generation of markdown content. It serves as a up-to-date overview of the ARCs current state since all the information is derived from the content from an already established or starting investigation.
+ARCSummary aims to facilitate the dynamic generation of markdown content. It serves as a up-to-date overview of the ARCs current state since all the information is derived from the content of an already established or starting investigation.
 
 ## Setup
-Clone this repository locally and run with or without docker. 
+Clone this repository locally to run with or without docker. 
 
 ### ARCsummary currently supports two main subcommands:
 
 - **summary**     Updates your README.md to the current version
-- **summarymr**    Pushes Updated Summary to side branch and opens a MergeRequest onto main branch.
+- **summarymr**    Pushes the updated summary to a side branch and opens a MergeRequest onto the main branch.
 
 ### Download and run Docker image
 ```bash
@@ -37,6 +37,31 @@ dotnet build
 dotnet run summary -d /path/to/your/arc
 dotnet run summarymr -d /path/to/your/arc -t your_access_token -i user/repository
 ```
+
+### Update via YAML
+Alternatively you can include an empty YML file at the following root of your arc ("../.arc/arc-summary.yml"), which will return the default order. A suitable style format can be chosen [here](https://github.com/nfdi4plants/ARCSummary/blob/main/src/Core/READMEAutomation.fs).
+Create a custom format using the currently supported format:
+```bash
+Custom:
+   - Investigation # Top-level information based on metadata
+      - Title
+      - Description
+      - Contacts
+      - Publication
+   - TOC # Table of Contents
+   - ISAGraph # Flowchart comparing nodes between studies & assays
+   - OverviewTable # Additional table based on metadata
+   - Studies
+      - Intro # Title & Description if available
+      - Additionaldetails
+      - Annotationheaders
+   - Assays
+      - Intro # Title & Description if available
+      - Additionaldetails
+      - Annotationheaders
+```
+The order and sections to include are at the user's discretion. All input is later interpreted in complete lowercase.
+Please bear in mind that an introduction is mandatory for both the studies and assays sections.
 
 ## Help 
 ### For Summary:

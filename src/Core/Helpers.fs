@@ -6,6 +6,7 @@ open ARCtrl.Helper
 open System
 open System.Text
 open System.Text.RegularExpressions
+open SummaryTypes
 
 module Option = 
 
@@ -17,6 +18,10 @@ module Option =
     let verifyList (list: list<'a>) = // not yet implemented or partially
         if list.IsEmpty then failwith "Consider adding information to this list"
         else list
+    
+module StringHelper =
+    let join (sep : string) (vals : string array) =
+        String.Join(sep, vals)
 
 module ArcTable =    // Functions to access information from ArcTables
 

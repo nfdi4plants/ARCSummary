@@ -5,6 +5,12 @@ open Argu
 open mainCLI
 open READMEAutomation
 open ARCSummary.GitLabAPI
+open SummaryStyles
+open System.IO
+open ConfigFileTypes
+open ConfigFileDecode
+open ARCtrl.Yaml
+open YAMLicious
 
 module CLI =
 
@@ -16,13 +22,42 @@ module CLI =
             match res.GetSubCommand() with
             | Summary summaryArgs -> 
                 let arcPath = summaryArgs.GetResult SummaryArgs.ARC_Directory
-                match ARC.load(arcPath).ISA with
-                | Some investigation ->
-                    updateREADME arcPath investigation |> ignore
+                let sectionOrder : Section list = 
+                    let sectionsPath = Path.Combine(arcPath, ".arc", "arc-summary.yml")
+                    if File.Exists(sectionsPath) then 
+                        let content = File.ReadAllText(sectionsPath) 
+                        if not (System.String.IsNullOrWhiteSpace content) then
+                            let tryLoadConfig =
+                                try              
+                                    let config = decodeConfig (Reader.read content) 
+                                    Some config
+                                with _ ->
+                                    printfn "Failed to decode arc-summary.yml, reverted to default section order."
+                                    None
+                            match tryLoadConfig with
+                            | Some config ->
+                                printfn "Custom order found"
+                                config.Custom
+                            // | Some config -> //Not yet implemented
+                            //     config.Theme |> ignore
+                            //     printfn "%s selected"
+                            | None ->
+                                defaultOrder
+                        else
+                            printfn "arc-summary.yml is empty, reverted to default section order."
+                            defaultOrder
+                    else
+                        printfn "No arc-summary.yml found, reverted to default section order."
+                        defaultOrder
+                match ARC.tryLoadAsync(arcPath) |> Async.RunSynchronously  with
+                | Ok arc ->            
+                    updateREADME sectionOrder arcPath arc |> ignore
                     printfn "README.md updated successfully at %s" arcPath
                     0 
-                | None ->
-                    printfn "Failed to load investigation from ARC at %s" arcPath
+                | Error msgs ->
+                    printfn "Could not load ARC from %s:" arcPath
+                    msgs
+                    |> Array.iter (printfn "%s")
                     1
             | SummaryMR summaryMRArgs ->
                 let arcPath = summaryMRArgs.GetResult SummaryMRArgs.ARC_Directory
