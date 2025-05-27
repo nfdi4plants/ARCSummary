@@ -39,7 +39,11 @@ dotnet run summarymr -d /path/to/your/arc -t your_access_token -i user/repositor
 ```
 
 ### Update via YAML
-Alternatively you can include an empty YML file at the following root of your arc ("../.arc/arc-summary.yml"), which will return the default order. A suitable style format can be chosen [here](https://github.com/nfdi4plants/ARCSummary/blob/main/src/Core/READMEAutomation.fs).
+Alternatively you can include an empty YML file at the following root of your arc ("../.arc/arc-summary.yml"), which will return the default order. A suitable theme can be chosen [here](https://github.com/nfdi4plants/ARCSummary/blob/main/src/Core/SummaryStyles.fs). For example for the publication style just include:
+```bash
+publicationstyle
+```
+
 Create a custom format using the currently supported format:
 ```bash
 Custom:
@@ -52,16 +56,18 @@ Custom:
    - ISAGraph # Flowchart comparing nodes between studies & assays
    - OverviewTable # Additional table based on metadata
    - Studies
-      - Intro # Title & Description if available
+      - Title
+      - Description
       - Additionaldetails
       - Annotationheaders
    - Assays
-      - Intro # Title & Description if available
+      - Title
+      - Description
       - Additionaldetails
       - Annotationheaders
 ```
 The order and sections to include are at the user's discretion. All input is later interpreted in complete lowercase.
-Please bear in mind that an introduction is mandatory for both the studies and assays sections.
+
 
 ## Help 
 ### For Summary:

@@ -10,35 +10,11 @@ open SummaryTypes
 open ConfigFileTypes
 
 
-module SummaryStyles =
-    let defaultOrder : Section list = 
-        [
-            Section.Investigation InvestigationSection.Title
-            Section.Investigation InvestigationSection.Description
-            Section.TOC
-            Section.ISAGraph
-            Section.OverviewTable
-            Section.Investigation InvestigationSection.Contacts
-            Section.Investigation InvestigationSection.Publication
-            Section.Studies StudySection.Intro
-            Section.Studies StudySection.AdditionalDetails
-            Section.Studies StudySection.AnnotationHeaders       
-            Section.Assays AssaySection.Intro
-            Section.Assays AssaySection.AdditionalDetails
-            Section.Assays AssaySection.AnnotationHeaders
-        ]
-    
-    let publicationStyle : Section list = // Title, Description, Contacts, Publication (check if available title with publication title)
-        [
-            Section.Investigation InvestigationSection.Title
-            Section.Investigation InvestigationSection.Description
-            Section.Investigation InvestigationSection.Contacts
-            Section.Investigation InvestigationSection.Publication
-        ]
-
 module READMEAutomation = // better name 
 
     let createMarkdownSummary (sections:Section list) (investigation:ArcInvestigation) : string  = 
+        let mutable studiesHeaderSet = false              
+        let mutable assayHeaderSet = false
         let tlm : TopLevelMetadata = getTopLevelMetadata investigation
         let studyOVs : StudyOverview seq =
             investigation.Studies
@@ -61,42 +37,58 @@ module READMEAutomation = // better name
         sections 
         |> Seq.map (fun (sec:Section) ->
             match sec with 
-            | Investigation Title -> createInvTitle tlm 
-            | Investigation Description -> createInvDescription tlm 
+            | Investigation InvestigationSection.Title -> createInvTitle tlm 
+            | Investigation InvestigationSection.Description -> createInvDescription tlm 
             | Investigation Contacts -> createContactsSection tlm 
             | Investigation Publication -> createPublicationsSection tlm 
             | TOC -> TableOfContents.createTOC(sections, tlm ,assayOVs, studyOVs)
             | ISAGraph -> createRelationshipGraph tlm investigation assayOVs studyOVs
             | OverviewTable -> createOverviewTable tlm 
-            | Studies Intro -> // Other Study/Assay sections are handled in the 'Intro' match case. No-op here.
-                studyOVs
-                |> List.ofSeq
-                |> List.map (fun (sOV:StudyOverview) ->
-                    orderedStudySections
-                    |> List.map (fun subSec ->
-                        match subSec with
-                        | StudySection.Intro -> createStudyIntro sOV
-                        | StudySection.AdditionalDetails -> createStudyAdditionalDetails sOV
-                        | StudySection.AnnotationHeaders -> createStudyAnnotationHeaders sOV
+            | Studies _ -> 
+                if not studiesHeaderSet then         
+                    studiesHeaderSet <- true
+                    studyOVs
+                    |> List.ofSeq
+                    |> List.map (fun (sOV:StudyOverview) ->
+                        let id = createStudySectionId sOV
+                        let studySubSecs =
+                            orderedStudySections
+                            |> List.map (fun subSec ->
+                                match subSec with
+                                | StudySection.Title -> createStudyTitle sOV
+                                | StudySection.Description -> createStudyDescription sOV
+                                | StudySection.AdditionalDetails -> createStudyAdditionalDetails sOV
+                                | StudySection.AnnotationHeaders -> createStudyAnnotationHeaders sOV
+                            )
+                            |> String.concat "\n"
+                        [id;studySubSecs]
+                        |> String.concat "\n"
                     )
-                    |> String.concat "\n"
-                )
-                |> String.concat "\n\n"
-            | Assays AssaySection.Intro -> // Same here
-                assayOVs
-                |> List.ofSeq
-                |> List.map (fun (aOV:AssayOverview) ->
-                    orderedAssaySections
-                    |> List.map (fun subSec ->
-                        match subSec with
-                        | AssaySection.Intro -> createAssayIntro aOV
-                        | AssaySection.AdditionalDetails -> createAssayAdditionalDetails aOV
-                        | AssaySection.AnnotationHeaders -> createAssayAnnotationHeaders aOV
+                    |> String.concat "\n\n"
+                else ""
+            | Assays _ ->
+                if not assayHeaderSet then
+                    assayHeaderSet <- true 
+                    assayOVs
+                    |> List.ofSeq
+                    |> List.map (fun (aOV:AssayOverview) ->
+                        let id = createAssaySectionId aOV
+                        let assaySubSecs =
+                            orderedAssaySections
+                            |> List.map (fun subSec ->
+                                match subSec with
+                                | AssaySection.Title -> createAssayTitle aOV
+                                | AssaySection.Description -> createAssayDescription aOV
+                                | AssaySection.AdditionalDetails -> createAssayAdditionalDetails aOV
+                                | AssaySection.AnnotationHeaders -> createAssayAnnotationHeaders aOV
+                            )
+                            |> String.concat "\n"
+                        [id;assaySubSecs]
+                        |> String.concat "\n"
+
                     )
-                    |> String.concat "\n"
-                )
-                |> String.concat "\n\n"
-            | _ -> ""
+                    |> String.concat "\n\n"
+                else ""
         )
         |> Seq.filter (fun s -> not (System.String.IsNullOrWhiteSpace s))
         |> String.concat "\n\n"

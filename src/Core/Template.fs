@@ -28,6 +28,7 @@ module ARCInstances =
 
     let getStudyOverview (investigation:ArcInvestigation) (study:ArcStudy) = {
         StudyIdentifier = study.Identifier
+        StudyTitle = study.Title
         StudyDescription = study.Description
         TableCount = Some study.TableCount
         TableNames = study.TableNames
@@ -49,7 +50,8 @@ module ARCInstances =
 
     let getAssayOverview (investigation:ArcInvestigation) (assay:ArcAssay) = {  
         AssayIdentifier = assay.Identifier
-        AssayDescription = assay.Description // Not yet implemented could be an option in the future depending on ARCtrl 
+        AssayTitle = assay.Title
+        AssayDescription = assay.Description 
         MeasurementType = assay.MeasurementType
         MeasurementDevice = assay.Tables |> ResizeArray.collect getMeasurementDevice |> Seq.toList    
         TechnologyType = assay.TechnologyType                                                    
@@ -175,9 +177,18 @@ module Template =    // template part definitions
 
    
     //Part 3: Studies: Description, Additional details, Annotation headers
-    let createStudyIntro (sOV:StudyOverview) : string =
+    let createStudySectionId(sOV:StudyOverview) : string =
         let sb = StringBuilder()
         sb.AppendLine($"## Study: _{sOV.StudyIdentifier}_") |> ignore
+        sb.ToString()
+    
+    let createStudyTitle (sOV:StudyOverview) : string =
+        let sb = StringBuilder()
+        if sOV.StudyTitle.IsSome then sb.AppendLine($"## {sOV.StudyTitle.Value}") |> ignore
+        sb.ToString()
+    
+    let createStudyDescription (sOV:StudyOverview) : string =
+        let sb = StringBuilder()
         if sOV.StudyDescription.IsSome then sb.AppendLine($"### Description\n{sOV.StudyDescription.Value}") |> ignore
         sb.ToString()
 
@@ -221,9 +232,18 @@ module Template =    // template part definitions
         sb.ToString()
 
     // Part 4: Assays: Description, Additional details, Annotation headers
-    let createAssayIntro (aOV:AssayOverview) : string =
+    let createAssaySectionId (aOV:AssayOverview) : string =
         let sb = StringBuilder()
         sb.AppendLine($"## Assay: _{aOV.AssayIdentifier}_") |> ignore
+        sb.ToString()
+    
+    let createAssayTitle (aOV:AssayOverview) : string =
+        let sb = StringBuilder()
+        if aOV.AssayTitle.IsSome then sb.AppendLine($"## {aOV.AssayTitle.Value}") |> ignore
+        sb.ToString()
+
+    let createAssayDescription (aOV:AssayOverview) : string =
+        let sb = StringBuilder()
         if aOV.AssayDescription.IsSome then sb.AppendLine($"### Description\n{aOV.AssayDescription.Value}") |> ignore
         sb.ToString()
 
@@ -307,4 +327,5 @@ module Template =    // template part definitions
                 | Section.Investigation InvestigationSection.Title 
                 | Section.Investigation InvestigationSection.Description
                 | Section.TOC -> ()
+                | _ -> ()
             sb.ToString()

@@ -5,6 +5,7 @@ open System.IO
 open YAMLicious
 open YAMLicious.YAMLiciousTypes
 open ConfigFileTypes
+open SummaryStyles
 
 
 module ConfigFileDecode =
@@ -19,7 +20,7 @@ module ConfigFileDecode =
         match element with
         | YAMLElement.Object [YAMLElement.Value v] ->
             match v.Value.ToLower() with
-            | "title" -> Some Title 
+            | "title" -> Some InvestigationSection.Title 
             | "description" -> Some InvestigationSection.Description 
             | "publication" -> Some Publication 
             | "contacts" -> Some Contacts 
@@ -30,7 +31,8 @@ module ConfigFileDecode =
         match element with
         | YAMLElement.Object [YAMLElement.Value v] ->
             match v.Value.ToLower() with
-            | "intro" -> Some AssaySection.Intro 
+            | "title" -> Some AssaySection.Title
+            | "description" -> Some AssaySection.Description
             | "additionaldetails" -> Some AssaySection.AdditionalDetails 
             | "annotationheaders" -> Some AssaySection.AnnotationHeaders 
             | _ -> None
@@ -41,7 +43,8 @@ module ConfigFileDecode =
         match element with       
         | YAMLElement.Object [YAMLElement.Value v] ->
             match v.Value.ToLower() with
-            | "intro" -> Some StudySection.Intro 
+            | "title" -> Some StudySection.Title
+            | "description" -> Some StudySection.Description
             | "additionaldetails" -> Some StudySection.AdditionalDetails 
             | "annotationheaders" -> Some StudySection.AnnotationHeaders 
             | _ -> None
@@ -64,21 +67,58 @@ module ConfigFileDecode =
         | _ -> failwithf "Decode section failed: Section must be object sequence tuple but is %A" element
 
     let decodeConfig (configYAML : YAMLElement) : ARCSummaryConfig =
-        let theme = None
+        let theme = 
+            match configYAML with 
+            | YAMLElement.Object [YAMLElement.Value key]  -> 
+                match key.Value.ToLower() with 
+                | "publicationstyle" ->  PublicationStyle
+                | _ -> Default
+            | _ -> Default
         let custom = 
             match configYAML with
-            | YAMLElement.Object o ->
-                match o with 
-                | [YAMLElement.Mapping (key, YAMLElement.Object [YAMLElement.Sequence secFields])] ->
-                    match key.Value.ToLower() with
-                    | "custom" -> secFields |> List.collect decodeSection
-                    | _ -> []
-                | _ -> failwithf "YAML element is not a correct mapping, instead is %A" o
-            | _ -> failwithf "YAML element is not an object, instead is %A" configYAML
+            | YAMLElement.Object elements ->
+                elements 
+                |> List.tryPick(function
+                    | YAMLElement.Mapping (key, YAMLElement.Object [YAMLElement.Sequence secFields]) when key.Value.ToLower() = "custom" ->
+                    Some (secFields |> List.collect decodeSection)
+                    | _ -> None
+                )
+                |> Option.defaultValue defaultOrder
+            | _ -> 
+                if theme = Default then 
+                    printfn "YAMLElement is not an object, instead is %A" configYAML
+                defaultOrder
         {
             Theme = theme
             Custom = custom
         }
+
+    let loadSectionOrder (arcPath: string) : Section list =
+        let sectionsPath = Path.Combine(arcPath, ".arc", "arc-summary.yml")
+        if not (File.Exists sectionsPath) then
+            printfn "No arc-summary.yml found, using default section order."
+            defaultOrder
+        else
+            let content = File.ReadAllText sectionsPath
+            if System.String.IsNullOrWhiteSpace content then
+                printfn "arc-summary.yml is empty, using default section order."
+                defaultOrder
+            else
+                try
+                    let config = decodeConfig (Reader.read content)
+                    match config.Theme, config.Custom with
+                    | PublicationStyle, _ ->
+                        printfn "Using theme: PublicationStyle"
+                        publicationStyle
+                    | Default, custom when custom <> defaultOrder ->
+                        printfn "Using custom section order from arc-summary.yml"
+                        custom
+                    | _, _ ->
+                        printfn "No valid theme or custom order found, using default."
+                        defaultOrder
+                with _ ->
+                    printfn "Failed to decode arc-summary.yml, using default section order."
+                    defaultOrder
 
 
 

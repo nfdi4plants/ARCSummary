@@ -10,6 +10,7 @@
     <Compile Include="Helpers.fs" />
     <Compile Include="Template.fs" />
     <Compile Include="READMEAutomation.fs" />
+    <Compile Include="SummaryStyles.fs" />
   </ItemGroup>
 
   <ItemGroup>

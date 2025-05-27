@@ -8,7 +8,6 @@
 // #r "../Core/bin/Debug/netstandard2.0/Core.dll"
 // #r "../Yaml/bin/Debug/net9.0/Yaml.dll"
 
-
 // open ARCtrl.Yaml
 // open System.IO
 // open YAMLicious 
@@ -30,11 +29,104 @@
 // open ARCSummary.SummaryTypes
 
 // let yamlContentEx :string =
-//     File.ReadAllText("../.arc/arc-summary.yml") //
-
+//     File.ReadAllText("/Users/olescholz/Desktop/Programming/ARCitect_Warmup/Ru_ChlamyHeatstress/.arc/arc-summary.yml") 
 // let parsedEx = Reader.read yamlContentEx
 
 
+
+
+// let decodeConfig (configYAML : YAMLElement) : ARCSummaryConfig =
+//         let theme = 
+//             match configYAML with 
+//             | YAMLElement.Object [YAMLElement.Value key]  -> 
+//                 match key.Value.ToLower() with 
+//                 | "publicationstyle" ->  PublicationStyle
+//                 | _ -> Default
+//             | _ -> Default
+//         let custom = 
+//             match configYAML with
+//             | YAMLElement.Object o ->
+//                 match o with 
+//                 | [YAMLElement.Mapping (key, YAMLElement.Object [YAMLElement.Sequence secFields])] ->
+//                     match key.Value.ToLower() with
+//                     | "custom" -> secFields |> List.collect decodeSection
+//                     | _ -> []
+//                 | _ -> 
+//                     printfn "YAML element is not a correct mapping, instead is %A" o 
+//                     defaultOrder //instead of failwith replaced with printfn
+//             | _ -> 
+//                 printfn "YAML element is not an object, instead is %A" configYAML 
+//                 defaultOrder //instead of failwith replaced with printfn
+//         {
+//             Theme = theme
+//             Custom = custom
+//         }
+
+// let sectionOrder : Section list = 
+//                     let sectionsPath = Path.Combine(arcPath, ".arc", "arc-summary.yml")
+//                     if File.Exists(sectionsPath) then 
+//                         let content = File.ReadAllText(sectionsPath) 
+//                         if not (System.String.IsNullOrWhiteSpace content) then
+//                             let tryLoadConfig =
+//                                 try              
+//                                     let config = decodeConfig (Reader.read content) 
+//                                     Some config
+//                                 with _ ->
+//                                     printfn "Failed to decode arc-summary.yml, reverted to default section order."
+//                                     None
+//                             let selectTheme = 
+//                                 tryLoadConfig
+//                                 |> Option.map(fun (f:ARCSummaryConfig) ->             
+//                                     if not (f.Theme.Equals Default) then 
+//                                         match f.Theme with 
+//                                         | PublicationStyle -> 
+//                                             printfn "Theme: PublicationStyle"
+//                                             publicationStyle
+//                                         | _ -> 
+//                                             printfn "No valid theme found, reverted to default section order."
+//                                             defaultOrder
+//                                     else 
+//                                         printfn "Custom order found"
+//                                         f.Custom
+//                                 )
+//                                 |> Option.defaultValue defaultOrder 
+//                             selectTheme
+//                         else
+//                             printfn "arc-summary.yml is empty, reverted to default section order."
+//                             defaultOrder
+//                     else
+//                         printfn "No arc-summary.yml found, reverted to default section order."
+//                         defaultOrder
+
+// let config = decodeConfig (Reader.read content)
+
+// let tryLoadConfig =
+//     try 
+//         let config = decodeConfig (Reader.read content)
+//         Some config 
+//     with _ -> 
+//         printfn "failed"
+//         None
+
+// tryLoadConfig
+
+// let selectTheme = 
+//         tryLoadConfig
+//         |> Option.map(fun (f:ARCSummaryConfig) ->             
+//             if not (f.Theme.Equals Default) then 
+//                 match f.Theme with 
+//                 | PublicationStyle -> 
+//                     printfn "Theme: PublicationStyle"
+//                     publicationStyle
+//                 | _ -> 
+//                     printfn "No valid theme found, res"
+//                     defaultOrder
+//             else 
+//                 printfn "Custom order found"
+//                 f.Custom
+//         )
+//         |> Option.defaultValue defaultOrder 
+// selectTheme
 // module newTemplates =
 
     // //Part 1: Title, Description, Contacts and Publication of Investigation

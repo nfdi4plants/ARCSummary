@@ -20,6 +20,7 @@ module SummaryTypes =
     // Record type Overview for shared fields between study and assay might be beneficial
     type StudyOverview = {
         StudyIdentifier : string ; 
+        StudyTitle : string option ;
         StudyDescription : string option ;
         TableCount : int option ;
         TableNames : string list ; 
@@ -41,6 +42,7 @@ module SummaryTypes =
 
     type AssayOverview = {
         AssayIdentifier : string ;
+        AssayTitle : string option ;
         AssayDescription : string option ;
         MeasurementType : OntologyAnnotation option ; 
         MeasurementDevice : OntologyAnnotation list  ;    
@@ -67,12 +69,15 @@ module ConfigFileTypes =
         | Description 
         | Publication
         | Contacts 
+        
     type AssaySection =
-        | Intro 
+        | Title 
+        | Description
         | AdditionalDetails
         | AnnotationHeaders
     type StudySection =
-        | Intro 
+        | Title 
+        | Description
         | AdditionalDetails
         | AnnotationHeaders
 
@@ -84,14 +89,15 @@ module ConfigFileTypes =
         | Assays of AssaySection 
         | Studies of StudySection 
 
-    type ARCSummaryConfig = {
-        Theme : unit option;
-        Custom : Section list
-    }
-
     type Theme =
         | Default
         | PublicationStyle // Title, Description, Contacts, Publication (check if available title with publication title)
+
+    type ARCSummaryConfig = {
+        Theme : Theme ;
+        Custom : Section list
+    }
+
 
     // themes as parameter that can be overwritten by custom
 

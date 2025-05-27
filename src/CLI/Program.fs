@@ -22,33 +22,7 @@ module CLI =
             match res.GetSubCommand() with
             | Summary summaryArgs -> 
                 let arcPath = summaryArgs.GetResult SummaryArgs.ARC_Directory
-                let sectionOrder : Section list = 
-                    let sectionsPath = Path.Combine(arcPath, ".arc", "arc-summary.yml")
-                    if File.Exists(sectionsPath) then 
-                        let content = File.ReadAllText(sectionsPath) 
-                        if not (System.String.IsNullOrWhiteSpace content) then
-                            let tryLoadConfig =
-                                try              
-                                    let config = decodeConfig (Reader.read content) 
-                                    Some config
-                                with _ ->
-                                    printfn "Failed to decode arc-summary.yml, reverted to default section order."
-                                    None
-                            match tryLoadConfig with
-                            | Some config ->
-                                printfn "Custom order found"
-                                config.Custom
-                            // | Some config -> //Not yet implemented
-                            //     config.Theme |> ignore
-                            //     printfn "%s selected"
-                            | None ->
-                                defaultOrder
-                        else
-                            printfn "arc-summary.yml is empty, reverted to default section order."
-                            defaultOrder
-                    else
-                        printfn "No arc-summary.yml found, reverted to default section order."
-                        defaultOrder
+                let sectionOrder = loadSectionOrder arcPath
                 match ARC.tryLoadAsync(arcPath) |> Async.RunSynchronously  with
                 | Ok arc ->            
                     updateREADME sectionOrder arcPath arc |> ignore
