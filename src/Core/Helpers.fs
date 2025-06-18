@@ -15,13 +15,45 @@ module Option =
         | Some value -> value.ToString()
         | None -> "" 
                                
-    let verifyList (list: list<'a>) = // not yet implemented or partially
+    let verifyList (list: list<'a>) = // not yet implemented or partially or List.choose id
         if list.IsEmpty then failwith "Consider adding information to this list"
         else list
     
 module StringHelper =
     let join (sep : string) (vals : string array) =
         String.Join(sep, vals)
+
+
+module Formating =
+    let removeHashAndNumbers (input: string) =
+        Regex.Replace(input, @"#\d+", "")
+    let removeUnderscoreAndNumbers (input:string) =
+        Regex.Replace(input, @"_\d+", "")
+
+    let getHyperlinks (annotationheaders:list<OntologyAnnotation>) = 
+        let formated =
+            annotationheaders 
+            |> List.map (fun (oa:OntologyAnnotation) ->  
+                let name = oa.NameText |> removeHashAndNumbers |> removeUnderscoreAndNumbers
+                let link = oa.TermAccessionOntobeeUrl
+                let linklength = oa.TermAccessionOntobeeUrl |> Seq.length
+                if linklength > 1 then 
+                    $"[{name}]({link})"
+                else $"`{name}`")
+        String.Join(",",formated)
+
+// functions yet to be included in ARCtrl
+module TableHelpers = 
+    let dataIsEmpty (data:Data) =
+        match data with
+        | d -> d.ID.IsNone && d.Name.IsNone && d.DataType.IsNone && d.Format.IsNone && d.SelectorFormat.IsNone && d.Comments.Count = 0 
+
+    let cellIsEmpty (cell:CompositeCell) = 
+        match cell with
+        | CompositeCell.Term oa  -> oa.isEmpty()
+        | CompositeCell.FreeText s -> String.IsNullOrWhiteSpace s
+        | CompositeCell.Unitized (v, oa) -> String.IsNullOrWhiteSpace v && oa.isEmpty()
+        | CompositeCell.Data d -> dataIsEmpty d
 
 module ArcTable =    // Functions to access information from ArcTables
 
@@ -68,6 +100,11 @@ module ArcTable =    // Functions to access information from ArcTables
             | Some col ->  
                     col.Cells
             | None -> [||]
+
+open StringHelper
+open Formating
+open TableHelpers
+open ArcTable
 
 module ArcQuerying = // Functions for direct querying such as specific ontology search
 
@@ -147,8 +184,7 @@ module ArcQuerying = // Functions for direct querying such as specific ontology 
     let nodesAreEqual (node1:CompositeCell) (node2:CompositeCell) : bool =
         node1.ToString() = node2.ToString()    
 
-    // Anmerkung: Naming der Funktion. Rückgabewert ist bool, also eher "is", "are" oder ähnliches verwenden
-    let linkTablesByProcessNodes (preceedingTable: ArcTable) (succeedingTable: ArcTable) : bool =
+    let tableColumnsAreEqual (preceedingTable: ArcTable) (succeedingTable: ArcTable) : bool =
         let outCol = preceedingTable.TryGetOutputColumn()
         let inCol = succeedingTable.TryGetInputColumn()
         match inCol,outCol with 
@@ -161,50 +197,49 @@ module ArcQuerying = // Functions for direct querying such as specific ontology 
                 )
             )
         | _ -> false
-
-    // Anmerkung: Naming der Funktion. Rückgabewert ist bool, also eher "is", "are" oder ähnliches verwenden
-    let tablesAreLinked (preceedingTables : ArcTables) (succeedingTables: ArcTables) : bool = //previous linkTables
+    let tablesAreLinked (preceedingTables : ArcTables) (succeedingTables: ArcTables) : bool = 
         preceedingTables
         |> Seq.exists (fun preceedingTable -> 
             succeedingTables
             |> Seq.exists (fun succeedingTable ->
-                linkTablesByProcessNodes preceedingTable succeedingTable
+                tableColumnsAreEqual preceedingTable succeedingTable
             )
         )
 
-    // Anmerkung: Naming der Funktion. Rückgabewert ist bool, also eher "is", "are" oder ähnliches verwenden
-    let linkAssayToStudy (preceedingStudy : ArcStudy) (succeedingAssay : ArcAssay) : bool = // previous linkAssayToStudy
+    let studyOutputIsAssayInput (preceedingStudy : ArcStudy) (succeedingAssay : ArcAssay) : bool = // previous linkAssayToStudy
         preceedingStudy.Tables
         |> Seq.exists (fun preceedingTable -> 
             succeedingAssay.Tables
             |> Seq.exists (fun succeedingTable ->
-                linkTablesByProcessNodes preceedingTable succeedingTable
+                tableColumnsAreEqual preceedingTable succeedingTable
             )
         )
 
-    // Anmerkung: Naming der Funktion. Rückgabewert ist bool, also eher "is", "are" oder ähnliches verwenden
-    // Anmerkung: Assay fehlt im Namen, oder alternativ über Module
-    // Anmerkung: filter und map können zu choose zusammengefasst werden
-    let associatedStudies (investigation:ArcInvestigation) (assay:ArcAssay) =
+    let associatedStudiesForAssay (investigation:ArcInvestigation) (assay:ArcAssay) =
         investigation.Studies
-        |> ResizeArray.filter (fun (study:ArcStudy) -> linkAssayToStudy study assay)
-        |> ResizeArray.map (fun (study:ArcStudy) -> study.Identifier)
+        |> Seq.choose (fun (study:ArcStudy) -> 
+            if studyOutputIsAssayInput study assay then 
+                Some study.Identifier
+            else None 
+        )
+        // Seq.choose id necessary?
         |> Seq.distinct
         |> Seq.toList
 
-    // Anmerkung: Naming der Funktion. Rückgabewert ist bool, also eher "is", "are" oder ähnliches verwenden
-    // Anmerkung: Study fehlt im Namen, oder alternativ über Module
-    // Anmerkung: filter und map können zu choose zusammengefasst werden
-    let associatedAssays (investigation:ArcInvestigation) (study:ArcStudy) =
+
+    let associatedAssaysForStudy (investigation:ArcInvestigation) (study:ArcStudy) =
         investigation.Assays
-        |> ResizeArray.filter (fun (assay:ArcAssay) -> linkAssayToStudy study assay)
-        |> ResizeArray.map (fun (assay:ArcAssay) -> assay.Identifier)
+        |> Seq.choose (fun (assay:ArcAssay) ->
+            if studyOutputIsAssayInput study assay then 
+                Some assay.Identifier 
+            else None
+        )
+        // Seq.choose id necessary?
         |> Seq.distinct
         |> Seq.toList
 
 
-    // Anmerkung: Sehr viel repetitiver Code ab hier. Versuch mal den generischen Teil in eine Funktion auszulagern   
-
+    // Repetitive code, adapt into more generic function
 
 
     let getPreviousStudyIdsForAssay (assay: ArcAssay) (investigation: ArcInvestigation) : list<string> =
@@ -297,25 +332,98 @@ module ArcQuerying = // Functions for direct querying such as specific ontology 
             ) 
         |> Seq.toList 
 
-
+    // only one way really necessary
     // Helper function for String.join with "," as seperators, consider adding and for the last word and capping the first word in a map
-module Formating =
-    let removeHashAndNumbers (input: string) =
-        Regex.Replace(input, @"#\d+", "")
-    let removeUnderscoreAndNumbers (input:string) =
-        Regex.Replace(input, @"_\d+", "")
 
-    let getHyperlinks (annotationheaders:list<OntologyAnnotation>) = 
-        let formated =
-            annotationheaders 
-            |> List.map (fun (oa:OntologyAnnotation) ->  
-                let name = oa.NameText |> removeHashAndNumbers |> removeUnderscoreAndNumbers
-                let link = oa.TermAccessionOntobeeUrl
-                let linklength = oa.TermAccessionOntobeeUrl |> Seq.length
-                if linklength > 1 then 
-                    $"[{name}]({link})"
-                else $"`{name}`")
-        String.Join(",",formated)
+    let getOntologyHeaders (oaList:OntologyAnnotation list) =
+        oaList
+        |> List.choose (fun (oa:OntologyAnnotation) -> 
+            if not (String.IsNullOrWhiteSpace oa.NameText) then 
+                Some oa.NameText
+            else None
+        )
+
+    let getAllOntologyInfos (headers: string list) (table:ArcTable) =  
+        if not headers.IsEmpty then
+            headers
+            |> List.choose(fun (header:string) -> 
+                let cellStrings : string array =            
+                    getCellsByHeaderOntology table header
+                    |> Array.distinct
+                    |> Array.choose(fun (cell:CompositeCell) -> 
+                        if not (cellIsEmpty cell) then
+                            let oaID = removeHashAndNumbers header 
+                            Some (String.Join(": ", oaID,cell.ToString()))
+                        else None
+                    )
+                    |> Array.distinct // in case only one check for ontology is applied
+                let grouped =
+                    cellStrings
+                    |> Array.groupBy(fun s -> s.Split(':').[0].Trim())
+                    |> Array.choose(fun (key:string, values:string array) ->
+                        let vals = 
+                            values 
+                            |> Array.map (fun s ->
+                                let parts = s.Split(':')
+                                if parts.Length > 1 then 
+                                    parts.[1].Trim() 
+                                else "" )
+                            |> Array.filter (fun s -> not (String.IsNullOrWhiteSpace s))
+                        if not (Array.isEmpty vals) then
+                            let joined = String.concat ", " vals
+                            Some (String.Join(": ", key, joined))
+                        else None 
+                )
+                let resultingHeader = join "," grouped
+                if not (String.IsNullOrWhiteSpace resultingHeader) then 
+                    Some resultingHeader
+                else None
+            )
+            |> List.toArray
+            |> Array.filter (fun s -> not (String.IsNullOrWhiteSpace s))
+            |> join " ; "
+        else ""
+
+    let getPreviousTablesForTable (currentTable: ArcTable) (currentID:string) (allTableIDs:(string*ArcTable) list) =
+        allTableIDs 
+        |> List.choose(fun (precedingID:string, precedingTable:ArcTable) -> 
+            if precedingID <> currentID then 
+                if tableColumnsAreEqual precedingTable currentTable then 
+                    Some $"{precedingID} --> {currentID}"
+                else None 
+            else None
+        )
+
+    let collectAllTableIDs (investigation: ArcInvestigation) = 
+        let studyTables = 
+            investigation.Studies
+            |> Seq.collect(fun (study:ArcStudy) ->
+                study.Tables 
+                |> Seq.map(fun (table:ArcTable) -> $"Study_{study.Identifier}_{table.Name}",table)
+            )
+        let assayTables =
+            investigation.Assays
+            |> Seq.collect(fun (assay:ArcAssay) ->
+                assay.Tables 
+                |> Seq.map(fun (table:ArcTable) -> $"Assay_{assay.Identifier}_{table.Name}",table)
+            )
+        Seq.append studyTables assayTables
+        |> List.ofSeq
+
+    let getAllTableNodes (investigation: ArcInvestigation) =
+        let allTableIDs =
+            collectAllTableIDs investigation
+        allTableIDs
+        |> List.collect(fun (id:string,table:ArcTable) -> getPreviousTablesForTable table id allTableIDs)
+
+    let allStudyIDNodes (nodes:string list) =
+        nodes 
+        |> List.filter(fun (id:string) -> id.StartsWith("Study"))
+
+    let allAssayIDNodes (nodes:string list) =
+        nodes 
+        |> List.filter(fun (id:string) -> id.StartsWith("Assay"))
+
 
 
 module TemplateHelpers = // Better names

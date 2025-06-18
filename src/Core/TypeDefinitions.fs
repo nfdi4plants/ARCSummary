@@ -83,6 +83,7 @@ module ConfigFileTypes =
 
     type Section =
         | Investigation of InvestigationSection 
+        //| Methods // not yet implemented AI-Assisted Summary based on prompt /src/LLM/Prompt.fs
         | TOC        
         | ISAGraph
         | OverviewTable        

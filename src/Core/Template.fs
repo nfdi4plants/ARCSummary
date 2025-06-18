@@ -40,7 +40,7 @@ module ARCInstances =
         SampleCount = Some (study.Tables |> getSampleCount)
         Parameters = study.Tables |> Seq.map ArcTable.getAllParameters |> Seq.concat |> Seq.distinct |> Seq.toList
         Factors = study.Tables |> Seq.map ArcTable.getAllFactors |> Seq.concat |> Seq.distinct |> Seq.toList
-        AssociatedAssays = associatedAssays investigation study
+        AssociatedAssays = associatedAssaysForStudy investigation study
         PreviousAssayIdentifiers = getPreviousAssayIdsForStudy study investigation
         PreviousStudyIdentifiers = getPreviousStudyIdsForStudy study investigation
         FollowingAssayIdentifiers = getFollowingAssayIdsForStudy study investigation
@@ -61,7 +61,7 @@ module ARCInstances =
         SampleCount = Some (assay.Tables |> getSampleCount)                                                                                                          
         Parameters =  assay.Tables |> Seq.map ArcTable.getAllParameters |> Seq.concat |> Seq.distinct |> Seq.toList
         Factors = assay.Tables |> Seq.map ArcTable.getAllFactors |> Seq.concat |> Seq.distinct |> Seq.toList
-        AssociatedStudies = associatedStudies investigation assay
+        AssociatedStudies = associatedStudiesForAssay investigation assay
         PreviousAssayIdentifiers = getPreviousAssayIdsForAssay assay investigation
         PreviousStudyIdentifiers = getPreviousStudyIdsForAssay assay investigation
         FollowingAssayIdentifiers = getFollowingAssayIdsForAssay assay investigation
@@ -69,7 +69,8 @@ module ARCInstances =
         DataFileCount = Some (assay.Tables |> ResizeArray.map getDataFiles |> Seq.sum)
     }
 
-
+    // let kwfjnfk (aO:AssayOverview) =
+    //     printfn $"Previous Assays found: %A" AssayOverview.Previous
 
 module Template =    // template part definitions 
 
