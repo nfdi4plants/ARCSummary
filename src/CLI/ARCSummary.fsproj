@@ -16,6 +16,7 @@
     <ProjectReference Include="..\Core\Core.fsproj" />
     <ProjectReference Include="..\API\GitLabAPI.fsproj" />
     <ProjectReference Include="..\Yaml\Yaml.fsproj" />
+    <ProjectReference Include="..\LLM\LLM.fsproj" />
   </ItemGroup>
 
   <ItemGroup>

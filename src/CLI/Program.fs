@@ -11,6 +11,7 @@ open ConfigFileTypes
 open ConfigFileDecode
 open ARCtrl.Yaml
 open YAMLicious
+open Prompt
 
 module CLI =
 
@@ -84,6 +85,19 @@ module CLI =
                     1
                 else 
                     0
+            | Prompt summaryArgs -> 
+                let arcPath = summaryArgs.GetResult SummaryArgs.ARC_Directory
+                match ARC.tryLoadAsync(arcPath) |> Async.RunSynchronously  with
+                | Ok arc ->      
+                    let prompt =       
+                        summaryPrompt arc 
+                    printfn "%s" (prompt.ToString())
+                    0 
+                | Error msgs ->
+                    printfn "Could not load ARC from %s:" arcPath
+                    msgs
+                    |> Array.iter (printfn "%s")
+                    1
 
 
 

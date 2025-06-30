@@ -41,9 +41,11 @@ module mainCLI =
     and CLIArgs =
         | [<CliPrefix(CliPrefix.None)>] Summary of ParseResults<SummaryArgs>
         | [<CliPrefix(CliPrefix.None)>] SummaryMR of ParseResults<SummaryMRArgs>       
+        | [<CliPrefix(CliPrefix.None)>] Prompt of ParseResults<SummaryArgs>    
 
         interface IArgParserTemplate with
             member s.Usage =
                 match s with 
                 | Summary _ -> "Updates your README.md to current version"
                 | SummaryMR _ -> "Pushes Updated Summary to side branch and opens a MergeRequest onto main branch."    
+                | Prompt _ -> "Generates a prompt based on arc-path for ai-asssisted paragraph on the investigations objectives"

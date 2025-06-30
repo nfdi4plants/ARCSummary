@@ -9,6 +9,9 @@ open ArcQuerying
 
 module Prompt = 
 
+
+    // Function after mapping on tables
+
     let getStudyPrompt (investigation:ArcInvestigation) =
         investigation.Studies
         |> Seq.filter (fun (s:ArcStudy) -> s.TableCount <> 0)
