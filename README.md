@@ -121,3 +121,21 @@ OPTIONS:
     --help 
         display this list of options.
 ```
+
+### Prompt generation
+
+Currently ARCSummary supports the generation of three prompts: basic, enhanced and hybrid (enhanced + ToC) for use with ChatGPT
+
+```bash
+    basicprompt, -p1 <options>
+        Generates a basic prompt based on arc-path for
+        ai-asssisted paragraph on the investigations objectives
+        
+    enhancedprompt, -p2 <options>
+        Generates a enhanced prompt based on arc-path for
+        ai-asssisted paragraph on the investigations objectives
+
+    hybridprompt, -p3 <options>
+        Generates a enhanced + CoT prompt based on arc-path
+        for ai-asssisted paragraph on the investigations objectives
+```

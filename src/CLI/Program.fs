@@ -85,12 +85,12 @@ module CLI =
                     1
                 else 
                     0
-            | Prompt summaryArgs -> 
+            | BasicPrompt summaryArgs -> 
                 let arcPath = summaryArgs.GetResult SummaryArgs.ARC_Directory
                 match ARC.tryLoadAsync(arcPath) |> Async.RunSynchronously  with
                 | Ok arc ->      
                     let prompt =       
-                        summaryPrompt arc 
+                        basicPrompt arc 
                     printfn "%s" (prompt.ToString())
                     0 
                 | Error msgs ->
@@ -98,8 +98,32 @@ module CLI =
                     msgs
                     |> Array.iter (printfn "%s")
                     1
-
-
+            | EnhancedPrompt summaryArgs -> 
+                let arcPath = summaryArgs.GetResult SummaryArgs.ARC_Directory
+                match ARC.tryLoadAsync(arcPath) |> Async.RunSynchronously  with
+                | Ok arc ->      
+                    let prompt =       
+                        enhancedPrompt arc 
+                    printfn "%s" (prompt.ToString())
+                    0 
+                | Error msgs ->
+                    printfn "Could not load ARC from %s:" arcPath
+                    msgs
+                    |> Array.iter (printfn "%s")
+                    1
+            | HybridPrompt summaryArgs -> 
+                let arcPath = summaryArgs.GetResult SummaryArgs.ARC_Directory
+                match ARC.tryLoadAsync(arcPath) |> Async.RunSynchronously  with
+                | Ok arc ->      
+                    let prompt =       
+                        hybridPrompt arc 
+                    printfn "%s" (prompt.ToString())
+                    0 
+                | Error msgs ->
+                    printfn "Could not load ARC from %s:" arcPath
+                    msgs
+                    |> Array.iter (printfn "%s")
+                    1
 
         with
         :? ArguParseException as e ->

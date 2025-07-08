@@ -11,6 +11,7 @@ open Formating
 open TemplateHelpers
 open SummaryTypes
 open ConfigFileTypes
+open StringHelper
 
 module ARCInstances =
     let getTopLevelMetadata (selectISA:ArcInvestigation) : TopLevelMetadata = {
@@ -195,8 +196,6 @@ module Template =    // template part definitions
 
     let createStudyAdditionalDetails (sOV:StudyOverview) : string =
         let sb = StringBuilder()
-
-        sb.AppendLine("### Additional details") |> ignore
         sb.AppendLine("| Meta Data | Description |") |> ignore
         sb.AppendLine("| --------- | ----------- |") |> ignore
         sb.AppendLine($"| Table Count | {sOV.TableCount.Value} |") |> ignore
@@ -204,12 +203,13 @@ module Template =    // template part definitions
         sb.AppendLine($"| Table Names | {tableNamesString} |") |> ignore
         sb.AppendLine($"| Sample Count | {sOV.SampleCount.Value} |") |> ignore
         sb.AppendLine($"| Data File Count | {sOV.DataFileCount.Value} |") |> ignore
-        let laString = String.Join(" , ", sOV.AssociatedAssays)
-        sb.AppendLine($"| Associated assays | {laString} |") |> ignore
-        if sOV.Organisms.IsEmpty = false then
+        if not sOV.AssociatedAssays.IsEmpty then 
+            let asssociatedAssays = join "," (sOV.AssociatedAssays |> List.toArray)
+            sb.AppendLine($"| Associated assays | {asssociatedAssays} |") |> ignore
+        if not sOV.Organisms.IsEmpty then
             let organism = String.Join(" , ", (sOV.Organisms |> List.map (fun oa -> oa.NameText)))
             sb.AppendLine($"| Organisms | _{organism}_ |") |> ignore
-        if sOV.Genotypes.IsEmpty = false then
+        if not sOV.Genotypes.IsEmpty then
             let genotype = String.Join(" , ", (sOV.Genotypes |> List.map (fun oa -> oa.NameText)))
             sb.AppendLine($"| Genotype | _{genotype}_ |") |> ignore
         sb.AppendLine($"| Biological replicates | {sOV.BiologicalReplicateCount} |") |> ignore
@@ -217,6 +217,7 @@ module Template =    // template part definitions
             let tps = String.Join(" , ", sOV.TimepointCount.Value)
             sb.AppendLine($"| Time points | {tps} |") |> ignore
         sb.ToString()
+
 
     let createStudyAnnotationHeaders (sOV:StudyOverview) : string =
         let sb = StringBuilder()
@@ -248,15 +249,13 @@ module Template =    // template part definitions
         if aOV.AssayDescription.IsSome then sb.AppendLine($"### Description\n{aOV.AssayDescription.Value}") |> ignore
         sb.ToString()
 
-
     let createAssayAdditionalDetails (aOV:AssayOverview) : string =
         let sb = StringBuilder()
-        sb.AppendLine("### Additional details") |> ignore 
         sb.AppendLine("| Meta Data | Description |") |> ignore
         sb.AppendLine("| --------- | ----------- |") |> ignore
         if aOV.MeasurementType.IsSome = true then // change to = true
             sb.AppendLine($"| Measurement Type | {aOV.MeasurementType.Value.NameText} |") |> ignore 
-        if aOV.MeasurementDevice.IsEmpty = false then 
+        if not aOV.MeasurementDevice.IsEmpty then 
             sb.AppendLine($"| Measurement Device | {aOV.MeasurementDevice.Head.Name.Value} |") |> ignore 
         if aOV.TechnologyType.IsSome = true then
             sb.AppendLine($"| Technology Type | {aOV.TechnologyType.Value.NameText} |") |> ignore
@@ -265,10 +264,10 @@ module Template =    // template part definitions
         sb.AppendLine($"| Table Names | {tableNamesString} |") |> ignore
         sb.AppendLine($"| Sample Count | {aOV.SampleCount.Value} |") |> ignore
         sb.AppendLine($"| Data File Count | {aOV.DataFileCount.Value} |") |> ignore
-        let lsString = String.Join(" , ", aOV.AssociatedStudies)
-        sb.AppendLine($"| Associated studies | {lsString} |") |> ignore
+        if not aOV.AssociatedStudies.IsEmpty then
+            let associatedStudies= join "," (aOV.AssociatedStudies |> List.toArray)
+            sb.AppendLine($"| Associated studies | {associatedStudies} |") |> ignore
         sb.ToString()
-
     let createAssayAnnotationHeaders (aOV:AssayOverview) : string =
         let sb = StringBuilder()
         sb.AppendLine("### Annotation headers") |> ignore

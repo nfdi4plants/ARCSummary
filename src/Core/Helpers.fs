@@ -124,19 +124,26 @@ module ArcQuerying = // Functions for direct querying such as specific ontology 
                         |> Seq.max
                 | None -> 0
 
-    let getTimepoints (table:ArcTable) = // This function currently accounts for Timepoints that are defined as a Parameter, but some ARCs use Timepoints as a Factor instead
+    let getTimepoints (table:ArcTable) = // updated to account for Parameters and unitized cells
         let selectColumn =
             ArcTable.tryGetColumnByHeaderBy (fun (header:CompositeHeader) -> 
             match header with
-            | CompositeHeader.Parameter oa -> oa.NameText = "Time point"
+            | CompositeHeader.Parameter oa 
+            | CompositeHeader.Factor oa -> oa.NameText = "Time point"
             | _ -> false
             ) table
         match selectColumn with 
-                | Some col ->  
-                        col.Cells
-                        |> Array.map (fun (cell:CompositeCell) -> cell.AsTerm.NameText)
-                        |> Array.distinct
-                        |> Array.length
+                | Some col -> 
+                    col.Cells 
+                    |> Array.choose(fun (cell:CompositeCell) ->
+                        match cell with 
+                        | cell when cell.isTerm -> Some cell.AsTerm.NameText
+                        | cell when cell.isUnitized -> 
+                            Some (cell.AsUnitized.ToString()) 
+                        | _ -> None 
+                    )
+                    |> Array.distinct
+                    |> Array.length
                 | None -> 0
 
     let getSampleCount (arcTables:ResizeArray<ArcTable>) =

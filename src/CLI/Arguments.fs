@@ -41,11 +41,15 @@ module mainCLI =
     and CLIArgs =
         | [<CliPrefix(CliPrefix.None)>] Summary of ParseResults<SummaryArgs>
         | [<CliPrefix(CliPrefix.None)>] SummaryMR of ParseResults<SummaryMRArgs>       
-        | [<CliPrefix(CliPrefix.None)>] Prompt of ParseResults<SummaryArgs>    
+        | [<CliPrefix(CliPrefix.None)>] [<AltCommandLine("-p1")>] BasicPrompt of ParseResults<SummaryArgs>    
+        | [<CliPrefix(CliPrefix.None)>] [<AltCommandLine("-p2")>] EnhancedPrompt of ParseResults<SummaryArgs> 
+        | [<CliPrefix(CliPrefix.None)>] [<AltCommandLine("-p3")>] HybridPrompt of ParseResults<SummaryArgs> 
 
         interface IArgParserTemplate with
             member s.Usage =
                 match s with 
                 | Summary _ -> "Updates your README.md to current version"
                 | SummaryMR _ -> "Pushes Updated Summary to side branch and opens a MergeRequest onto main branch."    
-                | Prompt _ -> "Generates a prompt based on arc-path for ai-asssisted paragraph on the investigations objectives"
+                | BasicPrompt _ -> "Generates a basic prompt based on arc-path for ai-asssisted paragraph on the investigations objectives"
+                | EnhancedPrompt _ -> "Generates a enhanced prompt based on arc-path for ai-asssisted paragraph on the investigations objectives"
+                | HybridPrompt _ -> "Generates a enhanced + CoT prompt based on arc-path for ai-asssisted paragraph on the investigations objectives"

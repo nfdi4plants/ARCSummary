@@ -57,7 +57,7 @@ module READMEAutomation = // better name
                                 match subSec with
                                 | StudySection.Title -> createStudyTitle sOV
                                 | StudySection.Description -> createStudyDescription sOV
-                                | StudySection.AdditionalDetails -> createStudyAdditionalDetails sOV
+                                | StudySection.AdditionalDetails -> $"### Additional details \n {createStudyAdditionalDetails sOV}"
                                 | StudySection.AnnotationHeaders -> createStudyAnnotationHeaders sOV
                             )
                             |> String.concat "\n"
@@ -79,7 +79,7 @@ module READMEAutomation = // better name
                                 match subSec with
                                 | AssaySection.Title -> createAssayTitle aOV
                                 | AssaySection.Description -> createAssayDescription aOV
-                                | AssaySection.AdditionalDetails -> createAssayAdditionalDetails aOV
+                                | AssaySection.AdditionalDetails -> $"### Additional details \n {createAssayAdditionalDetails aOV}"
                                 | AssaySection.AnnotationHeaders -> createAssayAnnotationHeaders aOV
                             )
                             |> String.concat "\n"
