@@ -47,6 +47,7 @@ module SummaryTypes =
         MeasurementType : OntologyAnnotation option ; 
         MeasurementDevice : OntologyAnnotation list  ;    
         TechnologyType : OntologyAnnotation option ;
+        TechnologyPlatform : OntologyAnnotation option ;
         TableCount: int option ;
         TableNames: string list ; 
         Characteristics : OntologyAnnotation list ;   

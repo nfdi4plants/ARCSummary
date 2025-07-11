@@ -422,14 +422,19 @@ module ArcQuerying = // Functions for direct querying such as specific ontology 
             collectAllTableIDs investigation
         allTableIDs
         |> List.collect(fun (id:string,table:ArcTable) -> getPreviousTablesForTable table id allTableIDs)
+        
 
     let allStudyIDNodes (nodes:string list) =
         nodes 
         |> List.filter(fun (id:string) -> id.StartsWith("Study"))
+        |> List.toArray
+        |> join ","
 
     let allAssayIDNodes (nodes:string list) =
         nodes 
         |> List.filter(fun (id:string) -> id.StartsWith("Assay"))
+        |> List.toArray
+        |> join ","
 
 
 

@@ -131,16 +131,18 @@ module Prompt =
         sb.AppendLine($"The found assay are listed respective table name alongside the ontology information here: {getEnhancedAssayPrompt investigation} ") |> ignore
         sb.AppendLine($"This workflow highlights with --> which AssayIDs have matching output to input of another TableID: \n {allAssayIDNodes (getAllTableNodes investigation)}") |> ignore
         sb.AppendLine("Summarize in a short paragraph suitable for a methods section.")
-    
-    
+
+
     let hybridPrompt(investigation:ArcInvestigation) = 
         let sb = StringBuilder()
+        if not investigation.Description.IsNone then
+            sb.AppendLine($"### Investigation Description: \n {investigation.Description.Value}") |> ignore
         sb.AppendLine($"The following overview table contains metadata of the entire investigation: {createOverviewTable (getTopLevelMetadata investigation)}") |> ignore
         sb.AppendLine($"The found studies are listed with their respective id consisting of Study_Identifier_TableName alongside the ontology information here: {getEnhancedStudyPrompt investigation}") |> ignore
         sb.AppendLine($"This workflow highlights with --> which StudyIDs have matching output to input of another TableID: \n {allStudyIDNodes (getAllTableNodes investigation)} \n") |> ignore
         sb.AppendLine($"The found assays are listed with their respective id consisting of Assay_Identifier_TableName alongside the ontology information here: {getEnhancedAssayPrompt investigation} ") |> ignore // not uniform to studys
         sb.AppendLine($"This workflow highlights with --> which AssayIDs have matching output to input of another TableID: \n {allAssayIDNodes (getAllTableNodes investigation)} \n") |> ignore
-    
+
         sb.AppendLine("## INSTRUCTIONS (CHAIN-OF-THOUGHT)") |> ignore
         sb.AppendLine("1. **Identify the objectives based on key variables such as factors of the study**") |> ignore
         sb.AppendLine("2. **Infer the experimental design**: How are different conditions being compared?") |> ignore
@@ -150,7 +152,7 @@ module Prompt =
         sb.AppendLine("- **Paragraph 1 (2-3 sentences)**: State the main experimental objectives from 1.") |> ignore 
         sb.AppendLine("- **Paragraph 2 (5-7 sentences)**: Describe the experimental design and methodology in appropriate scientific language") |> ignore
         sb.AppendLine("6. Use any domain-specific vocabulary from the Description fields to improve specificity if available. \n") |> ignore
-    
+
         sb.AppendLine("## CONSTRAINTS") |> ignore
         sb.AppendLine("- Use formal scientific language appropriate for the methods section or abstract.") |> ignore
         sb.AppendLine("- Keep the output concise but specific.") |> ignore

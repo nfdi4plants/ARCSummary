@@ -55,7 +55,8 @@ module ARCInstances =
         AssayDescription = assay.Description 
         MeasurementType = assay.MeasurementType
         MeasurementDevice = assay.Tables |> ResizeArray.collect getMeasurementDevice |> Seq.toList    
-        TechnologyType = assay.TechnologyType                                                    
+        TechnologyType = assay.TechnologyType         
+        TechnologyPlatform = assay.TechnologyPlatform                                           
         TableCount = Some assay.TableCount                        
         TableNames = assay.TableNames
         Characteristics = assay.Tables |> Seq.map ArcTable.getAllCharacteristics |> Seq.concat |> Seq.distinct |> Seq.toList
@@ -81,14 +82,14 @@ module Template =    // template part definitions
     let createInvTitle (tlm:TopLevelMetadata) : string =
         let sb = StringBuilder()
 
-        if tlm.Title.IsSome then 
+        if not tlm.Title.IsNone then 
             sb.AppendLine($"# {tlm.Title.Value}") |> ignore
         else sb.AppendLine("# Please add a valid title for your ArcInvestigation") |> ignore
         sb.ToString()
 
     let createInvDescription (tlm:TopLevelMetadata) : string =
         let sb = StringBuilder()
-        if tlm.Description.IsSome then
+        if not tlm.Description.IsNone then
             sb.AppendLine($"### Description\n{tlm.Description.Value}") |> ignore
         else sb.AppendLine("### Please add a valid description to your ArcInvestigation") |> ignore
 
@@ -97,7 +98,7 @@ module Template =    // template part definitions
     let createContactsSection (tlm:TopLevelMetadata) : string = // Optional
         let sb = StringBuilder()
 
-        if tlm.Contacts.IsEmpty = false then           
+        if not tlm.Contacts.IsEmpty then           
             sb.AppendLine("## Contacts \n ") |> ignore 
             sb.AppendLine("| Names | Email | Address | Affiliation | ORCID |") |> ignore 
             sb.AppendLine("| ----- | ----- | ------- | ----------- | ----- |") |> ignore 
@@ -117,7 +118,7 @@ module Template =    // template part definitions
     let createPublicationsSection (tlm:TopLevelMetadata) : string = // Optional
         let sb = StringBuilder()
 
-        if tlm.Publications.IsEmpty = false then 
+        if not tlm.Publications.IsEmpty then 
             sb.AppendLine("## Publication \n") |> ignore
             sb.AppendLine("| Meta Data | Description |") |> ignore
             sb.AppendLine("| ----------- | ----------- |") |> ignore
@@ -159,12 +160,10 @@ module Template =    // template part definitions
         sb.AppendLine("### Overview Table") |> ignore
         sb.AppendLine("| Meta Data | Description |") |> ignore
         sb.AppendLine("| --------- | ----------- |") |> ignore
-        if tlm.SubmissionDate.IsSome then
+        if not tlm.SubmissionDate.IsNone then
             sb.AppendLine($"| Submission Date | {tlm.SubmissionDate.Value} |") |> ignore
-        else sb.AppendLine("| Submission Date  | tba |") |> ignore
-        if tlm.PublicReleaseDate.IsSome then
+        if not tlm.PublicReleaseDate.IsNone then
             sb.AppendLine($"| Public Release Date | {tlm.PublicReleaseDate.Value} |") |> ignore
-        else sb.AppendLine("| Public Release Date | tba |") |> ignore
         let studyIDs = String.Join(" , ", tlm.StudyIdentifiers)
         sb.AppendLine($"| Study identifiers | {studyIDs} |") |> ignore
         sb.AppendLine($"| Study Count | {tlm.StudyCount.Value} |") |> ignore
@@ -186,12 +185,12 @@ module Template =    // template part definitions
     
     let createStudyTitle (sOV:StudyOverview) : string =
         let sb = StringBuilder()
-        if sOV.StudyTitle.IsSome then sb.AppendLine($"## {sOV.StudyTitle.Value}") |> ignore
+        if not sOV.StudyTitle.IsNone then sb.AppendLine($"## {sOV.StudyTitle.Value}") |> ignore
         sb.ToString()
     
     let createStudyDescription (sOV:StudyOverview) : string =
         let sb = StringBuilder()
-        if sOV.StudyDescription.IsSome then sb.AppendLine($"### Description\n{sOV.StudyDescription.Value}") |> ignore
+        if not sOV.StudyDescription.IsNone then sb.AppendLine($"### Description\n{sOV.StudyDescription.Value}") |> ignore
         sb.ToString()
 
     let createStudyAdditionalDetails (sOV:StudyOverview) : string =
@@ -222,13 +221,13 @@ module Template =    // template part definitions
     let createStudyAnnotationHeaders (sOV:StudyOverview) : string =
         let sb = StringBuilder()
         sb.AppendLine("### Annotation headers") |> ignore
-        if sOV.Characteristics.IsEmpty = false then 
+        if not sOV.Characteristics.IsEmpty then 
             let charString = getHyperlinks sOV.Characteristics
             sb.AppendLine($"\n**Characteristics**: {charString}") |> ignore
-        if sOV.Parameters.IsEmpty = false then 
+        if not sOV.Parameters.IsEmpty then 
             let paramsString = getHyperlinks sOV.Parameters
             sb.AppendLine($"\n**Parameters**: {paramsString}") |> ignore
-        if sOV.Factors.IsEmpty = false then 
+        if not sOV.Factors.IsEmpty then 
             let factString = getHyperlinks sOV.Factors    
             sb.AppendLine($"\n**Factors**: {factString}") |> ignore
         sb.ToString()
@@ -241,24 +240,26 @@ module Template =    // template part definitions
     
     let createAssayTitle (aOV:AssayOverview) : string =
         let sb = StringBuilder()
-        if aOV.AssayTitle.IsSome then sb.AppendLine($"## {aOV.AssayTitle.Value}") |> ignore
+        if not aOV.AssayTitle.IsNone then sb.AppendLine($"## {aOV.AssayTitle.Value}") |> ignore
         sb.ToString()
 
     let createAssayDescription (aOV:AssayOverview) : string =
         let sb = StringBuilder()
-        if aOV.AssayDescription.IsSome then sb.AppendLine($"### Description\n{aOV.AssayDescription.Value}") |> ignore
+        if not aOV.AssayDescription.IsNone then sb.AppendLine($"### Description\n{aOV.AssayDescription.Value}") |> ignore
         sb.ToString()
 
     let createAssayAdditionalDetails (aOV:AssayOverview) : string =
         let sb = StringBuilder()
         sb.AppendLine("| Meta Data | Description |") |> ignore
         sb.AppendLine("| --------- | ----------- |") |> ignore
-        if aOV.MeasurementType.IsSome = true then // change to = true
+        if not aOV.MeasurementType.IsNone then 
             sb.AppendLine($"| Measurement Type | {aOV.MeasurementType.Value.NameText} |") |> ignore 
         if not aOV.MeasurementDevice.IsEmpty then 
             sb.AppendLine($"| Measurement Device | {aOV.MeasurementDevice.Head.Name.Value} |") |> ignore 
-        if aOV.TechnologyType.IsSome = true then
+        if not aOV.TechnologyType.IsNone then
             sb.AppendLine($"| Technology Type | {aOV.TechnologyType.Value.NameText} |") |> ignore
+        if not aOV.TechnologyPlatform.IsNone then 
+            sb.AppendLine($"| Technology Platform | {aOV.TechnologyPlatform.Value.NameText} |") |> ignore
         sb.AppendLine($"| Table Count | {aOV.TableCount.Value} |") |> ignore
         let tableNamesString = String.Join(" , ", aOV.TableNames)
         sb.AppendLine($"| Table Names | {tableNamesString} |") |> ignore
@@ -271,13 +272,13 @@ module Template =    // template part definitions
     let createAssayAnnotationHeaders (aOV:AssayOverview) : string =
         let sb = StringBuilder()
         sb.AppendLine("### Annotation headers") |> ignore
-        if aOV.Characteristics.IsEmpty = false then 
+        if not aOV.Characteristics.IsEmpty then 
             let charString = getHyperlinks aOV.Characteristics
             sb.AppendLine($"\n**Characteristics**: {charString}") |> ignore
-        if aOV.Parameters.IsEmpty = false then 
+        if not aOV.Parameters.IsEmpty then 
             let paramsString = getHyperlinks aOV.Parameters
             sb.AppendLine($"\n**Parameters**: {paramsString}") |> ignore
-        if aOV.Factors.IsEmpty = false then 
+        if not aOV.Factors.IsEmpty then 
             let factString = getHyperlinks aOV.Factors    
             sb.AppendLine($"\n**Factors**: {factString}") |> ignore
         sb.ToString()
