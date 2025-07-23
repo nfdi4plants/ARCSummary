@@ -118,44 +118,64 @@ open PromptHelper
 module Prompt =
     let basicPrompt (investigation:ArcInvestigation) = 
         let sb = StringBuilder()
-        sb.AppendLine("Summarize the biological and experimental objectives of the studies and assays below. Extract the key experimental factors and their values from the metadata in order to construct a 2-3 sentence summary of the objectives.") |> ignore
-        sb.AppendLine($"The found studies are listed with their respective id consisting of Study_Identifier_TableName alongside the ontology information here: {getBasicStudyPrompt investigation}") |> ignore
-        sb.AppendLine($"The found assay are listed respective table name alongside the ontology information here: {getBasicAssayPrompt investigation} ") |> ignore
-        sb.AppendLine("Summarize in a short paragraph suitable for a methods section.")
+        sb.AppendLine("
+        Summarize the biological and experimental objectives of the following Investigation based on the available metadata of its Studies and Assays.
+        You will receive identifiers, ontology annotations, and descriptive metadata for each component.
+        Extract relevant experimental factors and variables to construct a structured summary in two paragraphs:
+        - **Paragraph 1 (2-3 sentences):** Summarize the experimental objective of the Investigation
+        - **Paragraph 2 (5-7 sentences):** Describe the experimental design and methodology
+        Employ formal scientific language appropriate for an abstract and methods section.") |> ignore
+        if not investigation.Description.IsNone then
+            sb.AppendLine($"### Investigation Description: \n {investigation.Description.Value}") |> ignore
+        sb.AppendLine($"### Top-Level-Metadata: \n {createOverviewTable (getTopLevelMetadata investigation)}") |> ignore
+        sb.AppendLine($"{getEnhancedStudyPrompt investigation}") |> ignore
+        sb.AppendLine($"{getEnhancedAssayPrompt investigation}") 
+
 
     let enhancedPrompt (investigation:ArcInvestigation) =
         let sb = StringBuilder()
-        sb.AppendLine("Summarize the biological and experimental objectives of the studies and assays below. Extract the key experimental factors and their values from the metadata in order to construct a 2-3 sentence summary of the objectives.") |> ignore
-        sb.AppendLine($"The found studies are listed with their respective id consisting of Study_Identifier_TableName alongside the ontology information here: {getEnhancedStudyPrompt investigation}") |> ignore
-        sb.AppendLine($"This workflow highlights with --> which StudyIDs have matching output to input of another TableID: \n {allStudyIDNodes (getAllTableNodes investigation)}") |> ignore
-        sb.AppendLine($"The found assay are listed respective table name alongside the ontology information here: {getEnhancedAssayPrompt investigation} ") |> ignore
-        sb.AppendLine($"This workflow highlights with --> which AssayIDs have matching output to input of another TableID: \n {allAssayIDNodes (getAllTableNodes investigation)}") |> ignore
-        sb.AppendLine("Summarize in a short paragraph suitable for a methods section.")
+        sb.AppendLine("
+        Summarize the biological and experimental objectives of the following Investigation based on the available metadata of its Studies and Assays.
+        You will receive identifiers, ontology annotations, and descriptive metadata for each component.
+        Extract relevant experimental factors and variables to construct a structured summary in two paragraphs:
+        - **Paragraph 1 (2-3 sentences):** Summarize the experimental objective of the Investigation
+        - **Paragraph 2 (5-7 sentences):** Describe the experimental design and methodology
+        Employ formal scientific language appropriate for an abstract and methods section.") |> ignore
+        if not investigation.Description.IsNone then
+            sb.AppendLine($"### Investigation Description: \n {investigation.Description.Value}") |> ignore
+        sb.AppendLine($"### Top-Level-Metadata: \n {createOverviewTable (getTopLevelMetadata investigation)}") |> ignore
+        sb.AppendLine($"{getEnhancedStudyPrompt investigation}") |> ignore
+        sb.AppendLine($"### Study Table Associations (indicate with --> an input/output link): \n {allStudyIDNodes (getAllTableNodes investigation)}") |> ignore
+        sb.AppendLine($"{getEnhancedAssayPrompt investigation}") |> ignore
+        sb.AppendLine($"### Assay Table Associations (indicate with --> an input/output link): \n {allAssayIDNodes (getAllTableNodes investigation)}") 
+
 
 
     let hybridPrompt(investigation:ArcInvestigation) = 
         let sb = StringBuilder()
         if not investigation.Description.IsNone then
             sb.AppendLine($"### Investigation Description: \n {investigation.Description.Value}") |> ignore
-        sb.AppendLine($"The following overview table contains metadata of the entire investigation: {createOverviewTable (getTopLevelMetadata investigation)}") |> ignore
-        sb.AppendLine($"The found studies are listed with their respective id consisting of Study_Identifier_TableName alongside the ontology information here: {getEnhancedStudyPrompt investigation}") |> ignore
-        sb.AppendLine($"This workflow highlights with --> which StudyIDs have matching output to input of another TableID: \n {allStudyIDNodes (getAllTableNodes investigation)} \n") |> ignore
-        sb.AppendLine($"The found assays are listed with their respective id consisting of Assay_Identifier_TableName alongside the ontology information here: {getEnhancedAssayPrompt investigation} ") |> ignore // not uniform to studys
-        sb.AppendLine($"This workflow highlights with --> which AssayIDs have matching output to input of another TableID: \n {allAssayIDNodes (getAllTableNodes investigation)} \n") |> ignore
+        sb.AppendLine($"### Top-Level-Metadata: \n {createOverviewTable (getTopLevelMetadata investigation)}") |> ignore
+        sb.AppendLine($"{getEnhancedStudyPrompt investigation}") |> ignore
+        sb.AppendLine($"### Study Table Associations (indicate with --> an input/output link): \n {allStudyIDNodes (getAllTableNodes investigation)} \n") |> ignore
+        sb.AppendLine($"{getEnhancedAssayPrompt investigation} ") |> ignore 
+        sb.AppendLine($"### Assay Table Associations (indicate with --> an input/output link): \n {allAssayIDNodes (getAllTableNodes investigation)} \n") |> ignore
 
-        sb.AppendLine("## INSTRUCTIONS (CHAIN-OF-THOUGHT)") |> ignore
-        sb.AppendLine("1. **Identify the objectives based on key variables such as factors of the study**") |> ignore
-        sb.AppendLine("2. **Infer the experimental design**: How are different conditions being compared?") |> ignore
-        sb.AppendLine("3. **Map the experimental workflow** using the `-->` structure from Study to Assay.") |> ignore
-        sb.AppendLine("4. **Summarize key methods used** in harvesting, extraction, and measurement stages.") |> ignore
-        sb.AppendLine("5. Combine all insights into a cohesive summary structured in two paragraphs:") |> ignore
-        sb.AppendLine("- **Paragraph 1 (2-3 sentences)**: State the main experimental objectives from 1.") |> ignore 
-        sb.AppendLine("- **Paragraph 2 (5-7 sentences)**: Describe the experimental design and methodology in appropriate scientific language") |> ignore
-        sb.AppendLine("6. Use any domain-specific vocabulary from the Description fields to improve specificity if available. \n") |> ignore
-
-        sb.AppendLine("## CONSTRAINTS") |> ignore
-        sb.AppendLine("- Use formal scientific language appropriate for the methods section or abstract.") |> ignore
-        sb.AppendLine("- Keep the output concise but specific.") |> ignore
-        sb.AppendLine("- Emphasize treatment factors, organism studied, and downstream assays.") |> ignore
-        sb.AppendLine("- Avoid simply listing assays or instruments unless relevant to the objective or method.") |> ignore
-        sb.AppendLine("- Weight content as follows: **[IMPORTANT] Experimental objectives → [MEDIUM] Methodology → [LESS] Equipment details**.") 
+        sb.AppendLine("
+        ### Instructions 
+        1. Identify the objectives based on key variables such as factors of the study
+        2. Infer the experimental design: How are different conditions being compared?
+        3. Account for the relationships between Studies and Assays based on the association of tables.
+        4. Summarize key methods used in harvesting, extraction, and measurement stages.
+        5. Use domain-specific vocabulary from the Description fields if available.
+        6. Combine all insights into a cohesive summary structured in two paragraphs:
+            - **Paragraph 1 (2-3 sentences)**: State the main experimental objectives of the Investigation
+            - **Paragraph 2 (5-7 sentences)**: Describe the experimental design and methodology
+        
+        ### Constraints
+            - Use formal scientific language appropriate for an abstract and methods section.
+            - Pay attention to relevance, coherence, factual consistency and fluency.
+            - Emphasize treatment factors, organism, and downstream assays.
+            - Avoid simply listing assays or instruments unless relevant to the objective or method.
+            - Weight content as follows: **[IMPORTANT] Experimental objectives → [MEDIUM] Methodology → [LESS] Equipment details**.
+        ") 

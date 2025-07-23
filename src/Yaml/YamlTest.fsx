@@ -836,7 +836,13 @@
 //     Factors/Key experimental variables include: 
 //     "
 // consider including study/assay description if available
-
+// consider adding format specifiers to interpolated strings for type safety
+// Represent DOI as Badge? Applicable?
+// Validation package for readme?
+// Publish on nuget
+// Flag in the Config File Citationstyle for Publication for Citable Formats
+// Include organism ontology into field for getOrganisms
+// Rework Publication section and make fields optional
 
 
 

@@ -157,7 +157,7 @@ module Template =    // template part definitions
     let createOverviewTable (tlm:TopLevelMetadata) : string =
         let sb = StringBuilder()
         
-        sb.AppendLine("### Overview Table") |> ignore
+        //sb.AppendLine("### Overview Table") |> ignore implement later on
         sb.AppendLine("| Meta Data | Description |") |> ignore
         sb.AppendLine("| --------- | ----------- |") |> ignore
         if not tlm.SubmissionDate.IsNone then
