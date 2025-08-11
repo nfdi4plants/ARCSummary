@@ -8,7 +8,7 @@ open System.Text
 open Option
 open ArcQuerying
 open Formating
-open TemplateHelpers
+open ProvenanceGraph
 open SummaryTypes
 open ConfigFileTypes
 open StringHelper
@@ -38,7 +38,7 @@ module ARCInstances =
         Genotypes = study.Tables |> ResizeArray.collect getGenotype |> Seq.toList
         BiologicalReplicateCount = study.Tables |> ResizeArray.map getReplicates |> Seq.max
         TimepointCount = study.Tables |> Seq.map getTimepoints |> Seq.filter (fun x -> x > 0) |> Seq.length |> Some //|> Seq.toList
-        SampleCount = Some (study.Tables |> getSampleCount)
+        SampleCount = study.Tables |> getSampleCount |> Seq.toList
         Parameters = study.Tables |> Seq.map ArcTable.getAllParameters |> Seq.concat |> Seq.distinct |> Seq.toList
         Factors = study.Tables |> Seq.map ArcTable.getAllFactors |> Seq.concat |> Seq.distinct |> Seq.toList
         AssociatedAssays = associatedAssaysForStudy investigation study
@@ -46,7 +46,7 @@ module ARCInstances =
         PreviousStudyIdentifiers = getPreviousStudyIdsForStudy study investigation
         FollowingAssayIdentifiers = getFollowingAssayIdsForStudy study investigation
         FollowingStudyIdentifiers = getFollowingStudyIdsForStudy study investigation
-        DataFileCount = Some (study.Tables |> ResizeArray.map getDataFiles |> Seq.sum)
+        DataFileCount = study.Tables |> Seq.map getDataFiles |> Seq.toList
     } 
 
     let getAssayOverview (investigation:ArcInvestigation) (assay:ArcAssay) = {  
@@ -60,7 +60,7 @@ module ARCInstances =
         TableCount = Some assay.TableCount                        
         TableNames = assay.TableNames
         Characteristics = assay.Tables |> Seq.map ArcTable.getAllCharacteristics |> Seq.concat |> Seq.distinct |> Seq.toList
-        SampleCount = Some (assay.Tables |> getSampleCount)                                                                                                          
+        SampleCount = assay.Tables |> getSampleCount |> Seq.toList                                                                                                          
         Parameters =  assay.Tables |> Seq.map ArcTable.getAllParameters |> Seq.concat |> Seq.distinct |> Seq.toList
         Factors = assay.Tables |> Seq.map ArcTable.getAllFactors |> Seq.concat |> Seq.distinct |> Seq.toList
         AssociatedStudies = associatedStudiesForAssay investigation assay
@@ -68,7 +68,7 @@ module ARCInstances =
         PreviousStudyIdentifiers = getPreviousStudyIdsForAssay assay investigation
         FollowingAssayIdentifiers = getFollowingAssayIdsForAssay assay investigation
         FollowingStudyIdentifiers = getFollowingStudyIdsForAssay assay investigation
-        DataFileCount = Some (assay.Tables |> ResizeArray.map getDataFiles |> Seq.sum)
+        DataFileCount = assay.Tables |> Seq.map getDataFiles |> Seq.toList
     }
 
     // let kwfjnfk (aO:AssayOverview) =
@@ -150,14 +150,13 @@ module Template =    // template part definitions
         let sb = StringBuilder()
 
         let relationshipGraph = getRelationshipGraph investigation assayOVs studyOVs
-        sb.AppendLine($"## Relationships between Assays and Studies \n {relationshipGraph} ")|> ignore
+        sb.AppendLine($"## Provenance graph Studies and Assays \n {relationshipGraph} ")|> ignore
         // sb.AppendLine("_This flowchart highlights the relationship between assays (highlighted in blue) and studies (highlighted in green)_") |> ignore
         sb.ToString()
 
     let createOverviewTable (tlm:TopLevelMetadata) : string =
         let sb = StringBuilder()
         
-        //sb.AppendLine("### Overview Table") |> ignore implement later on
         sb.AppendLine("| Meta Data | Description |") |> ignore
         sb.AppendLine("| --------- | ----------- |") |> ignore
         if not tlm.SubmissionDate.IsNone then
@@ -198,10 +197,12 @@ module Template =    // template part definitions
         sb.AppendLine("| Meta Data | Description |") |> ignore
         sb.AppendLine("| --------- | ----------- |") |> ignore
         sb.AppendLine($"| Table Count | {sOV.TableCount.Value} |") |> ignore
-        let tableNamesString = String.Join(" , ", sOV.TableNames)
+        let tableNamesString = String.Join(", ", sOV.TableNames)
         sb.AppendLine($"| Table Names | {tableNamesString} |") |> ignore
-        sb.AppendLine($"| Sample Count | {sOV.SampleCount.Value} |") |> ignore
-        sb.AppendLine($"| Data File Count | {sOV.DataFileCount.Value} |") |> ignore
+        let sampleCountString = String.Join(", ", sOV.SampleCount)
+        sb.AppendLine($"| Sample Count | {sampleCountString} |") |> ignore
+        let dataFileCountString = String.Join(", " , sOV.DataFileCount)
+        sb.AppendLine($"| Data File Count | {dataFileCountString} |") |> ignore
         if not sOV.AssociatedAssays.IsEmpty then 
             let asssociatedAssays = join "," (sOV.AssociatedAssays |> List.toArray)
             sb.AppendLine($"| Associated assays | {asssociatedAssays} |") |> ignore
@@ -261,10 +262,12 @@ module Template =    // template part definitions
         if not aOV.TechnologyPlatform.IsNone then 
             sb.AppendLine($"| Technology Platform | {aOV.TechnologyPlatform.Value.NameText} |") |> ignore
         sb.AppendLine($"| Table Count | {aOV.TableCount.Value} |") |> ignore
-        let tableNamesString = String.Join(" , ", aOV.TableNames)
+        let tableNamesString = String.Join(", ", aOV.TableNames)
         sb.AppendLine($"| Table Names | {tableNamesString} |") |> ignore
-        sb.AppendLine($"| Sample Count | {aOV.SampleCount.Value} |") |> ignore
-        sb.AppendLine($"| Data File Count | {aOV.DataFileCount.Value} |") |> ignore
+        let sampleCountString = String.Join(", ", aOV.SampleCount)
+        sb.AppendLine($"| Sample Count | {sampleCountString} |") |> ignore
+        let dataFileCountString = String.Join(", ", aOV.DataFileCount)
+        sb.AppendLine($"| Data File Count | {dataFileCountString} |") |> ignore
         if not aOV.AssociatedStudies.IsEmpty then
             let associatedStudies= join "," (aOV.AssociatedStudies |> List.toArray)
             sb.AppendLine($"| Associated studies | {associatedStudies} |") |> ignore
@@ -305,8 +308,10 @@ module Template =    // template part definitions
 
             for sec in sections do
                 match sec with 
-                | Section.ISAGraph -> // no check if Empty 
-                    sb.AppendLine("- [ISA Graph](#relationships-between-assays-and-studies)") |> ignore
+                | Section.ProvenanceGraph ProvenanceGraphSection.AsISA -> // no check if Empty 
+                    sb.AppendLine("- [Provenance Graph](#provenance-graph-studies-and-assays)") |> ignore
+                | Section.ProvenanceGraph ProvenanceGraphSection.AsArcTables ->
+                    sb.AppendLine("- [Provenance Graph](#provenance-graph-of-arctables)") |> ignore
                 | Section.OverviewTable -> // no check if Empty 
                     sb.AppendLine("- [Overview Table](#overview-table)") |> ignore
 

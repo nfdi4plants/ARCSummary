@@ -29,6 +29,9 @@ module Formating =
         Regex.Replace(input, @"#\d+", "")
     let removeUnderscoreAndNumbers (input:string) =
         Regex.Replace(input, @"_\d+", "")
+    let removeWhitespace (input:string) =
+        Regex.Replace(input, @"\s+", "_")
+
 
     let getHyperlinks (annotationheaders:list<OntologyAnnotation>) = 
         let formated =
@@ -148,8 +151,8 @@ module ArcQuerying = // Functions for direct querying such as specific ontology 
 
     let getSampleCount (arcTables:ResizeArray<ArcTable>) =
         arcTables
-        |> ResizeArray.map (fun (table:ArcTable) -> table.RowCount)
-        |> Seq.max // if samples occur repeatedly there might be a need for Seq.distinct here
+        |> Seq.map (fun (table:ArcTable) -> table.RowCount)
+        //|> Seq.distinct // listed per distinct table values
 
     let getDataFiles (table:ArcTable) =
         let selectColumn =
@@ -162,8 +165,13 @@ module ArcQuerying = // Functions for direct querying such as specific ontology 
         match selectColumn with 
                 | Some col ->  
                         col.Cells
-                        |> Array.length
+                        |> Seq.choose (fun cell ->
+                            cell.AsData.FilePath
+                        ) 
+                        |> Seq.length 
                 | None -> 0
+
+        // ARC("ndnd").MakeDataFilesAbsolute
 
     let getOntologyListByHeaderOntology (table : ArcTable) (ontologyName : string) = 
             let isOntologyHeader (header : CompositeHeader)= 
@@ -179,8 +187,20 @@ module ArcQuerying = // Functions for direct querying such as specific ontology 
                     |> List.ofArray
             | None -> []
 
-    let getOrganisms (table:ArcTable) =
-        getOntologyListByHeaderOntology table "Organism"
+    let getOrganisms (table:ArcTable) = // changed to include both upper and lower
+            let isOntologyHeader (header : CompositeHeader)= 
+                    match ArcTable.tryTerm header with
+                    | Some oa -> oa.NameText.ToLower() = "organism" 
+                    | None -> false     
+            let colOption = ArcTable.tryGetColumnByHeaderBy isOntologyHeader table
+            match colOption with 
+            | Some col ->  
+                    col.Cells
+                    |> Array.map (fun (cell:CompositeCell) -> cell.AsTerm)
+                    |> Array.distinct
+                    |> List.ofArray
+            | None -> []
+
 
     let getMeasurementDevice (table:ArcTable) =
         getOntologyListByHeaderOntology table "Measurement Device"
@@ -221,6 +241,7 @@ module ArcQuerying = // Functions for direct querying such as specific ontology 
                 tableColumnsAreEqual preceedingTable succeedingTable
             )
         )
+
 
     let associatedStudiesForAssay (investigation:ArcInvestigation) (assay:ArcAssay) =
         investigation.Studies
@@ -350,8 +371,9 @@ module ArcQuerying = // Functions for direct querying such as specific ontology 
             else None
         )
 
-    let getAllOntologyInfos (headers: string list) (table:ArcTable) =  
+    let getAllOntologyInfos (headers: string list) (table:ArcTable) =  // spaghetti
         if not headers.IsEmpty then
+
             headers
             |> List.choose(fun (header:string) -> 
                 let cellStrings : string array =            
@@ -377,8 +399,16 @@ module ArcQuerying = // Functions for direct querying such as specific ontology 
                                 else "" )
                             |> Array.filter (fun s -> not (String.IsNullOrWhiteSpace s))
                         if not (Array.isEmpty vals) then
-                            let joined = String.concat ", " vals
-                            Some (String.Join(": ", key, joined))
+                            if vals.Length < 20 then
+                                let joined = String.concat ", " vals
+                                Some (String.Join(": ", key, joined))
+                            else 
+                                let joined = 
+                                    let head = vals |> List.ofArray |> List.head
+                                    let last = vals |> List.ofArray |> List.last
+                                    let count = vals.Length - 2
+                                    $"{head} ... {last} +{count} more"
+                                Some (String.Join(": ", key, joined))
                         else None 
                 )
                 let resultingHeader = join "," grouped
@@ -406,13 +436,13 @@ module ArcQuerying = // Functions for direct querying such as specific ontology 
             investigation.Studies
             |> Seq.collect(fun (study:ArcStudy) ->
                 study.Tables 
-                |> Seq.map(fun (table:ArcTable) -> $"Study_{study.Identifier}_{table.Name}",table)
+                |> Seq.map(fun (table:ArcTable) -> $"Study_{study.Identifier}_{removeWhitespace table.Name}",table)
             )
         let assayTables =
             investigation.Assays
             |> Seq.collect(fun (assay:ArcAssay) ->
                 assay.Tables 
-                |> Seq.map(fun (table:ArcTable) -> $"Assay_{assay.Identifier}_{table.Name}",table)
+                |> Seq.map(fun (table:ArcTable) -> $"Assay_{assay.Identifier}_{removeWhitespace table.Name}",table)
             )
         Seq.append studyTables assayTables
         |> List.ofSeq
@@ -436,12 +466,80 @@ module ArcQuerying = // Functions for direct querying such as specific ontology 
         |> List.toArray
         |> join ","
 
+open ArcQuerying
+
+module ProvenanceGraph = 
+
+    let getNodeDefs (investigation:ArcInvestigation) = 
+        let studyTables = 
+            investigation.Studies
+            |> Seq.collect(fun (study:ArcStudy) ->
+                study.Tables 
+                |> Seq.map(fun (table:ArcTable) -> 
+                $"Study_{removeWhitespace study.Identifier}_{removeWhitespace table.Name}[\"{removeWhitespace study.Identifier}_{removeWhitespace table.Name}\"];") 
+            )
+        let assayTables =
+            investigation.Assays
+            |> Seq.collect(fun (assay:ArcAssay) ->
+                assay.Tables 
+                |> Seq.map(fun (table:ArcTable) -> 
+                $"Assay_{removeWhitespace assay.Identifier}_{removeWhitespace table.Name}[\"{removeWhitespace assay.Identifier}_{removeWhitespace table.Name}\"];")
+            )
+        Seq.append studyTables assayTables
+        |> Array.ofSeq
+        |> join "\n"
+
+    let getGraphNodes (investigation:ArcInvestigation) = 
+        let allNodes = getAllTableNodes investigation |> List.toArray
+        join "; \n"allNodes 
 
 
-module TemplateHelpers = // Better names
+    let getClassDef (investigation:ArcInvestigation) =
+        let sb = StringBuilder()
+        let studyClassIDs = 
+            investigation.Studies
+            |> Seq.collect(fun (study:ArcStudy) ->
+                study.Tables 
+                |> Seq.map(fun (table:ArcTable) -> $"Study_{removeWhitespace study.Identifier}_{removeWhitespace table.Name}")
+            )
+            |> Array.ofSeq
+            |> join ","
+        let assayClassIDs =
+            investigation.Assays
+            |> Seq.collect(fun (assay:ArcAssay) ->
+                assay.Tables 
+                |> Seq.map(fun (table:ArcTable) -> $"Assay_{removeWhitespace assay.Identifier}_{removeWhitespace table.Name}")
+            )
+            |> Array.ofSeq
+            |> join ","
+        sb.AppendLine($"
+class {studyClassIDs} study;    
+class {assayClassIDs} assay;
+classDef assay fill:#4FB3D9,stroke:#333,stroke-width:2px,color:#3A3A3A;
+classDef study fill:#B4CE82,stroke:#333,stroke-width:2px,color:#3A3A3A;
+        ") 
+        |> ignore
+        sb.ToString()
 
+    let getARCTableProvenanceGraph (investigation:ArcInvestigation) = 
+        let sb = StringBuilder()
+        sb.AppendLine($"
+## Provenance graph of ArcTables
 
-    //Changes mermaid graph Helpers
+```mermaid
+---
+title: {investigation.Identifier}
+---    
+graph TB 
+{getNodeDefs investigation}
+    
+{getGraphNodes investigation}    
+    
+{getClassDef investigation}
+```    
+        ") 
+        |> ignore
+        sb.ToString()
 
     let studyToAssayRelationships (studyOVs:seq<StudyOverview>) = 
         studyOVs

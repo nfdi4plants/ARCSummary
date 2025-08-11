@@ -10,7 +10,7 @@ module SummaryStyles = //hardcoded section order for default case and themes
             Section.Investigation InvestigationSection.Title
             Section.Investigation InvestigationSection.Description
             Section.TOC
-            Section.ISAGraph
+            Section.ProvenanceGraph ProvenanceGraphSection.AsISA
             Section.OverviewTable
             Section.Investigation InvestigationSection.Contacts
             Section.Investigation InvestigationSection.Publication

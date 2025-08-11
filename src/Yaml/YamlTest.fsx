@@ -1,50 +1,239 @@
 //namespace ARCSummary
 
 
-// #r "nuget: ARCtrl, 3.0.0-alpha.4"
+#r "nuget: ARCtrl, 3.0.0-alpha.4"
 
 
-// open ARCtrl
-// open System
-// open System.Text
-// open System.Text.RegularExpressions
+open ARCtrl
+open System
+open System.Text
+open System.Text.RegularExpressions
 
-// module StringHelper =
-//     let join (sep : string) (vals : string array) =
-//         String.Join(sep, vals)
+module StringHelper =
+    let join (sep : string) (vals : string array) =
+        String.Join(sep, vals)
+open StringHelper
+
+module Formating =
+    let removeHashAndNumbers (input: string) =
+        Regex.Replace(input, @"#\d+", "")
+    let removeUnderscoreAndNumbers (input:string) =
+        Regex.Replace(input, @"_\d+", "")
+    let getHyperlinks (annotationheaders:list<OntologyAnnotation>) = 
+        let formated =
+            annotationheaders 
+            |> List.map (fun (oa:OntologyAnnotation) ->  
+                let name = oa.NameText |> removeHashAndNumbers |> removeUnderscoreAndNumbers
+                let link = oa.TermAccessionOntobeeUrl
+                let linklength = oa.TermAccessionOntobeeUrl |> Seq.length
+                if linklength > 1 then 
+                    $"[{name}]({link})"
+                else $"`{name}`")
+        String.Join(",",formated)
+
+open Formating
+module TableHelpers = 
+    let dataIsEmpty (data:Data) =
+        match data with
+        | d -> d.ID.IsNone && d.Name.IsNone && d.DataType.IsNone && d.Format.IsNone && d.SelectorFormat.IsNone && d.Comments.Count = 0 
+    let cellIsEmpty (cell:CompositeCell) = 
+        match cell with
+        | CompositeCell.Term oa  -> oa.isEmpty()
+        | CompositeCell.FreeText s -> String.IsNullOrWhiteSpace s
+        | CompositeCell.Unitized (v, oa) -> String.IsNullOrWhiteSpace v && oa.isEmpty()
+        | CompositeCell.Data d -> dataIsEmpty d
+
+    let getAllCharacteristics (table:ArcTable) =
+        table.Headers
+        |> Seq.choose (fun x ->
+            match x with 
+            | CompositeHeader.Characteristic c -> Some c
+            | _ -> None )
+        |> Seq.toList
+
+    let getAllParameters (table:ArcTable) =
+        table.Headers
+        |> Seq.choose (fun x ->
+            match x with 
+            | CompositeHeader.Parameter p -> Some p
+            | _ -> None )
+        |> Seq.toList
+
+    let getAllFactors (table:ArcTable) =
+        table.Headers
+        |> Seq.choose (fun x ->
+            match x with 
+            | CompositeHeader.Factor f -> Some f
+            | _ -> None )
+        |> Seq.toList
 
 
-// module Formating =
-//     let removeHashAndNumbers (input: string) =
-//         Regex.Replace(input, @"#\d+", "")
-//     let removeUnderscoreAndNumbers (input:string) =
-//         Regex.Replace(input, @"_\d+", "")
+    let tryTerm (header : CompositeHeader) = 
+            match header with
+            | CompositeHeader.Characteristic oa
+            | CompositeHeader.Component oa
+            | CompositeHeader.Parameter oa
+            | CompositeHeader.Factor oa -> Some oa
+            | _ -> None
 
-//     let getHyperlinks (annotationheaders:list<OntologyAnnotation>) = 
-//         let formated =
-//             annotationheaders 
-//             |> List.map (fun (oa:OntologyAnnotation) ->  
-//                 let name = oa.NameText |> removeHashAndNumbers |> removeUnderscoreAndNumbers
-//                 let link = oa.TermAccessionOntobeeUrl
-//                 let linklength = oa.TermAccessionOntobeeUrl |> Seq.length
-//                 if linklength > 1 then 
-//                     $"[{name}]({link})"
-//                 else $"`{name}`")
-//         String.Join(",",formated)
-// module TableHelpers = 
-//     let dataIsEmpty (data:Data) =
-//         match data with
-//         | d -> d.ID.IsNone && d.Name.IsNone && d.DataType.IsNone && d.Format.IsNone && d.SelectorFormat.IsNone && d.Comments.Count = 0 
+    let getCellsByHeaderOntology (table : ArcTable) (ontologyName : string) = 
+            let isOntologyHeader (header : CompositeHeader)= 
+                    match tryTerm header with
+                    | Some oa -> oa.NameText = ontologyName 
+                    | None -> false     
+            let colOption = ArcTable.tryGetColumnByHeaderBy isOntologyHeader table
+            match colOption with 
+            | Some col ->  
+                    col.Cells
+            | None -> [||]
 
-//     let cellIsEmpty (cell:CompositeCell) = 
-//         match cell with
-//         | CompositeCell.Term oa  -> oa.isEmpty()
-//         | CompositeCell.FreeText s -> String.IsNullOrWhiteSpace s
-//         | CompositeCell.Unitized (v, oa) -> String.IsNullOrWhiteSpace v && oa.isEmpty()
-//         | CompositeCell.Data d -> dataIsEmpty d
+    let getOntologyHeaders (oaList:OntologyAnnotation list) =
+        oaList
+        |> List.choose (fun (oa:OntologyAnnotation) -> 
+            if not (String.IsNullOrWhiteSpace oa.NameText) then 
+                Some oa.NameText
+            else None
+        )
 
 
+    let getAllOntologyInfos (headers: string list) (table:ArcTable) =  
+        if not headers.IsEmpty then
+        
+            headers
+            |> List.choose(fun (header:string) -> 
+                let cellStrings : string array =            
+                    getCellsByHeaderOntology table header
+                    |> Array.distinct
+                    |> Array.choose(fun (cell:CompositeCell) -> 
+                        if not (cellIsEmpty cell) then
+                            let oaID = removeHashAndNumbers header 
+                            Some (String.Join(": ", oaID,cell.ToString()))
+                        else None
+                    )
+                    |> Array.distinct // in case only one check for ontology is applied
+                let grouped =
+                    cellStrings
+                    |> Array.groupBy(fun s -> s.Split(':').[0].Trim())
+                    |> Array.choose(fun (key:string, values:string array) ->
+                        let vals = 
+                            values 
+                            |> Array.map (fun s ->
+                                let parts = s.Split(':')
+                                if parts.Length > 1 then 
+                                    parts.[1].Trim() 
+                                else "" )
+                            |> Array.filter (fun s -> not (String.IsNullOrWhiteSpace s))
+                        if not (Array.isEmpty vals) then
+                            if vals.Length < 20 then
+                                let joined = String.concat ", " vals
+                                Some (String.Join(": ", key, joined))
+                            else 
+                                let joined = 
+                                    let head = vals |> List.ofArray |> List.head
+                                    let last = vals |> List.ofArray |> List.last
+                                    let count = vals.Length - 2
+                                    $"{head} ... {last} +{count} more"
+                                Some (String.Join(": ", key, joined))
+                        else None 
+                )
+                let resultingHeader = join "," grouped
+                if not (String.IsNullOrWhiteSpace resultingHeader) then 
+                    Some resultingHeader
+                else None
+            )
+            |> List.toArray
+            |> Array.filter (fun s -> not (String.IsNullOrWhiteSpace s))
+            |> join " ; "
+        else ""
 
+    let nodesAreEqual (node1:CompositeCell) (node2:CompositeCell) : bool =
+        node1.ToString() = node2.ToString()    
+
+    let tableColumnsAreEqual (preceedingTable: ArcTable) (succeedingTable: ArcTable) : bool =
+        let outCol = preceedingTable.TryGetOutputColumn()
+        let inCol = succeedingTable.TryGetInputColumn()
+        match inCol,outCol with 
+        | Some inCol, Some outCol -> 
+            inCol.Cells
+            |> Seq.exists (fun inNode ->
+                outCol.Cells
+                |> Seq.exists (fun outNode ->
+                    nodesAreEqual inNode outNode
+                )
+            )
+        | _ -> false
+    let getPreviousTablesForTable (currentTable: ArcTable) (currentID:string) (allTableIDs:(string*ArcTable) list) =
+        allTableIDs 
+        |> List.choose(fun (precedingID:string, precedingTable:ArcTable) -> 
+            if precedingID <> currentID then 
+                if tableColumnsAreEqual precedingTable currentTable then 
+                    Some $"{precedingID} --> {currentID}"
+                else None 
+            else None
+        )
+
+    let collectAllTableIDs (investigation: ArcInvestigation) = 
+        let studyTables = 
+            investigation.Studies
+            |> Seq.collect(fun (study:ArcStudy) ->
+                study.Tables 
+                |> Seq.map(fun (table:ArcTable) -> $"Study_{study.Identifier}_{table.Name}",table)
+            )
+        let assayTables =
+            investigation.Assays
+            |> Seq.collect(fun (assay:ArcAssay) ->
+                assay.Tables 
+                |> Seq.map(fun (table:ArcTable) -> $"Assay_{assay.Identifier}_{table.Name}",table)
+            )
+        Seq.append studyTables assayTables
+        |> List.ofSeq
+
+    let getAllTableNodes (investigation: ArcInvestigation) =
+        let allTableIDs =
+            collectAllTableIDs investigation
+        allTableIDs
+        |> List.collect(fun (id:string,table:ArcTable) -> getPreviousTablesForTable table id allTableIDs)
+        
+
+    let allStudyIDNodes (nodes:string list) =
+        nodes 
+        |> List.filter(fun (id:string) -> id.StartsWith("Study"))
+        |> List.toArray
+        |> join ","
+
+    let allAssayIDNodes (nodes:string list) =
+        nodes 
+        |> List.filter(fun (id:string) -> id.StartsWith("Assay"))
+        |> List.toArray
+        |> join ","
+
+
+open TableHelpers
+
+let sampleARC = ARC.load("/Users/olescholz/Desktop/Results/Sample_ARCs/Historical_Phenomics_Wheat_Collection_IPK")
+
+let sampleARC2 = ARC.load("/Users/olescholz/Desktop/Results/Sample_ARCs/Ru_ChlamyHeatstress")
+
+// let table =     
+//     sampleARC.Studies.[0].Tables.[0]
+
+// let res =
+//     getAllOntologyInfos (getOntologyHeaders(getAllCharacteristics table)) table
+
+// printfn "%s" res
+
+let provenance (investigation:ArcInvestigation) = 
+    let sb= StringBuilder()
+    sb.AppendLine($"### Study Table Associations (indicate with --> an input/output link): \n {allStudyIDNodes (getAllTableNodes investigation)} \n") |> ignore
+    sb.AppendLine($"### Assay Table Associations (indicate with --> an input/output link): \n {allAssayIDNodes (getAllTableNodes investigation)} \n")
+
+let res = 
+    provenance sampleARC
+
+res.ToString()
+
+
+let hfisdi = 1 + 1
 // module ArcTable =    // Functions to access information from ArcTables
 
 

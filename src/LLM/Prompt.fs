@@ -28,22 +28,6 @@ module PromptHelper =
         String.Join("\n", tabChars, tabParams, tabFacs)
 
 
-    let getBasicStudyPrompt (investigation:ArcInvestigation) = 
-        investigation.Studies
-        |> Seq.filter (fun (s:ArcStudy) -> s.TableCount <> 0)
-        |> Seq.map(fun (study:ArcStudy) ->
-            study
-            |> Seq.map(fun (table:ArcTable) ->  
-                let ontologies = getOntologyForPrompt table
-                if not (String.IsNullOrWhiteSpace(ontologies)) then 
-                    let studyID = $"## Study_{study.Identifier}_{table.Name} \n"
-                    String.Join("\n", studyID, ontologies)
-                else ""
-                )
-            |> Seq.filter(fun s -> not (String.IsNullOrWhiteSpace(s)))
-            |> String.concat "\n"
-        )
-        |> String.concat "\n"
 
     let getEnhancedStudyPrompt (investigation:ArcInvestigation) = 
         investigation.Studies
@@ -70,23 +54,6 @@ module PromptHelper =
         )
         |> String.concat "\n"
 
-
-    let getBasicAssayPrompt (investigation:ArcInvestigation) = 
-        investigation.Assays
-        |> Seq.filter (fun (a:ArcAssay) -> a.TableCount <> 0)
-        |> Seq.map(fun (assay:ArcAssay) ->
-            assay
-            |> Seq.map(fun (table:ArcTable) ->  
-                let ontologies = getOntologyForPrompt table
-                if not (String.IsNullOrWhiteSpace(ontologies)) then 
-                    let assayID = $"## Assay_{assay.Identifier}_{table.Name} \n"
-                    String.Join("\n", assayID, ontologies)
-                else ""
-                )
-            |> Seq.filter(fun s -> not (String.IsNullOrWhiteSpace(s)))
-            |> String.concat "\n"
-        )
-        |> String.concat "\n"
 
     let getEnhancedAssayPrompt (investigation:ArcInvestigation) = 
         investigation.Assays

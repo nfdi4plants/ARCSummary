@@ -24,11 +24,17 @@ module CLI =
             | Summary summaryArgs -> 
                 let arcPath = summaryArgs.GetResult SummaryArgs.ARC_Directory
                 let sectionOrder = loadSectionOrder arcPath
+                let isSeparate = summaryArgs.TryGetResult SummaryArgs.IndividualMD |> Option.defaultValue false
                 match ARC.tryLoadAsync(arcPath) |> Async.RunSynchronously  with
-                | Ok arc ->            
-                    updateREADME sectionOrder arcPath arc |> ignore
-                    printfn "README.md updated successfully at %s" arcPath
-                    0 
+                | Ok arc ->       
+                    if not isSeparate then
+                        updateREADME sectionOrder arcPath arc |> ignore
+                        printfn "README.md updated successfully at %s" arcPath
+                        0 
+                    else 
+                        createAsSeparateFile sectionOrder arcPath arc |> ignore
+                        printfn "SUMMARY.md updated successfully at %s" arcPath
+                        0 
                 | Error msgs ->
                     printfn "Could not load ARC from %s:" arcPath
                     msgs

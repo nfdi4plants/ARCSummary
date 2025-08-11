@@ -50,17 +50,28 @@ module ConfigFileDecode =
             | _ -> None
         | _ -> None
 
+
+    let decodePGSection (element:YAMLElement) =
+        match element with
+        | YAMLElement.Object [YAMLElement.Value v] ->
+            match v.Value.ToLower() with
+            | "asisa" -> Some ProvenanceGraphSection.AsISA
+            | "asarctables" -> Some ProvenanceGraphSection.AsArcTables
+            | _ -> None
+        | _ -> None
+
     let decodeSection (element:YAMLElement) : Section list =
         match element with
         | YAMLElement.Object [YAMLElement.Value key] ->
             match key.Value.ToLower() with
             | "toc" -> [TOC]
-            | "isagraph" -> [ISAGraph]
+            //| "provenancegraph" -> [ProvenanceGraph]
             | "overviewtable" -> [OverviewTable]
             | key -> failwithf "Decode subsectionless section failed, unknown key %s" key
         | YAMLElement.Object [YAMLElement.Value key; YAMLElement.Sequence secFields] ->
             match key.Value.ToLower() with
             | "investigation" -> secFields |> List.choose (decodeInvSection >> Option.map Investigation)
+            | "provenancegraph" -> secFields |> List.choose (decodePGSection >> Option.map ProvenanceGraph)
             | "studies" -> secFields |> List.choose (decodeStudySection >> Option.map Studies)
             | "assays" -> secFields |> List.choose (decodeAssaySection >> Option.map Assays)          
             | key -> failwithf "Decode section failed, unknown key %s" key

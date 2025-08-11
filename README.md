@@ -53,7 +53,9 @@ Custom:
       - Contacts
       - Publication
    - TOC # Table of Contents
-   - ISAGraph # Flowchart comparing nodes between studies & assays
+   - ProvenanceGraph 
+      - AsISA # Flowchart comparing study & assay relationships
+      - AsArcTables # Flowchart comparing ArcTable relationships
    - OverviewTable # Additional table based on metadata
    - Studies
       - Title
@@ -71,13 +73,18 @@ The order and sections to include are at the user's discretion. All input is lat
 
 ## Help 
 ### For Summary:
+By default summary appends the generated content to the preexisting README.md file. If you would like to create the markdown as a separate SUMMARY.md file from the preexisting one you can set the optional flag to --indiv true.  
 ```bash
 USAGE: ARCSummary summary [--help] --arc-directory <arcPath>
+                          [--individualmd <bool>]
 
 OPTIONS:
 
     --arc-directory, -d, -ap <arcPath>
-                          Location of the ARC in the Filesystem
+                          Location of the ARC in the Filesystem                     
+    --individualmd, --indiv <bool>
+                          Creates an individual markdown separate from
+                          preexisting if true
     --help                display this list of options.
 ```
 

@@ -8,10 +8,12 @@ module mainCLI =
     
     type SummaryArgs =
         | [<Mandatory>] [<AltCommandLine("-d")>][<AltCommandLine("-ap")>] ARC_Directory of arcPath : string 
+        | [<AltCommandLine("--indiv")>] IndividualMD of bool
         interface IArgParserTemplate with
             member s.Usage =
                 match s with
                 | ARC_Directory  _ -> "Location of the ARC in the Filesystem" 
+                | IndividualMD _ -> "Creates an individual markdown separate from preexisting"
 
     and SummaryMRArgs =
         | [<Mandatory>] [<AltCommandLine("-d")>] ARC_Directory of string

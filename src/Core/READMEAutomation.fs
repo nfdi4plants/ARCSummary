@@ -3,7 +3,7 @@ namespace ARCSummary
 open ARCtrl
 open System
 open System.IO
-open TemplateHelpers
+open ProvenanceGraph
 open ARCInstances
 open Template
 open SummaryTypes
@@ -42,8 +42,9 @@ module READMEAutomation = // better name
             | Investigation Contacts -> createContactsSection tlm 
             | Investigation Publication -> createPublicationsSection tlm 
             | TOC -> TableOfContents.createTOC(sections, tlm ,assayOVs, studyOVs)
-            | ISAGraph -> createRelationshipGraph tlm investigation assayOVs studyOVs
-            | OverviewTable -> createOverviewTable tlm 
+            | ProvenanceGraph ProvenanceGraphSection.AsISA -> createRelationshipGraph tlm investigation assayOVs studyOVs
+            | ProvenanceGraph ProvenanceGraphSection.AsArcTables -> getARCTableProvenanceGraph investigation
+            | OverviewTable -> $"### Overview Table \n {createOverviewTable tlm}" 
             | Studies _ -> 
                 if not studiesHeaderSet then         
                     studiesHeaderSet <- true
@@ -95,7 +96,8 @@ module READMEAutomation = // better name
 
 
 
-    let updateMarkdownContent (sections:Section list) (preexistingMD:string) (investigation:ArcInvestigation) : string = 
+
+    let appendMarkdownContent (sections:Section list) (preexistingMD:string) (investigation:ArcInvestigation) : string = 
         let automatedMD  = createMarkdownSummary sections investigation
         let startMarker = "<!--- Start of automated section -->"
         let endMarker = "<!--- End of automated section -->"
@@ -117,7 +119,7 @@ module READMEAutomation = // better name
     let updateMarkdownFile (sections:Section list) (mdFileName: string) (investigation: ArcInvestigation) = 
         if File.Exists(mdFileName) then
             let existingContent = File.ReadAllText(mdFileName)
-            let updatedMD = updateMarkdownContent sections existingContent investigation
+            let updatedMD = appendMarkdownContent sections existingContent investigation
             if existingContent <> updatedMD then
                 File.WriteAllText(mdFileName, updatedMD)
             else
@@ -134,4 +136,17 @@ module READMEAutomation = // better name
         readmePath      
 
 
-
+    // optional flag to create as separate file
+    let createAsSeparateFile (sections:Section list) (arcPath:string) (investigation:ArcInvestigation) = 
+        let mdFileName = System.IO.Path.Combine(arcPath, "SUMMARY.md")
+        if File.Exists(mdFileName) then
+            let existingContent = File.ReadAllText(mdFileName)
+            let updatedMD = createMarkdownSummary sections investigation
+            if existingContent <> updatedMD then
+                File.WriteAllText(mdFileName, updatedMD)
+            else
+                printfn "File is already updated"
+        else
+            let automatedMD  = createMarkdownSummary sections investigation
+            System.IO.FileInfo(mdFileName).Directory.Create() |> ignore
+            File.WriteAllText(mdFileName, automatedMD)

@@ -29,7 +29,7 @@ module SummaryTypes =
         Genotypes : OntologyAnnotation list ;
         BiologicalReplicateCount : int ; 
         TimepointCount : int option ; 
-        SampleCount : int option ;
+        SampleCount : int list ;
         Parameters : OntologyAnnotation list ;
         Factors : OntologyAnnotation list ;
         AssociatedAssays : string list ; 
@@ -37,7 +37,7 @@ module SummaryTypes =
         PreviousStudyIdentifiers : string list ;
         FollowingAssayIdentifiers : string list ;
         FollowingStudyIdentifiers : string list ;
-        DataFileCount : int option
+        DataFileCount : int list
     } 
 
     type AssayOverview = {
@@ -51,7 +51,7 @@ module SummaryTypes =
         TableCount: int option ;
         TableNames: string list ; 
         Characteristics : OntologyAnnotation list ;   
-        SampleCount : int option ;
+        SampleCount : int list ;
         Parameters : OntologyAnnotation list ; 
         Factors : OntologyAnnotation list ;
         AssociatedStudies : string list  ; 
@@ -59,7 +59,7 @@ module SummaryTypes =
         PreviousStudyIdentifiers : string list ;
         FollowingAssayIdentifiers : string list ;
         FollowingStudyIdentifiers : string list ;
-        DataFileCount : int option
+        DataFileCount : int list
     }
 
 
@@ -82,11 +82,14 @@ module ConfigFileTypes =
         | AdditionalDetails
         | AnnotationHeaders
 
+    type ProvenanceGraphSection = 
+        | AsISA
+        | AsArcTables
     type Section =
         | Investigation of InvestigationSection 
         //| Methods // not yet implemented AI-Assisted Summary based on prompt /src/LLM/Prompt.fs
         | TOC        
-        | ISAGraph
+        | ProvenanceGraph of ProvenanceGraphSection
         | OverviewTable        
         | Assays of AssaySection 
         | Studies of StudySection 
