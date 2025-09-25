@@ -13,8 +13,4 @@
     <ProjectReference Include="..\Core\Core.fsproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="ARCtrl" Version="3.0.0-alpha.4" />
-  </ItemGroup>
-
 </Project>

@@ -5,6 +5,8 @@
     <TargetFramework>net8.0</TargetFramework>
     <IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
     <PackAsTool>true</PackAsTool>
+    <PublishSingleFile>true</PublishSingleFile>
+    <AssemblyName>arc-summary</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,7 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="ARCtrl" Version="3.0.0-alpha.3" />
     <PackageReference Include="Argu" Version="6.2.5" />
   </ItemGroup>
 
