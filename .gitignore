@@ -213,6 +213,9 @@ _pkginfo.txt
 *.appxbundle
 *.appxupload
 
+# Mac desktop service store files
+.DS_Store
+
 # Visual Studio cache files
 # files ending in .cache can be ignored
 *.[Cc]ache
@@ -351,3 +354,4 @@ MigrationBackup/
 
 #Paket dependency manager
 paket-files/
+.DS_Store
