@@ -39,7 +39,7 @@ dotnet run summarymr -d /path/to/your/arc -t your_access_token -i user/repositor
 ```
 
 ### Update via YAML
-Alternatively you can include an empty YML file at the following root of your arc ("../.arc/arc-summary.yml"), which will return the default order. A suitable theme can be chosen [here](https://github.com/nfdi4plants/ARCSummary/blob/main/src/Core/SummaryStyles.fs). For example for the publication style just include:
+Alternatively you can include an empty YML file at the following root of your arc ("../.arc/arc_summary.yml"), which will return the default order. A suitable theme can be chosen [here](https://github.com/nfdi4plants/ARCSummary/blob/main/src/Core/SummaryStyles.fs). For example for the publication style just include:
 ```bash
 publicationstyle
 ```

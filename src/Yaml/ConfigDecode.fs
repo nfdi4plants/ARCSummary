@@ -105,14 +105,21 @@ module ConfigFileDecode =
         }
 
     let loadSectionOrder (arcPath: string) : Section list =
-        let sectionsPath = Path.Combine(arcPath, ".arc", "arc-summary.yml")
+        let configPaths = ["arc-summary.yml" ; "arc_summary.yml"] 
+        let sectionsPath = 
+            configPaths
+            |> List.map(fun path ->
+                Path.Combine(arcPath, ".arc", path)
+            )
+            |> List.tryFind File.Exists
+            |> Option.defaultValue (Path.Combine(arcPath, ".arc", "arc_summary.yml"))
         if not (File.Exists sectionsPath) then
-            printfn "No arc-summary.yml found, using default section order."
+            printfn "No arc_summary.yml found, using default section order."
             defaultOrder
         else
             let content = File.ReadAllText sectionsPath
             if System.String.IsNullOrWhiteSpace content then
-                printfn "arc-summary.yml is empty, using default section order."
+                printfn "arc_summary.yml is empty, using default section order."
                 defaultOrder
             else
                 try
@@ -122,13 +129,13 @@ module ConfigFileDecode =
                         printfn "Using theme: PublicationStyle"
                         publicationStyle
                     | Default, custom when custom <> defaultOrder ->
-                        printfn "Using custom section order from arc-summary.yml"
+                        printfn "Using custom section order from arc_summary.yml"
                         custom
                     | _, _ ->
                         printfn "No valid theme or custom order found, using default."
                         defaultOrder
                 with _ ->
-                    printfn "Failed to decode arc-summary.yml, using default section order."
+                    printfn "Failed to decode arc_summary.yml, using default section order."
                     defaultOrder
 
 

@@ -51,7 +51,7 @@ type Commit =
             $"{baseURL}/projects/{pathOrId}/repository/commits"
 
     
-        static member CreateCommit (token: string, pathOrId:string, branch:string,  commitMessage:string, actions : CommitAction seq, ?startBranch:string, ?userEmail:string, ?userName:string, ?force:bool, ?apiAddress:string)=
+        static member CreateCommit (token: string, pathOrId:string, branch:string,  commitMessage:string, actions : CommitAction seq, ?startBranch:string, ?userEmail:string, ?userName:string, ?force:bool, ?apiAddress:string) =
             let apiAddress = Option.defaultValue Common.dataHUBAPI apiAddress
             let actions = array {
                 for action in actions do

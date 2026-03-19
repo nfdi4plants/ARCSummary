@@ -195,10 +195,19 @@ module ArcQuerying = // Functions for direct querying such as specific ontology 
             let colOption = ArcTable.tryGetColumnByHeaderBy isOntologyHeader table
             match colOption with 
             | Some col ->  
+                try
                     col.Cells
-                    |> Array.map (fun (cell:CompositeCell) -> cell.AsTerm)
+                    |> Array.map (function 
+                        | CompositeCell.Term oa -> oa
+                        | CompositeCell.Data _ -> failwith "Data" 
+                        | CompositeCell.FreeText _ -> failwith "FreeText"
+                        | CompositeCell.Unitized _ -> failwith "Unitized" 
+                    )
                     |> Array.distinct
                     |> List.ofArray
+                with ex ->
+                    printfn "Invalid Organism column type: is %s cell, expected Term cell" ex.Message
+                    [] 
             | None -> []
 
 
