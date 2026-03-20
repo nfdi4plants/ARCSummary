@@ -93,7 +93,7 @@ module ArcTable =    // Functions to access information from ArcTables
             | CompositeHeader.Factor oa -> Some oa
             | _ -> None
 
-    let getCellsByHeaderOntology (table : ArcTable) (ontologyName : string) = 
+    let getCellsByHeaderOntology (table : ArcTable) (ontologyName : string) : ResizeArray<CompositeCell> = 
             let isOntologyHeader (header : CompositeHeader)= 
                     match tryTerm header with
                     | Some oa -> oa.NameText = ontologyName 
@@ -102,7 +102,7 @@ module ArcTable =    // Functions to access information from ArcTables
             match colOption with 
             | Some col ->  
                     col.Cells
-            | None -> [||]
+            | None -> ResizeArray [||]
 
 open StringHelper
 open Formating
@@ -121,8 +121,8 @@ module ArcQuerying = // Functions for direct querying such as specific ontology 
         match selectColumn with 
                 | Some col ->  
                         col.Cells
-                        |> Array.map (fun (cell:CompositeCell) -> cell.AsTerm.NameText)
-                        |> Array.distinct
+                        |> ResizeArray.map (fun (cell:CompositeCell) -> cell.AsTerm.NameText)
+                        |> ResizeArray.distinct
                         |> Seq.map (fun (v:string) -> int v)
                         |> Seq.max
                 | None -> 0
@@ -138,15 +138,15 @@ module ArcQuerying = // Functions for direct querying such as specific ontology 
         match selectColumn with 
                 | Some col -> 
                     col.Cells 
-                    |> Array.choose(fun (cell:CompositeCell) ->
+                    |> ResizeArray.choose(fun (cell:CompositeCell) ->
                         match cell with 
                         | cell when cell.isTerm -> Some cell.AsTerm.NameText
                         | cell when cell.isUnitized -> 
                             Some (cell.AsUnitized.ToString()) 
                         | _ -> None 
                     )
-                    |> Array.distinct
-                    |> Array.length
+                    |> ResizeArray.distinct                   
+                    |> Seq.length // |> ResizeArray.length where ResizeArray.length not defined so workaround
                 | None -> 0
 
     let getSampleCount (arcTables:ResizeArray<ArcTable>) =
@@ -182,9 +182,9 @@ module ArcQuerying = // Functions for direct querying such as specific ontology 
             match colOption with 
             | Some col ->  
                     col.Cells
-                    |> Array.map (fun (cell:CompositeCell) -> cell.AsTerm)
-                    |> Array.distinct
-                    |> List.ofArray
+                    |> ResizeArray.map (fun (cell:CompositeCell) -> cell.AsTerm)
+                    |> ResizeArray.distinct
+                    |> List.ofSeq
             | None -> []
 
     let getOrganisms (table:ArcTable) = // changed to include both upper and lower
@@ -197,14 +197,14 @@ module ArcQuerying = // Functions for direct querying such as specific ontology 
             | Some col ->  
                 try
                     col.Cells
-                    |> Array.map (function 
+                    |> ResizeArray.map (function 
                         | CompositeCell.Term oa -> oa
                         | CompositeCell.Data _ -> failwith "Data" 
                         | CompositeCell.FreeText _ -> failwith "FreeText"
                         | CompositeCell.Unitized _ -> failwith "Unitized" 
                     )
-                    |> Array.distinct
-                    |> List.ofArray
+                    |> ResizeArray.distinct
+                    |> List.ofSeq
                 with ex ->
                     printfn "Invalid Organism column type: is %s cell, expected Term cell" ex.Message
                     [] 
@@ -387,14 +387,15 @@ module ArcQuerying = // Functions for direct querying such as specific ontology 
             |> List.choose(fun (header:string) -> 
                 let cellStrings : string array =            
                     getCellsByHeaderOntology table header
-                    |> Array.distinct
-                    |> Array.choose(fun (cell:CompositeCell) -> 
+                    |> ResizeArray.distinct
+                    |> ResizeArray.choose(fun (cell:CompositeCell) -> 
                         if not (cellIsEmpty cell) then
                             let oaID = removeHashAndNumbers header 
                             Some (String.Join(": ", oaID,cell.ToString()))
                         else None
                     )
-                    |> Array.distinct // in case only one check for ontology is applied
+                    |> ResizeArray.distinct // in case only one check for ontology is applied
+                    |> Array.ofSeq
                 let grouped =
                     cellStrings
                     |> Array.groupBy(fun s -> s.Split(':').[0].Trim())
