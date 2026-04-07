@@ -14,11 +14,26 @@ module Option =
         match o with
         | Some value -> value.ToString()
         | None -> "" 
-                               
+
+
+module ListHelper =                    
     let verifyList (list: list<'a>) = // not yet implemented or partially or List.choose id
         if list.IsEmpty then failwith "Consider adding information to this list"
         else list
-    
+
+    let joinList (selector:'a -> option<string>) (list:list<'a>) = 
+        list
+        |> List.choose (fun p ->
+            match selector p with
+            | Some v when not (String.IsNullOrWhiteSpace v) -> Some v
+            | _ -> None)
+        |> String.concat(" , ")
+
+    let appendLineIfNotEmpty (sb:StringBuilder) (label:string) (value:string) =
+        match value with
+        | v when String.IsNullOrWhiteSpace v -> ()
+        | v -> sb.AppendLine($"| {label} | {v} |") |> ignore
+
 module StringHelper =
     let join (sep : string) (vals : string array) =
         String.Join(sep, vals)

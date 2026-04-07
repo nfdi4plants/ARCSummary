@@ -11,7 +11,9 @@ open Formating
 open ProvenanceGraph
 open SummaryTypes
 open ConfigFileTypes
+open ListHelper
 open StringHelper
+open Option
 
 module ARCInstances =
     let getTopLevelMetadata (selectISA:ArcInvestigation) : TopLevelMetadata = {
@@ -95,7 +97,7 @@ module Template =    // template part definitions
 
         sb.ToString()
 
-    let createContactsSection (tlm:TopLevelMetadata) : string = // Optional
+    let createContactsSection (tlm:TopLevelMetadata) : string = 
         let sb = StringBuilder()
 
         if not tlm.Contacts.IsEmpty then           
@@ -115,33 +117,27 @@ module Template =    // template part definitions
             sb.AppendLine($"{grouped}") |> ignore 
         sb.ToString()
 
-    let createPublicationsSection (tlm:TopLevelMetadata) : string = // Optional
+    let createPublicationsSection (tlm:TopLevelMetadata) : string = 
         let sb = StringBuilder()
 
-        if not tlm.Publications.IsEmpty then 
+        if not tlm.Publications.IsEmpty then
+
+            let pubTitle  = joinList (fun (p:Publication) -> p.Title) tlm.Publications
+            let authors   = joinList (fun (p:Publication) -> p.Authors) tlm.Publications
+            let doi       = joinList (fun (p:Publication) -> p.DOI) tlm.Publications
+            let pubMedID  = joinList (fun (p:Publication) -> p.PubMedID |> Option.map string) tlm.Publications
+            let status    = joinList (fun (p:Publication) -> p.Status |> Option.map (fun s -> s.NameText)) tlm.Publications
+
             sb.AppendLine("## Publication \n") |> ignore
             sb.AppendLine("| Meta Data | Description |") |> ignore
             sb.AppendLine("| ----------- | ----------- |") |> ignore
-            let pubTitle = 
-                let getTitle = tlm.Publications |> List.map (fun p -> p.Title.Value)
-                String.Join(" , ", getTitle)
-            sb.AppendLine($"| Title | {pubTitle} |") |> ignore
-            let authors = 
-                let getAuthors = tlm.Publications |> List.map (fun p -> p.Authors.Value)
-                String.Join(" , ", getAuthors)
-            sb.AppendLine($"| Authors | {authors} |") |> ignore
-            let pubMedID = 
-                let getPMID = tlm.Publications |> List.map (fun p -> p.PubMedID.Value)
-                String.Join(" , ", getPMID)
-            sb.AppendLine($"| PubMedID | {pubMedID} |") |> ignore
-            let doi = 
-                let getDOI = tlm.Publications |> List.map (fun p -> p.DOI.Value)
-                String.Join(" , ", getDOI)
-            sb.AppendLine($"| DOI | {doi} |") |> ignore
-            let status = 
-                let getStat = tlm.Publications |> List.map (fun p -> p.Status.Value.NameText)
-                String.Join(" , ", getStat)
-            sb.AppendLine($"| Current status | {status} |") |> ignore
+
+            appendLineIfNotEmpty sb "Title" pubTitle
+            appendLineIfNotEmpty sb "Authors" authors
+            appendLineIfNotEmpty sb "PubMedID" pubMedID
+            appendLineIfNotEmpty sb "DOI" doi
+            appendLineIfNotEmpty sb "Current status" status
+
         sb.ToString()
 
 

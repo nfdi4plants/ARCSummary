@@ -65,7 +65,6 @@ module ConfigFileDecode =
         | YAMLElement.Object [YAMLElement.Value key] ->
             match key.Value.ToLower() with
             | "toc" -> [TOC]
-            //| "provenancegraph" -> [ProvenanceGraph]
             | "overviewtable" -> [OverviewTable]
             | key -> failwithf "Decode subsectionless section failed, unknown key %s" key
         | YAMLElement.Object [YAMLElement.Value key; YAMLElement.Sequence secFields] ->
