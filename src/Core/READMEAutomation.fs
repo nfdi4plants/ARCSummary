@@ -1,6 +1,7 @@
 namespace ARCSummary
 
 open ARCtrl
+open ARCtrl.WorkflowGraph
 open System
 open System.IO
 open ProvenanceGraph
@@ -15,6 +16,7 @@ module READMEAutomation = // better name
     let createMarkdownSummary (sections:Section list) (investigation:ArcInvestigation) : string  = 
         let mutable studiesHeaderSet = false              
         let mutable assayHeaderSet = false
+        let mutable workflowHeaderSet = false
         let tlm : TopLevelMetadata = getTopLevelMetadata investigation
         let studyOVs : StudyOverview seq =
             investigation.Studies
@@ -26,6 +28,22 @@ module READMEAutomation = // better name
             |> Seq.filter (fun (a:ArcAssay) -> a.TableCount <> 0)
             |> Seq.map (fun (a:ArcAssay) -> getAssayOverview investigation a)
 
+        let workflowOVs: WorkflowOverview seq  = 
+            if investigation.WorkflowCount <> 0 then
+                investigation.Workflows
+                |> Seq.map (fun (wf:ArcWorkflow) -> getWorkflowOverview wf)
+            else Seq.empty
+            //|> Seq.filter (fun (w:ArcWorkflow) -> w.Identifier.Length <> 0) // think of other filter
+        let graphMap = getWorkflowGraphMap investigation
+
+        let renderWorkflowSubsection (graphMap: Map<string, WorkflowGraph>) (wOV: WorkflowOverview) (subSec: WorkflowSection) =
+            match subSec with
+            | WorkflowSection.Metadata ->
+                createWorkflowSection investigation wOV
+
+            | WorkflowSection.WorkflowGraph ->
+                renderWorkflowGraph graphMap wOV.Identifier
+
         let orderedStudySections : StudySection list =
             sections
             |> List.choose (function Section.Studies (s:StudySection) -> Some s | _ -> None)
@@ -33,6 +51,10 @@ module READMEAutomation = // better name
         let orderedAssaySections : AssaySection list =
             sections
             |> List.choose (function Section.Assays (a:AssaySection) -> Some a | _ -> None)
+        
+        let orderedWorkflowSections : WorkflowSection list =
+            sections
+            |> List.choose (function Section.Workflows w -> Some w | _ -> None)
 
         sections 
         |> Seq.map (fun (sec:Section) ->
@@ -41,7 +63,7 @@ module READMEAutomation = // better name
             | Investigation InvestigationSection.Description -> createInvDescription tlm 
             | Investigation Contacts -> createContactsSection tlm 
             | Investigation Publication -> createPublicationsSection tlm 
-            | TOC -> TableOfContents.createTOC(sections, tlm ,assayOVs, studyOVs)
+            | TOC -> TableOfContents.createTOC(sections, tlm ,assayOVs, studyOVs, workflowOVs)
             | ProvenanceGraph ProvenanceGraphSection.AsISA -> createRelationshipGraph tlm investigation assayOVs studyOVs
             | ProvenanceGraph ProvenanceGraphSection.AsArcTables -> getARCTableProvenanceGraph investigation
             | OverviewTable -> $"### Overview Table \n {createOverviewTable tlm}" 
@@ -90,6 +112,25 @@ module READMEAutomation = // better name
                     )
                     |> String.concat "\n\n"
                 else ""
+            | Workflows _ ->
+                if not workflowHeaderSet then
+                    workflowHeaderSet <- true
+                    workflowOVs
+                    |> List.ofSeq
+                    |> List.map (fun wOV ->
+                        let id = $"## Workflow: _{wOV.Identifier}_"
+                        let subSections =
+                            orderedWorkflowSections
+                            |> List.map (fun subSec ->
+                                renderWorkflowSubsection graphMap wOV subSec
+                            )
+                            |> String.concat "\n"
+                        [ id; subSections ]
+                        |> String.concat "\n"
+                    )
+                    |> String.concat "\n\n"
+                else ""
+
         )
         |> Seq.filter (fun s -> not (System.String.IsNullOrWhiteSpace s))
         |> String.concat "\n\n"

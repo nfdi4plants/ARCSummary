@@ -11,9 +11,11 @@ module SummaryTypes =
         Publications : Publication list ;
         Contacts : Person list ;
         AssayIdentifiers : string list ;
-        AssayCount : int option ;
+        AssayCount : int option ; // maybe int and display 0 when not, but match is made easier
         StudyIdentifiers : string list ;
-        StudyCount : int option
+        StudyCount : int option ;
+        WorkflowCount : int option;
+        RunCount : int option
     }
 
 
@@ -62,6 +64,37 @@ module SummaryTypes =
         DataFileCount : int list
     }
 
+    type WorkflowOverview =
+        {
+            Identifier : string
+            Title : string option
+            Description : string option
+            Workflowtype : OntologyAnnotation option  
+            URI : string option
+            Version : string option  
+            SubWorkflowIDs : string ResizeArray
+            // Parameters, Compontents sepperatly like in Assays and Studies maybe Datamap eventually, Contacts maybe to the Contacts section
+
+            //WorkflowGraph : string 
+        }
+
+
+    type RunOverview = 
+        {
+            Identfier : string
+            Title : string option
+            Description : string option
+            MeasurementType : OntologyAnnotation option
+            TechnologyPlatform : OntologyAnnotation option
+            TechnologyType : OntologyAnnotation option
+            TableCount : int
+            TableNames : string array
+            AdjacentWorkflows : string array
+
+
+            // Cwl description and input?,Performers? datamap..
+        }
+
 
 module ConfigFileTypes =
 
@@ -82,6 +115,9 @@ module ConfigFileTypes =
         | AdditionalDetails
         | AnnotationHeaders
 
+    type WorkflowSection = // metadata could be split as with other sections
+        | Metadata
+        | WorkflowGraph
     type ProvenanceGraphSection = 
         | AsISA
         | AsArcTables
@@ -93,6 +129,7 @@ module ConfigFileTypes =
         | OverviewTable        
         | Assays of AssaySection 
         | Studies of StudySection 
+        | Workflows of WorkflowSection
 
     type Theme =
         | Default

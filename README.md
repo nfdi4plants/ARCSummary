@@ -67,6 +67,9 @@ Custom:
       - Description
       - Additionaldetails
       - Annotationheaders
+   - Workflows
+      - Metadata
+      - WorkflowGraph
 ```
 The order and sections to include are at the user's discretion. All input is later interpreted in complete lowercase.
 

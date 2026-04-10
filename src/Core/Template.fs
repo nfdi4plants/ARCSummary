@@ -3,6 +3,7 @@ namespace ARCSummary
 
 open ARCtrl
 open ARCtrl.Helper
+open ARCtrl.WorkflowGraph
 open System
 open System.Text
 open Option
@@ -16,17 +17,19 @@ open StringHelper
 open Option
 
 module ARCInstances =
-    let getTopLevelMetadata (selectISA:ArcInvestigation) : TopLevelMetadata = {
-        Title = selectISA.Title ;
-        Description = selectISA.Description ;
-        SubmissionDate = selectISA.SubmissionDate ;
-        PublicReleaseDate = selectISA.PublicReleaseDate ;
-        Publications = selectISA.Publications |> Seq.toList ;
-        Contacts = selectISA.Contacts |> Seq.toList ;
-        AssayIdentifiers = selectISA.AssayIdentifiers |> Seq.toList ;
-        AssayCount = Some selectISA.AssayCount ;
-        StudyIdentifiers = selectISA.StudyIdentifiers |> Seq.toList ;
-        StudyCount = Some selectISA.StudyCount
+    let getTopLevelMetadata (investigation:ArcInvestigation) : TopLevelMetadata = {
+        Title = investigation.Title ;
+        Description = investigation.Description ;
+        SubmissionDate = investigation.SubmissionDate ;
+        PublicReleaseDate = investigation.PublicReleaseDate ;
+        Publications = investigation.Publications |> Seq.toList ;
+        Contacts = investigation.Contacts |> Seq.toList ;
+        AssayIdentifiers = investigation.AssayIdentifiers |> Seq.toList ;
+        AssayCount = Some investigation.AssayCount ;
+        StudyIdentifiers = investigation.StudyIdentifiers |> Seq.toList ;
+        StudyCount = Some investigation.StudyCount;
+        WorkflowCount = Some investigation.WorkflowCount;
+        RunCount = Some investigation.RunCount
     }
 
     let getStudyOverview (investigation:ArcInvestigation) (study:ArcStudy) = {
@@ -85,15 +88,15 @@ module Template =    // template part definitions
         let sb = StringBuilder()
 
         if not tlm.Title.IsNone then 
-            sb.AppendLine($"# {tlm.Title.Value}") |> ignore
+            sb.AppendLine($"# {tlm.Title.Value} \n") |> ignore
         else sb.AppendLine("# Please add a valid title for your ArcInvestigation") |> ignore
         sb.ToString()
 
     let createInvDescription (tlm:TopLevelMetadata) : string =
         let sb = StringBuilder()
         if not tlm.Description.IsNone then
-            sb.AppendLine($"### Description\n{tlm.Description.Value}") |> ignore
-        else sb.AppendLine("### Please add a valid description to your ArcInvestigation") |> ignore
+            sb.AppendLine($"> {tlm.Description.Value}") |> ignore
+        else sb.AppendLine("> Please add a valid description to your ArcInvestigation") |> ignore
 
         sb.ToString()
 
@@ -282,6 +285,64 @@ module Template =    // template part definitions
             sb.AppendLine($"\n**Factors**: {factString}") |> ignore
         sb.ToString()
 
+    //part 5: Workflows with WorkflowGraphs
+    let getWorkflowOverview (workflow: ArcWorkflow) = {
+        Identifier = workflow.Identifier
+        Title = workflow.Title
+        Description = workflow.Description
+        Workflowtype = workflow.WorkflowType
+        URI = workflow.URI
+        Version = workflow.Version
+        SubWorkflowIDs = workflow.SubWorkflowIdentifiers
+    }
+    let getWorkflowGraphMap (investigation: ArcInvestigation): Map<string, WorkflowGraph> =
+        investigation.WorkflowIdentifiers
+        |> Array.choose (fun id ->
+            ArcInvestigation.tryGetWorkflow id investigation
+            |> Option.bind (fun wf ->
+                match Adapters.ofWorkflow wf with
+                | Ok g -> Some (id, g)
+                | Error _ -> None
+            )
+        )
+        |> Map.ofArray
+
+    let renderWorkflowGraph (graphMap: Map<string, WorkflowGraph>) (workflowId: string) =
+        match Map.tryFind workflowId graphMap with
+        | Some graph ->
+            let graphMd = WorkflowGraphSiren.toMarkdown graph
+            $"### Workflowgraph\n{graphMd}"
+        | None ->
+            "_No WorkflowGraph available_\n"
+    let createWorkflowSection (investigation: ArcInvestigation) (wOV: WorkflowOverview) =
+        let sb = StringBuilder()
+        if investigation.WorkflowCount <> 0 then 
+            if wOV.Title.IsSome then 
+                sb.AppendLine($"### {wOV.Title.Value} \n") |> ignore
+            if wOV.Description.IsSome then 
+                sb.AppendLine($"> {wOV.Description.Value} \n") |> ignore
+            let rows =
+                [
+                    wOV.Workflowtype
+                    |> Option.map (fun wt -> $"| Workflowtype | {wt.NameText} |")
+                    wOV.URI
+                    |> Option.map (fun uri -> $"| URI | {uri} |")
+                    wOV.Version
+                    |> Option.map (fun v -> $"| Version | {v} |")
+                    if wOV.SubWorkflowIDs.Count <> 0 then
+                        let subWFIDs = wOV.SubWorkflowIDs |> Seq.toArray |> join ","
+                        Some $"| SubWorkflowIDs | {subWFIDs} |"
+                    else None
+                ]
+                |> List.choose id
+            if not rows.IsEmpty then
+                sb.AppendLine("### Additional details") |> ignore   
+                sb.AppendLine("| Meta Data | Description |") |> ignore
+                sb.AppendLine("| --------- | ----------- |") |> ignore
+
+                rows
+                |> List.iter (fun row -> sb.AppendLine(row) |> ignore)
+        sb.ToString()
 
     type TableOfContents =
 
@@ -292,12 +353,14 @@ module Template =    // template part definitions
                     $"     - [{id}](#{prefix}-{id.ToLower()})")
                 |> String.concat "\n"
 
-        static member createTOC(sections : Section list, tlm : TopLevelMetadata , ?assayOVs : seq<AssayOverview>, ?studyOVs : seq<StudyOverview>) =    
+        static member createTOC(sections : Section list, tlm : TopLevelMetadata , ?assayOVs : seq<AssayOverview>, ?studyOVs : seq<StudyOverview>, ?workflowOVs : seq<WorkflowOverview>) =    
             let mutable studiesHeaderSet = false              
             let mutable assayHeaderSet = false
+            let mutable workflowHeaderSet = false
 
             let studyOVs = Option.defaultValue Seq.empty studyOVs
             let assayOVs = Option.defaultValue Seq.empty assayOVs
+            let workflowOVs = Option.defaultValue Seq.empty workflowOVs
 
             let sb = StringBuilder()
             sb.AppendLine("## Table of Contents \n") |> ignore
@@ -326,6 +389,11 @@ module Template =    // template part definitions
                         sb.AppendLine("- Assays \n ") |> ignore
                         assayHeaderSet <- true
                         sb.AppendLine(TableOfContents.createAnchor "assay" (assayOVs |> Seq.map (fun (aOV:AssayOverview) -> aOV.AssayIdentifier))) |> ignore            
+                | Section.Workflows subSection when not (Seq.isEmpty workflowOVs) -> 
+                    if not workflowHeaderSet then 
+                        sb.AppendLine("- Workflows \n ") |> ignore
+                        workflowHeaderSet <- true
+                        sb.AppendLine(TableOfContents.createAnchor "workflow" (workflowOVs |> Seq.map (fun (wOV:WorkflowOverview) -> wOV.Identifier))) |> ignore       
                 | Section.Investigation InvestigationSection.Title 
                 | Section.Investigation InvestigationSection.Description
                 | Section.TOC -> ()

@@ -11,7 +11,7 @@ open SummaryStyles
 module ConfigFileDecode =
 
 
-    let yamlPath = Path.Combine(".arc","arc-summary.yml")
+    let yamlPath = Path.Combine(".arc","arc_summary.yml") // previous outdated arc-summary
     let yamlContent = File.ReadAllText(yamlPath)
     let parsed = Reader.read yamlContent
 
@@ -50,6 +50,15 @@ module ConfigFileDecode =
             | _ -> None
         | _ -> None
 
+    let decodeWorkflowSection (element:YAMLElement) =
+        match element with 
+        | YAMLElement.Object [YAMLElement.Value v] -> 
+            match v.Value.ToLower() with 
+            | "metadata" -> Some WorkflowSection.Metadata
+            | "workflowgraph" -> Some WorkflowSection.WorkflowGraph
+            | _ -> None
+        | _ -> None
+
 
     let decodePGSection (element:YAMLElement) =
         match element with
@@ -72,7 +81,8 @@ module ConfigFileDecode =
             | "investigation" -> secFields |> List.choose (decodeInvSection >> Option.map Investigation)
             | "provenancegraph" -> secFields |> List.choose (decodePGSection >> Option.map ProvenanceGraph)
             | "studies" -> secFields |> List.choose (decodeStudySection >> Option.map Studies)
-            | "assays" -> secFields |> List.choose (decodeAssaySection >> Option.map Assays)          
+            | "assays" -> secFields |> List.choose (decodeAssaySection >> Option.map Assays)  
+            | "workflows" -> secFields |> List.choose (decodeWorkflowSection >> Option.map Workflows)        
             | key -> failwithf "Decode section failed, unknown key %s" key
         | _ -> failwithf "Decode section failed: Section must be object sequence tuple but is %A" element
 

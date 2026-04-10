@@ -22,6 +22,8 @@ module SummaryStyles = //hardcoded section order for default case and themes
             Section.Assays AssaySection.Description
             Section.Assays AssaySection.AdditionalDetails
             Section.Assays AssaySection.AnnotationHeaders
+            Section.Workflows WorkflowSection.Metadata
+            Section.Workflows WorkflowSection.WorkflowGraph
         ]
     
     let publicationStyle : Section list = // Title, Description, Contacts, Publication 
