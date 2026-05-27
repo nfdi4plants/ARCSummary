@@ -59,6 +59,13 @@ module ConfigFileDecode =
             | _ -> None
         | _ -> None
 
+    let decodeRunSection (element:YAMLElement) =
+        match element with 
+        | YAMLElement.Object [YAMLElement.Value v] -> 
+            match v.Value.ToLower() with 
+            | "metadata" -> Some RunSection.Metadata
+            | _ -> None
+        | _ -> None
 
     let decodePGSection (element:YAMLElement) =
         match element with
@@ -83,6 +90,7 @@ module ConfigFileDecode =
             | "studies" -> secFields |> List.choose (decodeStudySection >> Option.map Studies)
             | "assays" -> secFields |> List.choose (decodeAssaySection >> Option.map Assays)  
             | "workflows" -> secFields |> List.choose (decodeWorkflowSection >> Option.map Workflows)        
+            | "runs" -> secFields |> List.choose (decodeRunSection >> Option.map Runs)
             | key -> failwithf "Decode section failed, unknown key %s" key
         | _ -> failwithf "Decode section failed: Section must be object sequence tuple but is %A" element
 

@@ -17,6 +17,7 @@ module READMEAutomation = // better name
         let mutable studiesHeaderSet = false              
         let mutable assayHeaderSet = false
         let mutable workflowHeaderSet = false
+        let mutable runHeaderSet = false
         let tlm : TopLevelMetadata = getTopLevelMetadata investigation
         let studyOVs : StudyOverview seq =
             investigation.Studies
@@ -34,15 +35,25 @@ module READMEAutomation = // better name
                 |> Seq.map (fun (wf:ArcWorkflow) -> getWorkflowOverview wf)
             else Seq.empty
             //|> Seq.filter (fun (w:ArcWorkflow) -> w.Identifier.Length <> 0) // think of other filter
+        let runOVs: RunOverview seq = 
+            if investigation.RunCount <> 0 then 
+                investigation.Runs
+                |> Seq.map (fun (run:ArcRun) -> getRunOverview run)
+            else Seq.empty
+
         let graphMap = getWorkflowGraphMap investigation
 
         let renderWorkflowSubsection (graphMap: Map<string, WorkflowGraph>) (wOV: WorkflowOverview) (subSec: WorkflowSection) =
             match subSec with
             | WorkflowSection.Metadata ->
                 createWorkflowSection investigation wOV
-
             | WorkflowSection.WorkflowGraph ->
                 renderWorkflowGraph graphMap wOV.Identifier
+        
+        let renderRunSubsection (investigation: ArcInvestigation) (rOV: RunOverview) (subSec: RunSection) =
+            match subSec with
+            | RunSection.Metadata ->
+                createRunSection investigation rOV
 
         let orderedStudySections : StudySection list =
             sections
@@ -55,6 +66,10 @@ module READMEAutomation = // better name
         let orderedWorkflowSections : WorkflowSection list =
             sections
             |> List.choose (function Section.Workflows w -> Some w | _ -> None)
+        
+        let orderedRunSections : RunSection list = 
+            sections
+            |> List.choose (function Section.Runs r -> Some r | _ -> None)
 
         sections 
         |> Seq.map (fun (sec:Section) ->
@@ -63,7 +78,7 @@ module READMEAutomation = // better name
             | Investigation InvestigationSection.Description -> createInvDescription tlm 
             | Investigation Contacts -> createContactsSection tlm 
             | Investigation Publication -> createPublicationsSection tlm 
-            | TOC -> TableOfContents.createTOC(sections, tlm ,assayOVs, studyOVs, workflowOVs)
+            | TOC -> TableOfContents.createTOC(sections, tlm ,assayOVs, studyOVs, workflowOVs, runOVs)
             | ProvenanceGraph ProvenanceGraphSection.AsISA -> createRelationshipGraph tlm investigation assayOVs studyOVs
             | ProvenanceGraph ProvenanceGraphSection.AsArcTables -> getARCTableProvenanceGraph investigation
             | OverviewTable -> $"### Overview Table \n {createOverviewTable tlm}" 
@@ -123,6 +138,24 @@ module READMEAutomation = // better name
                             orderedWorkflowSections
                             |> List.map (fun subSec ->
                                 renderWorkflowSubsection graphMap wOV subSec
+                            )
+                            |> String.concat "\n"
+                        [ id; subSections ]
+                        |> String.concat "\n"
+                    )
+                    |> String.concat "\n\n"
+                else ""
+            | Runs _ ->
+                if not runHeaderSet then
+                    runHeaderSet <- true
+                    runOVs
+                    |> List.ofSeq
+                    |> List.map (fun rOV ->
+                        let id = $"## Run: _{rOV.Identifier}_"
+                        let subSections =
+                            orderedRunSections
+                            |> List.map (fun subSec ->
+                                renderRunSubsection investigation rOV subSec
                             )
                             |> String.concat "\n"
                         [ id; subSections ]

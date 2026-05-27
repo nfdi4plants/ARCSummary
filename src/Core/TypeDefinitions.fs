@@ -14,7 +14,9 @@ module SummaryTypes =
         AssayCount : int option ; // maybe int and display 0 when not, but match is made easier
         StudyIdentifiers : string list ;
         StudyCount : int option ;
-        WorkflowCount : int option;
+        WorkflowIdentifiers : string list ;
+        WorkflowCount : int option ;
+        RunIdentifiers : string list ;
         RunCount : int option
     }
 
@@ -64,8 +66,7 @@ module SummaryTypes =
         DataFileCount : int list
     }
 
-    type WorkflowOverview =
-        {
+    type WorkflowOverview = {
             Identifier : string
             Title : string option
             Description : string option
@@ -74,26 +75,22 @@ module SummaryTypes =
             Version : string option  
             SubWorkflowIDs : string ResizeArray
             // Parameters, Compontents sepperatly like in Assays and Studies maybe Datamap eventually, Contacts maybe to the Contacts section
-
             //WorkflowGraph : string 
         }
 
 
-    type RunOverview = 
-        {
-            Identfier : string
-            Title : string option
-            Description : string option
-            MeasurementType : OntologyAnnotation option
-            TechnologyPlatform : OntologyAnnotation option
-            TechnologyType : OntologyAnnotation option
-            TableCount : int
-            TableNames : string array
-            AdjacentWorkflows : string array
-
-
-            // Cwl description and input?,Performers? datamap..
-        }
+    type RunOverview = {
+        Identifier : string
+        Title : string option
+        Description : string option
+        MeasurementType : OntologyAnnotation option
+        TechnologyPlatform : OntologyAnnotation option
+        TechnologyType : OntologyAnnotation option
+        TableCount : int
+        TableNames : string list
+        AdjacentWorkflows : string array
+        // Cwl description and input?,Performers? datamap..
+    }
 
 
 module ConfigFileTypes =
@@ -118,6 +115,9 @@ module ConfigFileTypes =
     type WorkflowSection = // metadata could be split as with other sections
         | Metadata
         | WorkflowGraph
+
+    type RunSection = // metadata could be split as with other sections
+        | Metadata
     type ProvenanceGraphSection = 
         | AsISA
         | AsArcTables
@@ -130,6 +130,7 @@ module ConfigFileTypes =
         | Assays of AssaySection 
         | Studies of StudySection 
         | Workflows of WorkflowSection
+        | Runs of RunSection
 
     type Theme =
         | Default

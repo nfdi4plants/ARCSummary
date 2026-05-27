@@ -18,17 +18,19 @@ open Option
 
 module ARCInstances =
     let getTopLevelMetadata (investigation:ArcInvestigation) : TopLevelMetadata = {
-        Title = investigation.Title ;
-        Description = investigation.Description ;
-        SubmissionDate = investigation.SubmissionDate ;
-        PublicReleaseDate = investigation.PublicReleaseDate ;
-        Publications = investigation.Publications |> Seq.toList ;
-        Contacts = investigation.Contacts |> Seq.toList ;
-        AssayIdentifiers = investigation.AssayIdentifiers |> Seq.toList ;
-        AssayCount = Some investigation.AssayCount ;
-        StudyIdentifiers = investigation.StudyIdentifiers |> Seq.toList ;
-        StudyCount = Some investigation.StudyCount;
-        WorkflowCount = Some investigation.WorkflowCount;
+        Title = investigation.Title 
+        Description = investigation.Description 
+        SubmissionDate = investigation.SubmissionDate 
+        PublicReleaseDate = investigation.PublicReleaseDate 
+        Publications = investigation.Publications |> Seq.toList 
+        Contacts = investigation.Contacts |> Seq.toList 
+        AssayIdentifiers = investigation.AssayIdentifiers |> Seq.toList 
+        AssayCount = Some investigation.AssayCount 
+        StudyIdentifiers = investigation.StudyIdentifiers |> Seq.toList 
+        StudyCount = Some investigation.StudyCount
+        WorkflowIdentifiers = investigation.WorkflowIdentifiers |> Seq.toList
+        WorkflowCount = Some investigation.WorkflowCount
+        RunIdentifiers = investigation.RunIdentifiers |> Seq.toList
         RunCount = Some investigation.RunCount
     }
 
@@ -155,20 +157,26 @@ module Template =    // template part definitions
 
     let createOverviewTable (tlm:TopLevelMetadata) : string =
         let sb = StringBuilder()
-        
         sb.AppendLine("| Meta Data | Description |") |> ignore
         sb.AppendLine("| --------- | ----------- |") |> ignore
         if not tlm.SubmissionDate.IsNone then
             sb.AppendLine($"| Submission Date | {tlm.SubmissionDate.Value} |") |> ignore
         if not tlm.PublicReleaseDate.IsNone then
             sb.AppendLine($"| Public Release Date | {tlm.PublicReleaseDate.Value} |") |> ignore
-        let studyIDs = String.Join(" , ", tlm.StudyIdentifiers)
-        sb.AppendLine($"| Study identifiers | {studyIDs} |") |> ignore
+        let studyIDs = String.Join(", ", tlm.StudyIdentifiers)
+        sb.AppendLine($"| Study Identifiers | {studyIDs} |") |> ignore
         sb.AppendLine($"| Study Count | {tlm.StudyCount.Value} |") |> ignore
-        let assayIDs = String.Join(" , ", tlm.AssayIdentifiers)
-        sb.AppendLine($"| Assay identifiers | {assayIDs} |") |> ignore
+        let assayIDs = String.Join(", ", tlm.AssayIdentifiers)
+        sb.AppendLine($"| Assay Identifiers | {assayIDs} |") |> ignore
         sb.AppendLine($"| Assay Count | {tlm.AssayCount.Value} |") |> ignore
-
+        if not (tlm.WorkflowCount.Value = 0) then
+            let workflowIDs = String.Join(", ", tlm.WorkflowIdentifiers)
+            sb.AppendLine($"| Workflow Identifiers | {workflowIDs} |") |> ignore
+            sb.AppendLine($"| Workflow Count | {tlm.WorkflowCount.Value} |") |> ignore
+        if not (tlm.RunCount.Value = 0) then
+            let runIDs = String.Join(", ", tlm.RunIdentifiers)
+            sb.AppendLine($"| Run Identifiers | {runIDs} |") |> ignore
+            sb.AppendLine($"| Run Count | {tlm.RunCount.Value} |") |> ignore
         sb.ToString()
 
 
@@ -188,7 +196,7 @@ module Template =    // template part definitions
     
     let createStudyDescription (sOV:StudyOverview) : string =
         let sb = StringBuilder()
-        if not sOV.StudyDescription.IsNone then sb.AppendLine($"### Description\n{sOV.StudyDescription.Value}") |> ignore
+        if not sOV.StudyDescription.IsNone then sb.AppendLine($" \n >{sOV.StudyDescription.Value}") |> ignore
         sb.ToString()
 
     let createStudyAdditionalDetails (sOV:StudyOverview) : string =
@@ -245,7 +253,7 @@ module Template =    // template part definitions
 
     let createAssayDescription (aOV:AssayOverview) : string =
         let sb = StringBuilder()
-        if not aOV.AssayDescription.IsNone then sb.AppendLine($"### Description\n{aOV.AssayDescription.Value}") |> ignore
+        if not aOV.AssayDescription.IsNone then sb.AppendLine($" \n >{aOV.AssayDescription.Value}") |> ignore
         sb.ToString()
 
     let createAssayAdditionalDetails (aOV:AssayOverview) : string =
@@ -324,13 +332,13 @@ module Template =    // template part definitions
             let rows =
                 [
                     wOV.Workflowtype
-                    |> Option.map (fun wt -> $"| Workflowtype | {wt.NameText} |")
+                    |> Option.map (fun oa -> $"| Workflow Type | {oa.NameText} |")
                     wOV.URI
                     |> Option.map (fun uri -> $"| URI | {uri} |")
                     wOV.Version
                     |> Option.map (fun v -> $"| Version | {v} |")
                     if wOV.SubWorkflowIDs.Count <> 0 then
-                        let subWFIDs = wOV.SubWorkflowIDs |> Seq.toArray |> join ","
+                        let subWFIDs = wOV.SubWorkflowIDs |> Seq.toArray |> join ", "
                         Some $"| SubWorkflowIDs | {subWFIDs} |"
                     else None
                 ]
@@ -344,6 +352,54 @@ module Template =    // template part definitions
                 |> List.iter (fun row -> sb.AppendLine(row) |> ignore)
         sb.ToString()
 
+    // part 6 Runs
+    let getRunOverview (run: ArcRun) = {
+        Identifier = run.Identifier
+        Title = run.Title
+        Description = run.Description
+        MeasurementType = run.MeasurementType
+        TechnologyPlatform = run.TechnologyPlatform
+        TechnologyType = run.TechnologyType
+        TableCount = run.TableCount
+        TableNames = run.TableNames
+        AdjacentWorkflows = run.WorkflowIdentifiers |> Seq.toArray
+    }    
+
+    let createRunSection (investigation:ArcInvestigation) (rOV:RunOverview) = 
+        let sb = StringBuilder()
+        if investigation.RunCount <> 0 then 
+            if rOV.Title.IsSome then 
+                sb.AppendLine($"### {rOV.Title.Value}") |> ignore
+            if rOV.Description.IsSome then 
+                sb.AppendLine($"> {rOV.Description.Value} \n") |> ignore
+            let rows =
+                [
+                    rOV.MeasurementType
+                    |> Option.map (fun oa -> $"| Measurement Type | {oa.NameText} |")
+                    rOV.TechnologyPlatform
+                    |> Option.map (fun oa -> $"| Technology Platform | {oa.NameText} |")
+                    rOV.TechnologyType
+                    |> Option.map (fun oa -> $"| Technology Type | {oa.NameText} |")
+                    if rOV.TableCount <> 0 then 
+                        Some $"| Table Count | {rOV.TableCount} |"
+                    else None
+                    if not rOV.TableNames.IsEmpty then 
+                        let tableIDs = rOV.TableNames |> Seq.toArray |> join ", " 
+                        Some $"| Table Names | {tableIDs} |"
+                    else None
+                    if rOV.AdjacentWorkflows.Length <> 0 then
+                        let adWFs = rOV.AdjacentWorkflows |> join ", "
+                        Some $"| Adjacent Workflows | {adWFs} |"
+                ]
+                |> List.choose id
+            if not rows.IsEmpty then
+                sb.AppendLine("### Additional details") |> ignore   
+                sb.AppendLine("| Meta Data | Description |") |> ignore
+                sb.AppendLine("| --------- | ----------- |") |> ignore
+                rows
+                |> List.iter (fun row -> sb.AppendLine(row) |> ignore)
+        sb.ToString()
+
     type TableOfContents =
 
 
@@ -353,14 +409,16 @@ module Template =    // template part definitions
                     $"     - [{id}](#{prefix}-{id.ToLower()})")
                 |> String.concat "\n"
 
-        static member createTOC(sections : Section list, tlm : TopLevelMetadata , ?assayOVs : seq<AssayOverview>, ?studyOVs : seq<StudyOverview>, ?workflowOVs : seq<WorkflowOverview>) =    
+        static member createTOC(sections : Section list, tlm : TopLevelMetadata , ?assayOVs : seq<AssayOverview>, ?studyOVs : seq<StudyOverview>, ?workflowOVs : seq<WorkflowOverview>, ?runOVs : seq<RunOverview>) =    
             let mutable studiesHeaderSet = false              
             let mutable assayHeaderSet = false
             let mutable workflowHeaderSet = false
+            let mutable runHeaderSet = false
 
             let studyOVs = Option.defaultValue Seq.empty studyOVs
             let assayOVs = Option.defaultValue Seq.empty assayOVs
             let workflowOVs = Option.defaultValue Seq.empty workflowOVs
+            let runOVs = Option.defaultValue Seq.empty runOVs
 
             let sb = StringBuilder()
             sb.AppendLine("## Table of Contents \n") |> ignore
@@ -394,6 +452,11 @@ module Template =    // template part definitions
                         sb.AppendLine("- Workflows \n ") |> ignore
                         workflowHeaderSet <- true
                         sb.AppendLine(TableOfContents.createAnchor "workflow" (workflowOVs |> Seq.map (fun (wOV:WorkflowOverview) -> wOV.Identifier))) |> ignore       
+                | Section.Runs subSection when not (Seq.isEmpty runOVs) -> 
+                    if not runHeaderSet then 
+                        sb.AppendLine("- Runs \n ") |> ignore 
+                        runHeaderSet <- true
+                        sb.AppendLine(TableOfContents.createAnchor "run" (runOVs |> Seq.map (fun (rOV:RunOverview) -> rOV.Identifier))) |> ignore       
                 | Section.Investigation InvestigationSection.Title 
                 | Section.Investigation InvestigationSection.Description
                 | Section.TOC -> ()
