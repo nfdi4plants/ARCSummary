@@ -20,7 +20,14 @@ docker run -v "</path_to_your_arc>:/arc" ghcr.io/nfdi4plants/arc-summary:main su
 docker run -v "</path_to_your_arc>:/arc" ghcr.io/nfdi4plants/arc-summary:main summarymr -d /arc -t your_access_token -i user/repository
 ```
 
+The following command executed from within the ARC (`./`) edits the local `README.md`.
+
+```bash
+docker run --rm -v "./:/arc" ghcr.io/nfdi4plants/arc-summary:main summary -d /arc
+```
+
 ### Build and run Docker image
+
 For reference as this is based on the docker setup provided by arc-export see the [docs](https://github.com/nfdi4plants/arc-export)
 ```bash
 docker build -t dockerimage:latest /path/to/ARCSummary 
