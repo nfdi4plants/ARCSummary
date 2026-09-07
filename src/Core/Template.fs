@@ -191,7 +191,7 @@ module Template =    // template part definitions
     
     let createStudyTitle (sOV:StudyOverview) : string =
         let sb = StringBuilder()
-        if not sOV.StudyTitle.IsNone then sb.AppendLine($"## {sOV.StudyTitle.Value}") |> ignore
+        if not sOV.StudyTitle.IsNone then sb.AppendLine($"### {sOV.StudyTitle.Value}") |> ignore
         sb.ToString()
     
     let createStudyDescription (sOV:StudyOverview) : string =
@@ -248,7 +248,7 @@ module Template =    // template part definitions
     
     let createAssayTitle (aOV:AssayOverview) : string =
         let sb = StringBuilder()
-        if not aOV.AssayTitle.IsNone then sb.AppendLine($"## {aOV.AssayTitle.Value}") |> ignore
+        if not aOV.AssayTitle.IsNone then sb.AppendLine($"### {aOV.AssayTitle.Value}") |> ignore
         sb.ToString()
 
     let createAssayDescription (aOV:AssayOverview) : string =
